@@ -1,0 +1,704 @@
+CREATE TABLE SALES_MASTER (
+    InvoiceNo int NOT NULL AUTO_INCREMENT,
+    BillDate varchar(255),
+	CustomerID varchar(255),
+	PlaceOfSupply varchar(255),
+	InvoiceAddress varchar(5000),
+	TYPE varchar(255) ,
+	TotalTaxable varchar(255),
+	TOTALCGST varchar(255),
+	TOTALSGST varchar(255),
+	TOTALIGST varchar(255),
+	GrandTotal varchar(255),
+	CreatedDate varchar(255),
+    PRIMARY KEY (InvoiceNo)
+)
+
+ALTER TABLE SALES_MASTER AUTO_INCREMENT = 500;
+
+CREATE TABLE SALES_TRANSACTIONS (
+    ID int NOT NULL AUTO_INCREMENT,
+    InvoiceNo int NOT NULL,
+    ItemID varchar(255),
+	Quantity varchar(255),
+	Rate varchar(255),
+	GSTRate varchar(255),	
+	Discount varchar(255),
+	TaxableValue varchar(255),
+	CGST varchar(255),
+	SGST varchar(255),
+	IGST varchar(255),
+	TotalItemValue varchar(255),
+    PRIMARY KEY (ID)
+)
+
+CREATE TABLE CUSTOMER_MASTER (
+    ID int NOT NULL AUTO_INCREMENT,
+    VendorName varchar(255) NOT NULL,
+    GSTNUMBER varchar(255),
+	State varchar(255),
+	City varchar(255),
+	contactPerson varchar(255) ,
+	MobileNumber varchar(255),
+	PAN varchar(255),
+	Address varchar(255),
+	pincode varchar(255),
+    PRIMARY KEY (ID)
+)
+
+
+CREATE TABLE ITEM_MASTER (
+    ID int NOT NULL AUTO_INCREMENT,
+    Description varchar(255) NOT NULL,
+    ItemType varchar(255),
+	HSN varchar(255),
+	ITEMCODE varchar(255),
+	UNIT varchar(255),
+	TAXRATE varchar(255),
+	DISCOUNT varchar(255),
+	CESSAMOUNT varchar(255),
+	PURCHASEPRICE varchar(255),
+	SELLINGPRICE varchar(255),
+	Quantity varchar(255),
+	PRIMARY KEY (ID)
+)
+['H4 13442 24V 100/90CP P43T', 'GOODS', '8539', '', '18', '', '65.25', '', 'Pieces', '', '0']
+['H4 12442 12V 100/90CP P43T', 'GOODS', '8539', '', '18', '', '61.02', '', 'Pieces', '', '0']
+['SOLENOID  SWITCH 406577', 'GOODS', '8511', '', '', '', '1362', '', 'Pieces', '37', '0']
+['BRUSH HOLDER   REAR  BRACKET 104', 'GOODS', '8511', '', '', '', '215', '', 'Pieces', '43', '0']
+['RECTIFIER 478', 'GOODS', '8511', '', '28', '', '980', '', 'Pieces', '43', '0']
+['RELAY 061', 'GOODS', '8536', '', '28', '', '268', '', 'Pieces', '21.87', '0']
+['HLX:622 H3 24V 70W PK22s', 'GOODS', '85392120', '', '18', '', '27.97', '', 'Pieces', '', '0']
+['LX: 61000963 009-HLA-LMW T/ACE CUB MOTORISED', 'GOODS', '85122010', '', '', '', '271.87', '', 'Pieces', '', '0']
+['LX:61000965 009 -HLA-RMW T/ACE', 'GOODS', '85122010', '', '28', '', '271.87', '', 'Pieces', '', '0']
+['ARMETURE 2025', 'GOODS', '8511', '', '28', '', '1926', '', 'Pieces', '40', '0']
+['RECTIFIER  COOLER 260', 'GOODS', '8511', '', '28', '', '1075', '', 'Pieces', '41', '0']
+['EGT GEAR 389', 'GOODS', '8511', '', '28', '', '1145', '', 'Pieces', '41', '0']
+['BRUSH  HOLDER REAR BRACKET  406594', 'GOODS', '8511', '', '28', '', '501', '', 'Pieces', '41', '0']
+['NAGIN  24V    REVERSE  ALRMA', 'GOODS', '8531', '', '28', '', '68', '', 'Pieces', '', '0']
+['NAGIN DX REVERSE ALARM', 'GOODS', '8531', '', '', '', '60', '', 'Pieces', '', '0']
+['SILICON SIREN REVERSE ALARM', 'GOODS', '8531', '', '28', '', '82', '', 'Pieces', '', '0']
+['VIP SIREN', 'GOODS', '8531', '', '28', '', '235', '', 'Pieces', '', '0']
+['62327  12V  35/35W BA 20D', 'GOODS', '8539', '', '', '', '25.42', '', 'Pieces', '', '0']
+['  H3 12V  55W64151', 'GOODS', '8539', '', '18', '', '19.49', '', 'Pieces', '', '0']
+['62248  H4  24V 100/90W  P-43T', 'GOODS', '8539', '', '18', '', '55.08', '', 'Pieces', '', '0']
+['62204 H4 12V 100/90W P43T', 'GOODS', '8539', '', '18', '', '40.68', '', 'Pieces', '', '0']
+['H4 12V  100/90  CP  BTO TR', 'GOODS', '8539', '', '18', '', '35.17', '', 'Pieces', '', '0']
+['H4 12V 100/90  CP P36 TR', 'GOODS', '8539', '', '18', '', '35.17', '', 'Pieces', '', '0']
+['H4  24 100/90 WP43', 'GOODS', '8539', '', '18', '', '35.17', '', 'Pieces', '', '0']
+['H4 12V 100/90 CP P45TR', 'GOODS', '8539', '', '18', '', '35.17', '', 'Pieces', '', '0']
+['H4 12V 100/90 CP  P43 TR', 'GOODS', '8539', '', '18', '', '35.17', '', 'Pieces', '', '0']
+['818  STOP LITESW  MARUTI', 'GOODS', '8536', '', '28', '', '25', '', 'Pieces', '40', '0']
+['815  S.L. SWITCH 1612 TATA STEEL', 'GOODS', '8536', '', '', '', '50', '', 'Pieces', '40', '0']
+['905  DOUBLE  HORN RED GRILL', 'GOODS', '8512', '', '28', '', '550', '', 'Pieces', '40', '0']
+['901D  SINGAL HORN  M-100 DLX 12V', 'GOODS', '8512', '', '28', '', '220', '', 'Pieces', '40', '0']
+['900  SINGLE  HORN  SMALL CLASSIC  12V', 'GOODS', '8512', '', '', '', '100', '', 'Pieces', '40', '0']
+['789U  MOBILE CHARGER 4 PIN  FOR CAR U', 'GOODS', '8536', '', '28', '', '100', '', 'Pieces', '40', '0']
+['542N IGN 1210SE  ZUES  TYPE NYLN', 'GOODS', '8708', '', '28', '', '90', '', 'Pieces', '40', '0']
+['2906 FAN BRUSH INDICA(BHER0)', 'GOODS', '85452000', '', '28', '', '100', '', 'Pieces', '52.5', '0']
+['3105 SELF BRUSH ACTIVA', 'GOODS', '85452000', '', '28', '', '50', '', 'Pieces', '52.5', '0']
+['8107 ALT. BRUSH LEYLAND (CABON)', 'GOODS', '85119000', '', '28', '', '44', '', '', '52.5', '0']
+['8104 ALT. BRUSH 407 (CARBON)', 'GOODS', '85119000', '', '28', '', '32', '', 'Pieces', '52.5', '0']
+['4478  SELF ROCKER ASSY GIO / SWIFT', 'GOODS', '85119000', '', '28', '', '250', '', 'Pieces', '52.5', '0']
+['4465 SELF ROCKER ASSY SWIFT', 'GOODS', '85119000', '', '28', '', '250', '', 'Pieces', '52.5', '0']
+['4464 SELF ROCKER ASSY SCORPIO', 'GOODS', '85119000', '', '28', '', '250', '', 'Pieces', '52.5', '0']
+['5202 BALL BEARING-6202', 'GOODS', '85119000', '', '28', '', '82', '', 'Pieces', '52.5', '0']
+['3101 SELF BRUSH KINETIC HONDA ', 'GOODS', '85452000', '', '28', '', '50', '', 'Pieces', '52.5', '0']
+['2914 FAN MOTOR BRUSH ACE(INROD)', 'GOODS', '85452000', '', '28', '', '40', '', 'Pieces', '52.5', '0']
+['966  PUSH PULL  SWITCH  TRACTOR', 'GOODS', '8708', '', '28', '30', '22', '', 'Pieces', '', '0']
+['520  SOLENOID  SWITCH  INTER MICO', 'GOODS', '8511', '', '28', '', '750', '', 'Pieces', '', '0']
+['512 SOLENOID SWITCH MARUTI CAR/VAN BICO', 'GOODS', '8511', '', '28', '', '545', '', 'Pieces', '', '0']
+[' 1260A  PVC  WIRE  4MM  34', 'GOODS', '8544', '', '28', '', '170', '', 'Rolls', '', '0']
+['SB1018G  S. BENDEX 1018 GOLD', 'GOODS', '8511', '', '28', '', '300', '', 'Pieces', '40', '0']
+['SELF BANDEX  1399', 'GOODS', '8511', '', '28', '', '280', '', 'Pieces', '40', '0']
+['1315 SELF BENDIX 9554 TVS', 'GOODS', '8511', '', '28', '', '280', '', 'Pieces', '40', '0']
+['1376 SELF BENDIX 3397', 'GOODS', '8511', '', '28', '', '280', '', 'Pieces', '40', '0']
+['SELF BENDIX 0780 M', 'GOODS', '8511', '', '28', '', '280', '', 'Pieces', '40', '0']
+['535 IGN. SWITCH PEUGEOT', 'GOODS', '8708', '', '28', '', '175', '', 'Pieces', '40', '0']
+[' SELF BENDIX 3078  INTER TRACTOR', 'GOODS', '8511', '', '28', '', '270', '', 'Pieces', '40', '0']
+['752 INDICATOR FLASHER MUSICAL 12V', 'GOODS', '8536', '', '28', '', '55', '', 'Pieces', '40', '0']
+['751 INDICATOR FLASHER 12V', 'GOODS', '8536', '', '28', '', '38', '', 'Pieces', '40', '0']
+['780 HORN RELAY 12V', 'GOODS', '8536', '', '28', '', '55', '', 'Pieces', '40', '0']
+['507  HEADLIGHT  SWITCH AMB DLX', 'GOODS', '8536', '', '28', '', '55', '', 'Pieces', '40', '0']
+['522 IGN SWITCH FORD/ESCORD  N/M', 'GOODS', '8708', '', '28', '', '110', '', 'Pieces', '40', '0']
+['528 IGN . SWITCH INTER DI W/WIRE', 'GOODS', '8708', '', '28', '', '145', '', 'Pieces', '40', '0']
+['540 ING. SWITCH AMB', 'GOODS', '8708', '', '28', '', '105', '', 'Pieces', '40', '0']
+['782 HORN TUNER 12V', 'GOODS', '8536', '', '28', '', '100', '', 'Pieces', '40', '0']
+['783 HORN TUNER 12V', 'GOODS', '8536', '', '28', '', '110', '', 'Pieces', '40', '0']
+['553 STARTER BUTTON TATA 470', 'GOODS', '8536', '', '28', '', '30', '', 'Pieces', '40', '0']
+['552 STARTER BUTTON ZEUS BRASS', 'GOODS', '8536', '', '28', '', '45', '', 'Pieces', '40', '0']
+['724 H L HOLDER 3 PIN CERAMIC', 'GOODS', '8544', '', '28', '', '35', '', 'Pieces', '40', '0']
+['HEADLIGHT RELAY WITH CO WIRE', 'GOODS', '8536', '', '28', '', '450', '', 'Pieces', '40', '0']
+['HN8202M HORN DC D82', 'GOODS', '8512', '', '28', '', '106', '', 'Pieces', '21.87', '0']
+['MELODY MAKER 7IN 1 EH 24V', 'GOODS', '8708', '', '', '', '254', '', 'Pieces', '47', '0']
+['MELODY MAKER  7 IN 1 EH 12V', 'GOODS', '8708', '', '28', '', '248', '', 'Pieces', '47', '0']
+['SB 102 H4 P43T', 'GOODS', '8512', '', '28', '', '163', '', 'Pieces', '40', '0']
+['HL 121 (1613) LED12V', 'GOODS', '8512', '', '28', '', '1150', '', 'Pieces', '40', '0']
+['HL 121 1613 P43T', 'GOODS', '8512', '', '28', '', '580', '', 'Pieces', '42', '0']
+[' R. R UNIT MAH ALFA 6 WIRE', 'GOODS', '8536', '', '28', '', '', '260', '', '', '0']
+['H/L ASSY APE WITH BULB LEFT', 'GOODS', '8512', '', '28', '', '', '175', '', '', '0']
+['SELF  GEAR 6545', 'GOODS', '85030029', '', '28', '', '', '62', '', '', '0']
+['PMP 2157 DUAL H L R KIT  H1 H7', 'GOODS', '8536', '', '28', '', '', '410', '', '', '0']
+['HLH33VA/H3-12V-55W/', 'GOODS', '8539', '', '28', '', '20.58', '', 'Pieces', '', '0']
+['VSZPSet/SPARE-POINT Set ASSY-VIBROSONIC', 'GOODS', '8512', '', '28', '', '103.35', '', 'Pieces', '', '0']
+['MSU024H/ MEGASONIC-UNIVERSAL-24-HT-C/F/', 'GOODS', '8512', '', '28', '', '624.47', '', 'Pieces', '', '0']
+['SMU012S/SMARTONE-12V-HIGH-UNIVERSAL-DUAL-Set', 'GOODS', '8512', '', '28', '', '272', '', 'Pieces', '', '0']
+['VSU012H/VIBROSONIC-UNIVERSAL12V-HT-C/F/', 'GOODS', '8512', '', '28', '', '450.92', '', 'Pieces', '', '0']
+['VSU012L / VIBROSONIC-UNIVERSAL12V-LT-C/F/', 'GOODS', '8512', '', '28', '', '450', '', '', '', '0']
+['CTU212L/CLEARTONE- UNIVERSAL 12V-LT-B/C', 'GOODS', '8512', '', '28', '', '245.63', '', '', '', '0']
+['CTU212H/CLEARTONE-UNIVERSAL-12V-HT-B/C', 'GOODS', '8512', '', '28', '', '245.63', '', '', '', '0']
+['CTZPSSet/SPARE-POINT  Set ASSY- CLEARTONE', 'GOODS', '8512', '', '28', '', '54.25', '', '', '', '0']
+['R7MN12L/ROOTS MINI-12V-LOW-UNIVERSAL', 'GOODS', '8512', '', '28', '', '73.41', '', '', '', '0']
+['WNU012S/WINDTONE UNIVERSAL12V-Set', 'GOODS', '8512', '', '28', '', '342.09', '', '', '', '0']
+['VMZPSet/SPARE-VIBRO MINI-POINT ASSY/', 'GOODS', '8512', '', '28', '', '44.37', '', '', '', '0']
+['DE SHILD FRONT BRACKET 2001A', 'GOODS', '8511', '', '28', '', '475', '', 'Pieces', '41', '0']
+['BEARING 511', 'GOODS', '8511', '', '', '', '335', '', 'Pieces', '43', '0']
+['REGULATOR 210', 'GOODS', '8511', '', '', '', '580', '', 'Pieces', '43', '0']
+['BRUSH HOLDER BRACKET 743', 'GOODS', '8511', '', '28', '', '575', '', 'Pieces', '43', '0']
+['052 HORN RELAY', 'GOODS', '8512', '', '28', '', '64', '', '', '', '0']
+['2723 BRUSH GEAR', 'GOODS', '8511', '', '28', '', '625', '', '', '', '0']
+['8362 REGULATOR', 'GOODS', '8511', '', '28', '', '403', '', '', '', '0']
+['1637 OIL SEAL', 'GOODS', '8511', '', '28', '', '201.5', '', '', '', '0']
+['SWITCH', 'GOODS', '85365090', '', '28', '', '30', '', '', '', '0']
+['SOLENOID SWITCH 277', 'GOODS', '85365090', '', '28', '', '108', '', '', '', '0']
+['SOLENOID SWITCH 216', 'GOODS', '85365090', '', '28', '', '108', '', '', '', '0']
+['SELF GEAR 6545', 'GOODS', '85030029', '', '28', '', '52', '', '', '', '0']
+['SELF GEAR 349', 'GOODS', '85030029', '', '28', '', '63', '', '', '', '0']
+['REGULATOR 412', 'GOODS', '85044040', '', '28', '', '10', '', '', '', '0']
+['REGULATOR 407', 'GOODS', '85044040', '', '28', '', '10', '', '', '', '0']
+['OIL SEAL', 'GOODS', '87089900', '', '28', '', '4', '', '', '', '0']
+['CARBAN BRUSH', 'GOODS', '85452000', '', '28', '', '8', '', '', '', '0']
+['CARBON BRUSH 126', 'GOODS', '85452000', '', '28', '', '10', '', '', '', '0']
+['BRUSH HOLDER 338C', 'GOODS', '85030090', '', '28', '', '17', '', '', '', '0']
+['ARMATURE 729', 'GOODS', '85030090', '', '28', '', '70', '', '', '', '0']
+['armature 729', 'GOODS', '85030090', '', '28', '', '70', '', '', '', '0']
+['ALTERNATOR', 'GOODS', '85044090', '', '28', '', '1356', '', '', '', '0']
+['PUSH PULL SWITCH H/D', 'GOODS', '8536', '', '28', '', '60', '', 'BOX', '', '0']
+['FUSE BOX', 'GOODS', '8536', '', '28', '', '35', '', 'Pieces', '', '0']
+['TOGGLE SWITCH', 'GOODS', '8536', '', '28', '', '75', '', 'BOX', '', '0']
+['H.L. HOLDER', 'GOODS', '8536', '', '28', '', '6', '', 'Pieces', '', '0']
+['MAIN LINE SWITCH', 'GOODS', '8536', '', '28', '', '34', '', 'Pieces', '', '0']
+['INGNITON SWITCH', 'GOODS', '8536', '', '28', '', '35', '', 'Pieces', '', '0']
+['HEAD LIGHT SWITCH', 'GOODS', '8536', '', '28', '', '50', '', 'BOX', '', '0']
+['T.L ASSLY TATA ACE', 'GOODS', '8512', '', '28', '', '', '60', '', '', '0']
+['SELF ARMACHER APE BAJAJ', 'GOODS', '8511', '', '', '', '', '470', '', '', '0']
+['HLY:611 H3 12V 55W', 'GOODS', '85392120', '', '28', '', '', '22', '', '', '0']
+['VSUO12L / VIBROSONIC HORN', 'GOODS', '8512', '', '28', '', '450', '455', '', '', '0']
+['TAIL LAMP ASSY FOUR CHAMBER', 'GOODS', '8512', '', '28', '', '', '110', '', '', '0']
+['PM 2138 ACE RELAY', 'GOODS', '8536', '', '28', '', '', '110', '', '', '0']
+['P.MP 2138 ACC RELAY', 'GOODS', '8536', '', '28', '', '', '110', '', '', '0']
+['HLX:611 H3 12V 55W PKs', 'GOODS', '8531', '', '18', '', '', '22', '', '', '0']
+['HLX:407 H412 V P43 100/90', 'GOODS', '8539', '', '18', '', '', '42', '', '', '0']
+['SELF ARMACHER MARSAL', 'GOODS', '8511', '', '28', '', '', '910', '', '', '0']
+['LX: 61007405002 HLA-NL P43T CAB LH', 'GOODS', '8512', '', '28', '', '', '290', '', '', '0']
+['SELF BANDEX 3397', 'GOODS', '8511', '', '28', '', '', '165', '', '', '0']
+['SELF BANDEX 3397', 'GOODS', '8511', '', '18', '', '', '165', '', '', '0']
+['BRUSH HOLDER REAR  BRACKET 522', 'GOODS', '8511', '', '28', '', '', '440', '', '', '0']
+['ORC DRIVE CLUTCH 547', 'GOODS', '8511', '', '28', '', '', '600', '', '', '0']
+['STATER FRAME BODY POLE HOUSING 784', 'GOODS', '8511', '', '28', '', '', '1000', '', '', '0']
+['RELAY 061', 'GOODS', '8512', '', '28', '', '', '220', '', '', '0']
+['ARMETURE 085', 'GOODS', '8511', '', '28', '', '', '1100', '', '', '0']
+['SOLENOID SWITCH 016', 'GOODS', '8511', '', '28', '', '', '710', '', '', '0']
+['3397 BANDEX', 'GOODS', '8511', '', '', '', '', '165', '', '', '0']
+['HLX:402 H4 12V P43 60/55W', 'GOODS', '85392120', '', '28', '', '', '38.4', '', '', '0']
+['AI-422', 'GOODS', '85365090', '', '28', '', '', '410', '', '', '0']
+['S/LAMP GLASS 2214', 'GOODS', '8512', '', '28', '', '31', '33', 'Pieces', '', '0']
+['BACK LIGHT ASSY MATADOR', 'GOODS', '8512', '', '28', '', '', '70', 'Pieces', '', '0']
+['A1-42/ALE COMBINATION', 'GOODS', '', '', '28', '', '', '400', 'Pieces', '', '0']
+['2462 070 HLU', 'GOODS', '', '', '', '', '', '138', '', '', '0']
+['HLX:407 H412 P43', 'GOODS', '', '', '', '', '', '42', '', '', '0']
+['AL-421 TATA ACE', 'GOODS', '', '', '', '', '', '400', '', '', '0']
+['AP C5 104 TATA 1612TC', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['1176 BULB', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['P43/130/100', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['1141 BULB', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['H3(100W)', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['ALTINATOR ASSEMBLY- 2251D', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['104 BASH ROCKER', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['90 M HORN-100', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['H4 12 100/90CP P43', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['H/L 760 RELAY SWITCH', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['INGNATRON SWITCH', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['ROCKER 840 BOSH', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['H/L(121) 1612 P43', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['TRACTOR BANDIX', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['STATOR', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['1613 H/L', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['M 100 HOM', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['PUSH PULL SWITCH', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['TEM ASSEMBLY', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['P43/(709)H/L-121', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['BANDIX', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['ALTINATOR ASSEMBLY', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['ALMATURE', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['P-45T 130/90', 'GOODS', '', '', '28', '', '', '132', 'Pieces', '', '0']
+['H3 611', 'GOODS', '', '', '28', '', '', '24', 'Pieces', '', '0']
+['101-H/L TATA CAB', 'GOODS', '', '', '28', '', '', '269', 'Pieces', '', '0']
+['121-1613-H/L P-43T', 'GOODS', '', '', '28', '', '', '390', 'Pieces', '', '0']
+['TRACTOR ARMACHER', 'GOODS', '', '', '28', '', '', '878', 'Pieces', '', '0']
+['1018 BANDEX', 'GOODS', '', '', '28', '', '', '170', 'Pieces', '', '0']
+['BANDEX 053 BOSCH', 'GOODS', '', '', '28', '', '', '515', 'Pieces', '', '0']
+['H/L.101 TATA CAB', 'GOODS', '', '', '28', '', '', '283', 'Pieces', '', '0']
+['SB.102 H/D', 'GOODS', '', '', '28', '', '', '128', 'Pieces', '', '0']
+['TRACTOR ARMACHER', 'GOODS', '', '', '28', '', '', '886', 'Pieces', '', '0']
+['210 REGULATOR', 'GOODS', '', '', '28', '', '', '414', 'Pieces', '', '0']
+['333 AUTO SWITCH', 'GOODS', '', '', '28', '', '', '566', 'Pieces', '', '0']
+['285 ROCKER', 'GOODS', '', '', '28', '', '', '697', 'Pieces', '', '0']
+['STATER JCB', 'GOODS', '', '', '28', '', '', '388', 'Pieces', '', '0']
+['443 ROCKER', 'GOODS', '', '', '28', '', '', '411', 'Pieces', '', '0']
+['333 AUTO SWITCH', 'GOODS', '', '', '28', '', '', '388', 'Pieces', '', '0']
+['2441 BULB', 'GOODS', '', '', '28', '', '', '4.7', 'Pieces', '', '0']
+['67  BULB', 'GOODS', '', '', '28', '', '', '2.61', 'Pieces', '', '0']
+['2467 BULB', 'GOODS', '', '', '28', '', '', '2.88', 'Pieces', '', '0']
+['HLX:406 H4 12V P45 100/90,CP                       406 H4                                                          ', 'GOODS', '', '', '28', '', '', '44', 'Pieces', '', '0']
+['1141AMBER', 'GOODS', '', '', '28', '', '', '6.8', 'Pieces', '', '0']
+['1016BULB', 'GOODS', '', '', '28', '', '', '2.22', 'Pieces', '', '0']
+['101 H/L TATA CAB', 'GOODS', '', '', '28', '', '', '283', 'Pieces', '', '0']
+['404 H/L', 'GOODS', '', '', '28', '', '', '340', 'Pieces', '', '0']
+['H/L 118 TELCO', 'GOODS', '', '', '28', '', '', '340', 'Pieces', '', '0']
+['H/L 121 709P43', 'GOODS', '', '', '28', '', '', '375', 'Pieces', '', '0']
+['H/L SWITCH', 'GOODS', '', '', '28', '', '', '22', 'Pieces', '', '0']
+['STATOR FORD TRUCTOR', 'GOODS', '', '', '28', '', '', '243', 'Pieces', '', '0']
+['BL-334', 'GOODS', '', '', '28', '', '110', '', 'Pieces', '', '0']
+['SB-102 MSR P43T', 'GOODS', '', '', '28', '', '128', '', 'Pieces', '', '0']
+['H/L 122 P45T', 'GOODS', '', '', '28', '', '370', '', 'Pieces', '', '0']
+['APH MINI', 'GOODS', '', '', '28', '', '267', '', 'Set', '', '0']
+['H/L 122 P43T', 'GOODS', '', '', '28', '', '370', '', 'Pieces', '', '0']
+['H/L 1613 -121', 'GOODS', '', '', '28', '', '390', '', 'Pieces', '', '0']
+['743 ROCKER', 'GOODS', '', '', '28', '', '411', '', 'Pieces', '', '0']
+['210 REGULATOR', 'GOODS', '', '', '28', '', '414', '', 'Pieces', '', '0']
+['HINO 24V ROTOR', 'GOODS', '', '', '28', '', '593', '', 'Pieces', '', '0']
+['841 ROCKER', 'GOODS', '', '', '28', '', '297', '', 'Pieces', '', '0']
+['ROTARY VACAM 315', 'GOODS', '', '', '28', '', '971', '', 'Pieces', '', '0']
+['407 COBINATION', 'GOODS', '', '', '28', '', '445', '', 'Pieces', '', '0']
+['6, POLE FUSE BOX', 'GOODS', '', '', '28', '', '45', '', 'Pieces', '', '0']
+['407 COBINATION', 'GOODS', '', '', '28', '', '445', '', 'Pieces', '', '0']
+['SILICON SIREN', 'GOODS', '8512', '', '28', '', '117', '', 'Pieces', '', '0']
+['TAIL LIGHT ASSY. MAHINDRA MAXIMO', 'GOODS', '8512', '', '28', '', '105', '', 'Pieces', '', '0']
+['TAIL LIGHT ASSY. MATADOOR', 'GOODS', '8512', '', '28', '', '66', '', 'Pieces', '', '0']
+['210 ROCKER', 'GOODS', '', '', '28', '', '', '414', 'Pieces', '', '0']
+['LEYLAND ROTOR', 'GOODS', '', '', '28', '', '', '593', 'Pieces', '', '0']
+['840 ROCKER', 'GOODS', '', '', '28', '', '', '297', 'Pieces', '', '0']
+['ROTOR', 'GOODS', '', '', '28', '', '', '369', 'Pieces', '', '0']
+['INTER ROCKER', 'GOODS', '', '', '28', '', '', '33', 'Pieces', '', '0']
+['1018 SELF BANDEX', 'GOODS', '', '', '28', '', '', '170', 'Pieces', '', '0']
+['MASSY ALTINATOR', 'GOODS', '', '', '28', '', '', '1060', 'Pieces', '', '0']
+['TRACTOR ARMACHER', 'GOODS', '', '', '28', '', '', '1100', 'Pieces', '', '0']
+['BANDEX TRACTOR', 'GOODS', '', '', '28', '', '', '160', 'Pieces', '', '0']
+['280 BANDEX', 'GOODS', '', '', '28', '', '', '432', 'Pieces', '', '0']
+['7341 BANDEX', 'GOODS', '', '', '28', '', '', '168', 'Pieces', '', '0']
+['407 ALTINATOR', 'GOODS', '', '', '28', '', '', '1110', 'Pieces', '', '0']
+['TRACTOR ALTINATOR', 'GOODS', '', '', '28', '', '', '1100', 'Pieces', '', '0']
+['3397 BANDEX', 'GOODS', '', '', '28', '', '', '168', 'Pieces', '', '0']
+['104- COMBINATION', 'GOODS', '', '', '28', '', '', '290', 'Pieces', '', '0']
+['25 SIG COMUTATOR', 'GOODS', '', '', '28', '', '', '151', 'Pieces', '', '0']
+['21 SIG COMUTATOR608', 'GOODS', '', '', '28', '', '', '164', 'Pieces', '', '0']
+['21 SIG COMUTATOR MICO', 'GOODS', '', '', '28', '', '', '160', 'Pieces', '', '0']
+['23 SIG COMUTATOR', 'GOODS', '', '', '28', '', '', '150', 'Pieces', '', '0']
+['TRACTOR ARMACHER', 'GOODS', '', '', '28', '', '', '870', 'Pieces', '', '0']
+['0724  BANDEX', 'GOODS', '', '', '28', '', '', '', 'Pieces', '', '0']
+['1399 BANDEX', 'GOODS', '', '', '28', '', '', '', 'Pieces', '', '0']
+['SIDE LAMP GLASS 2214', 'GOODS', '8512', '', '28', '', '31', '', 'Pieces', '', '0']
+['H.L.DOOM 4018 N/M PVC(MOTOR OPTION', 'GOODS', '8708', '', '28', '', '70', '', 'Pieces', '', '0']
+['12003 RELAY WIRING KIT', 'GOODS', '8544', '', '28', '', '611', '', 'Pieces', '10', '0']
+['HLX:462 H4 24V P43 100/90W', 'GOODS', '8539', '', '18', '', '55', '', 'Pieces', '', '0']
+['W H TLP 2515Ex TURBO SQFB CO', 'GOODS', '8544', '', '28', '', '5000', '', 'Pieces', '40', '0']
+['S  B 2435', 'GOODS', '8511', '', '28', '', '350', '', 'Pieces', '40', '0']
+['HORN RELAY 12V', 'GOODS', '8536', '', '28', '', '55', '', 'Pieces', '40', '0']
+['DHL. RELAY  SPL 12V', 'GOODS', '8536', '', '28', '', '125', '', 'Pieces', '40', '0']
+['SELF ARM.APE MICO LATEST', 'GOODS', '8511', '', '28', '', '700', '', 'Pieces', '40', '0']
+['S.L.SWITCH TATA 407 N/M', 'GOODS', '9026', '', '28', '', '43', '', 'Pieces', '40', '0']
+['SELF ARM.MARUTI VAN MPFI', 'GOODS', '8511', '', '28', '', '700', '', 'Pieces', '40', '0']
+['R.L.SWITCH  TC W/WIRE', 'GOODS', '', '', '28', '', '80', '', 'Pieces', '40', '0']
+['REVERSE LIGHT SWITCH T.ACE', 'GOODS', '', '', '28', '', '70', '', 'Pieces', '40', '0']
+['S.L SWITCH  TATA 407 N/M', 'GOODS', '9026', '', '28', '', '43', '', 'Pieces', '40', '0']
+['ING 1210SE ZUES TYPE NYLN', 'GOODS', '8708', '', '28', '', '90', '', 'Pieces', '40', '0']
+['S.L. SWETCH 1612 TATA STEEL', 'GOODS', '', '', '28', '', '50', '', 'Pieces', '40', '0']
+['MAGNET COIL  APE BSIII', 'GOODS', '8511', '', '28', '', '385', '', 'Pieces', '40', '0']
+['R/R UNIT MAH ALFA 6 WIRE', 'GOODS', '8536', '', '28', '', '414', '', 'Pieces', '40', '0']
+['R/R  UNIT APECNG/APE LATEST', 'GOODS', '8511', '5', '28', '', '414', '', 'Pieces', '40', '0']
+['GLOW  PLUG TIMER TATA ACE BS 3', 'GOODS', '8536', '', '28', '', '230', '', 'Pieces', '40', '0']
+['GLOW PLUG TIMER TATA ACE BSII', 'GOODS', '8536', '', '28', '', '230', '', 'Pieces', '40', '0']
+['T.L.ASSLY APE LATEST', 'GOODS', '8512', '', '28', '', '110', '', 'Pieces', '40', '0']
+['H.L. ASSLY APE WITCH BULB  LEFT SIDE', 'GOODS', '8512', '', '28', '', '275', '', 'Pieces', '40', '0']
+['HEADLIGHT  HOLDER  3 PIN  ', 'GOODS', '8544', '', '28', '', '27', '', 'Pieces', '40', '0']
+['T.L  ASSLY  APE  LATEST ', 'GOODS', '8512', '', '28', '', '110', '', 'Pieces', '40', '0']
+['SIDE IND LIGHT   APE  2 HOLE', 'GOODS', '8512', '', '28', '', '70', '', 'Pieces', '40', '0']
+['SIDE IND. ASSY APE 2 HOLE (LUM HOLE (LUMAX TYPE', 'GOODS', '8512', '', '', '', '70', '', 'Pieces', '40', '0']
+['HEADLIGHT  BEAM APE', 'GOODS', '8512', '', '28', '', '75', '', 'Pieces', '40', '0']
+['T.L. ASSY.APE 2010 MDL 4 CHAMBER RT', 'GOODS', '8512', '', '', '', '127', '', 'Pieces', '40', '0']
+['T.L. ASSY.APE 2010 MDL 4 CHAMBER LEFT', 'GOODS', '8512', '', '28', '', '127', '', 'Pieces', '40', '0']
+['H.L.ASSLY  APE WITH BULB RITE SULB RITE SIDE', 'GOODS', '8512', '', '28', '', '275', '', 'Pieces', '40', '0']
+['H.L.   DOOM 4018 N/M PVC (MOTOR  OPTTON', 'GOODS', '8708', '', '28', '', '70', '', 'Pieces', '', '0']
+['TAIL LIGHT GLASS FOUR CHAMBER', 'GOODS', '8512', '', '28', '', '51', '', 'Pieces', '', '0']
+['TAIL LIGHT ASSY FOUR CHAMBER', 'GOODS', '8512', '', '28', '', '100', '', 'Pieces', '', '0']
+['SIDE LIGHT ASSY 1210 S BUS', 'GOODS', '8512', '', '28', '', '51', '', 'Pieces', '', '0']
+['PMP 1415 ALT  REGULATOR', 'GOODS', '8511', '', '28', '', '185', '', 'Pieces', '45', '0']
+['PMP 7196 BRUSH CARD ASSY', 'GOODS', '8511', '', '28', '', '197', '', 'Pieces', '45', '0']
+['PMP 2052 HORN RELAY 12V 3 PIN', 'GOODS', '8536', '', '28', '', '120', '', 'Pieces', '45', '0']
+['PMP 2138 ACC RELAY', 'GOODS', '8536', '', '28', '', '182', '', 'Pieces', '45', '0']
+['PMP  2157 DUAL H L R KIT H1, H7', 'GOODS', '8536', '', '28', '', '727', '', 'Pieces', '45', '0']
+['H.L.ASSLY  APE WITH BULB LIFT SULB LIFT SIDE', 'GOODS', '8512', '', '', '', '275', '', 'Pieces', '40', '0']
+['T.L.ASSLY TATA  ACE', 'GOODS', '8512', '', '28', '', '84', '', 'Pieces', '40', '0']
+['SIDE LIGHT GLASS 2214', 'GOODS', '85121000', '', '28', '', '31', '', 'Pieces', '', '0']
+['HLX:406 H4 12V P45 100/90,CP', 'GOODS', '85392120', '', '28', '', '38.98', '', 'Pieces', '', '0']
+['LX:61002468 070-HLU-PN REF,U7 FLAT W.P P-43', 'GOODS', '85122010', '', '28', '', '101.56', '', 'Pieces', '', '0']
+['LX:61000963  009-HLA-LMW T/ACE CUB MOTORISED', 'GOODS', '85122010', '', '28', '', '271.87', '', 'Pieces', '', '0']
+['LX:61007406  002-HLA-NR P43T CAP RH(WOC)', 'GOODS', '85122010', '', '28', '', '278.91', '', 'Pieces', '', '0']
+['LX:61007405 002-HLA-NL P43T CAP LH (WOC)', 'GOODS', '85122010', '', '28', '', '278.91', '', 'Pieces', '', '0']
+['HL-121  1613 P43T', 'GOODS', '8512', '', '28', '', '580', '', 'Pieces', '42', '0']
+[' -12V-052 HORAN REALY', 'GOODS', '8512', '60', '28', '', '65', '', 'Pieces', '', '0']
+['SELF ARMATCHAR MARSAL 307', 'GOODS', '', '', '28', '', '878', '', 'Pieces', '', '0']
+['SELF ARMATCHAR APE BAJAJ', 'GOODS', '8511', '', '28', '', '435', '', 'Pieces', '', '0']
+['ALTINATOR STATOR TC24V', 'GOODS', '8511', '', '28', '', '380', '', 'Pieces', '', '0']
+['ALTINATOR ROTOR TC24V', 'GOODS', '8511', '', '28', '', '480', '', 'Pieces', '', '0']
+['SELF COMUTATOR MARUTI ZEN', 'GOODS', '8511', '', '28', '', '87', '', 'Pieces', '', '0']
+['SELF COMUTATOR INTER', 'GOODS', '8511', '', '28', '', '131', '', 'Pieces', '', '0']
+['SELF BANDEX 8286', 'GOODS', '8511', '', '28', '', '145', '', 'Pieces', '', '0']
+['SELF BANDEX 0053', 'GOODS', '8511', '', '28', '', '155', '', 'Pieces', '', '0']
+['SELF BANDEX 2801', 'GOODS', '8511', '', '28', '', '165', '', 'Pieces', '', '0']
+['SELF BANDEX 7643', 'GOODS', '8511', '', '28', '', '165', '', 'Pieces', '', '0']
+['SELF BANDEX 2761', 'GOODS', '8511', '', '28', '', '155', '', 'Pieces', '', '0']
+['SELF BANDEX  1399', 'GOODS', '8511', '', '28', '', '', '', 'Pieces', '', '0']
+['SELF BANDEX  8331', 'GOODS', '8511', '', '28', '', '', '', 'Pieces', '', '0']
+['SELF BANDEX  3397', 'GOODS', '8511', '', '28', '', '', '', 'Pieces', '', '0']
+['EGT GEAR  727', 'GOODS', '8511', '727', '28', '', '', '', 'Pieces', '', '0']
+['BRUSH H 522OLDER REAR BRACKET', 'GOODS', '8511', '522', '28', '', '', '', 'Pieces', '', '0']
+['ORC DRIVE CLUTCH  349', 'GOODS', '8511', '349', '28', '', '', '', 'Pieces', '', '0']
+['BRUSH HOLDER REAR BRACKET  886', 'GOODS', '8511', '886', '28', '', '', '', 'Pieces', '', '0']
+['SOLENOID SWITCH  333', 'GOODS', '8511', '', '28', '', '', '', 'Pieces', '', '0']
+['W H TLP2515Es TURBO CO', 'GOODS', '', '', '', '', '', '', 'Set', '', '0']
+['BATTERY WIRE 440-14 DELUXE', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['BATTERY WIRE 325-14 DELUXE', 'GOODS', '', '', '', '', '', '', '', '', '0']
+['BATTERY WIRE 220-14 DELUXE', 'GOODS', '', '', '', '', '', '', 'Set', '', '0']
+['W  H  TLP2515CEs DIGITAL SQFB CO', 'GOODS', '', '', '', '', '', '', 'Set', '', '0']
+['W H TLPT2515CEs EX   E-II SQFB CO', 'GOODS', '', '', '', '', '', '', 'Set', '', '0']
+['W H TATA LPT 1612/1613', 'GOODS', '', '', '', '', '', '', 'Set', '', '0']
+['W H  TATA ACE LOADER DIGITAL MT', 'GOODS', '8544', '', '', '', '', '', '', '', '0']
+['LT WIRE 4MM S.DELUX', 'GOODS', '', '', '', '', '', '', 'Rolls', '', '0']
+['HN8202M HORN DC D82', 'GOODS', '8512', '', '28', '', '', '', 'Pieces', '21.87', '0']
+['12003 RELAY WIRING KIT', 'GOODS', '8544', '', '28', '', '', '', 'Pieces', '', '0']
+['HLX 407 H4 12V P43 100/90CP', 'GOODS', '85392120', '', '28', '', '', '', 'Pieces', '', '0']
+['FCL:075 SQ FINOLEX PVC CABIL 4MM 24.21', 'GOODS', '85443000', '', '', '', '', '', 'Rolls', '', '0']
+
+Insert query
+-----------------
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 13442 24V 100/90CP P43T','GOODS','8539','','18','','65.25','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12442 12V 100/90CP P43T','GOODS','8539','','18','','61.02','','Pieces','','0');;
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SOLENOID  SWITCH 406577','GOODS','8511','','','','1362','','Pieces','37','0');;
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH HOLDER   REAR  BRACKET 104','GOODS','8511','','','','215','','Pieces','43','0');;
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('RECTIFIER 478','GOODS','8511','','28','','980','','Pieces','43','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('RELAY 061','GOODS','8536','','28','','268','','Pieces','21.87','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:622 H3 24V 70W PK22s','GOODS','85392120','','18','','27.97','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX: 61000963 009-HLA-LMW T/ACE CUB MOTORISED','GOODS','85122010','','','','271.87','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX:61000965 009 -HLA-RMW T/ACE','GOODS','85122010','','28','','271.87','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ARMETURE 2025','GOODS','8511','','28','','1926','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('RECTIFIER  COOLER 260','GOODS','8511','','28','','1075','','Pieces','41','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('EGT GEAR 389','GOODS','8511','','28','','1145','','Pieces','41','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH  HOLDER REAR BRACKET  406594','GOODS','8511','','28','','501','','Pieces','41','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('NAGIN  24V    REVERSE  ALRMA','GOODS','8531','','28','','68','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('NAGIN DX REVERSE ALARM','GOODS','8531','','','','60','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SILICON SIREN REVERSE ALARM','GOODS','8531','','28','','82','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VIP SIREN','GOODS','8531','','28','','235','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('62327  12V  35/35W BA 20D','GOODS','8539','','','','25.42','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('  H3 12V  55W64151','GOODS','8539','','18','','19.49','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('62248  H4  24V 100/90W  P-43T','GOODS','8539','','18','','55.08','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('62204 H4 12V 100/90W P43T','GOODS','8539','','18','','40.68','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12V  100/90  CP  BTO TR','GOODS','8539','','18','','35.17','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12V 100/90  CP P36 TR','GOODS','8539','','18','','35.17','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4  24 100/90 WP43','GOODS','8539','','18','','35.17','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12V 100/90 CP P45TR','GOODS','8539','','18','','35.17','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12V 100/90 CP  P43 TR','GOODS','8539','','18','','35.17','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('818  STOP LITESW  MARUTI','GOODS','8536','','28','','25','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('815  S.L. SWITCH 1612 TATA STEEL','GOODS','8536','','','','50','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('905  DOUBLE  HORN RED GRILL','GOODS','8512','','28','','550','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('901D  SINGAL HORN  M-100 DLX 12V','GOODS','8512','','28','','220','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('900  SINGLE  HORN  SMALL CLASSIC  12V','GOODS','8512','','','','100','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('789U  MOBILE CHARGER 4 PIN  FOR CAR U','GOODS','8536','','28','','100','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('542N IGN 1210SE  ZUES  TYPE NYLN','GOODS','8708','','28','','90','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2906 FAN BRUSH INDICA(BHER0)','GOODS','85452000','','28','','100','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('3105 SELF BRUSH ACTIVA','GOODS','85452000','','28','','50','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('8107 ALT. BRUSH LEYLAND (CABON)','GOODS','85119000','','28','','44','','','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('8104 ALT. BRUSH 407 (CARBON)','GOODS','85119000','','28','','32','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('4478  SELF ROCKER ASSY GIO / SWIFT','GOODS','85119000','','28','','250','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('4465 SELF ROCKER ASSY SWIFT','GOODS','85119000','','28','','250','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('4464 SELF ROCKER ASSY SCORPIO','GOODS','85119000','','28','','250','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('5202 BALL BEARING-6202','GOODS','85119000','','28','','82','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('3101 SELF BRUSH KINETIC HONDA ','GOODS','85452000','','28','','50','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2914 FAN MOTOR BRUSH ACE(INROD)','GOODS','85452000','','28','','40','','Pieces','52.5','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('966  PUSH PULL  SWITCH  TRACTOR','GOODS','8708','','28','30','22','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('520  SOLENOID  SWITCH  INTER MICO','GOODS','8511','','28','','750','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('512 SOLENOID SWITCH MARUTI CAR/VAN BICO','GOODS','8511','','28','','545','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values (' 1260A  PVC  WIRE  4MM  34','GOODS','8544','','28','','170','','Rolls','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SB1018G  S. BENDEX 1018 GOLD','GOODS','8511','','28','','300','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX  1399','GOODS','8511','','28','','280','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1315 SELF BENDIX 9554 TVS','GOODS','8511','','28','','280','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1376 SELF BENDIX 3397','GOODS','8511','','28','','280','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BENDIX 0780 M','GOODS','8511','','28','','280','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('535 IGN. SWITCH PEUGEOT','GOODS','8708','','28','','175','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values (' SELF BENDIX 3078  INTER TRACTOR','GOODS','8511','','28','','270','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('752 INDICATOR FLASHER MUSICAL 12V','GOODS','8536','','28','','55','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('751 INDICATOR FLASHER 12V','GOODS','8536','','28','','38','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('780 HORN RELAY 12V','GOODS','8536','','28','','55','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('507  HEADLIGHT  SWITCH AMB DLX','GOODS','8536','','28','','55','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('522 IGN SWITCH FORD/ESCORD  N/M','GOODS','8708','','28','','110','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('528 IGN . SWITCH INTER DI W/WIRE','GOODS','8708','','28','','145','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('540 ING. SWITCH AMB','GOODS','8708','','28','','105','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('782 HORN TUNER 12V','GOODS','8536','','28','','100','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('783 HORN TUNER 12V','GOODS','8536','','28','','110','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('553 STARTER BUTTON TATA 470','GOODS','8536','','28','','30','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('552 STARTER BUTTON ZEUS BRASS','GOODS','8536','','28','','45','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('724 H L HOLDER 3 PIN CERAMIC','GOODS','8544','','28','','35','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HEADLIGHT RELAY WITH CO WIRE','GOODS','8536','','28','','450','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HN8202M HORN DC D82','GOODS','8512','','28','','106','','Pieces','21.87','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MELODY MAKER 7IN 1 EH 24V','GOODS','8708','','','','254','','Pieces','47','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MELODY MAKER  7 IN 1 EH 12V','GOODS','8708','','28','','248','','Pieces','47','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SB 102 H4 P43T','GOODS','8512','','28','','163','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HL 121 (1613) LED12V','GOODS','8512','','28','','1150','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HL 121 1613 P43T','GOODS','8512','','28','','580','','Pieces','42','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values (' R. R UNIT MAH ALFA 6 WIRE','GOODS','8536','','28','','','260','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L ASSY APE WITH BULB LEFT','GOODS','8512','','28','','','175','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF  GEAR 6545','GOODS','85030029','','28','','','62','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP 2157 DUAL H L R KIT  H1 H7','GOODS','8536','','28','','','410','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLH33VA/H3-12V-55W/','GOODS','8539','','28','','20.58','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VSZPSet/SPARE-POINT Set ASSY-VIBROSONIC','GOODS','8512','','28','','103.35','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MSU024H/ MEGASONIC-UNIVERSAL-24-HT-C/F/','GOODS','8512','','28','','624.47','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SMU012S/SMARTONE-12V-HIGH-UNIVERSAL-DUAL-Set','GOODS','8512','','28','','272','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VSU012H/VIBROSONIC-UNIVERSAL12V-HT-C/F/','GOODS','8512','','28','','450.92','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VSU012L / VIBROSONIC-UNIVERSAL12V-LT-C/F/','GOODS','8512','','28','','450','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('CTU212L/CLEARTONE- UNIVERSAL 12V-LT-B/C','GOODS','8512','','28','','245.63','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('CTU212H/CLEARTONE-UNIVERSAL-12V-HT-B/C','GOODS','8512','','28','','245.63','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('CTZPSSet/SPARE-POINT  Set ASSY- CLEARTONE','GOODS','8512','','28','','54.25','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('R7MN12L/ROOTS MINI-12V-LOW-UNIVERSAL','GOODS','8512','','28','','73.41','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('WNU012S/WINDTONE UNIVERSAL12V-Set','GOODS','8512','','28','','342.09','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VMZPSet/SPARE-VIBRO MINI-POINT ASSY/','GOODS','8512','','28','','44.37','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('DE SHILD FRONT BRACKET 2001A','GOODS','8511','','28','','475','','Pieces','41','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BEARING 511','GOODS','8511','','','','335','','Pieces','43','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('REGULATOR 210','GOODS','8511','','','','580','','Pieces','43','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH HOLDER BRACKET 743','GOODS','8511','','28','','575','','Pieces','43','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('052 HORN RELAY','GOODS','8512','','28','','64','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2723 BRUSH GEAR','GOODS','8511','','28','','625','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('8362 REGULATOR','GOODS','8511','','28','','403','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1637 OIL SEAL','GOODS','8511','','28','','201.5','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SWITCH','GOODS','85365090','','28','','30','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SOLENOID SWITCH 277','GOODS','85365090','','28','','108','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SOLENOID SWITCH 216','GOODS','85365090','','28','','108','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF GEAR 6545','GOODS','85030029','','28','','52','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF GEAR 349','GOODS','85030029','','28','','63','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('REGULATOR 412','GOODS','85044040','','28','','10','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('REGULATOR 407','GOODS','85044040','','28','','10','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('OIL SEAL','GOODS','87089900','','28','','4','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('CARBAN BRUSH','GOODS','85452000','','28','','8','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('CARBON BRUSH 126','GOODS','85452000','','28','','10','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH HOLDER 338C','GOODS','85030090','','28','','17','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ARMATURE 729','GOODS','85030090','','28','','70','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('armature 729','GOODS','85030090','','28','','70','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ALTERNATOR','GOODS','85044090','','28','','1356','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PUSH PULL SWITCH H/D','GOODS','8536','','28','','60','','BOX','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('FUSE BOX','GOODS','8536','','28','','35','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TOGGLE SWITCH','GOODS','8536','','28','','75','','BOX','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L. HOLDER','GOODS','8536','','28','','6','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MAIN LINE SWITCH','GOODS','8536','','28','','34','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('INGNITON SWITCH','GOODS','8536','','28','','35','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HEAD LIGHT SWITCH','GOODS','8536','','28','','50','','BOX','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L ASSLY TATA ACE','GOODS','8512','','28','','','60','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARMACHER APE BAJAJ','GOODS','8511','','','','','470','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLY:611 H3 12V 55W','GOODS','85392120','','28','','','22','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('VSUO12L / VIBROSONIC HORN','GOODS','8512','','28','','450','455','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TAIL LAMP ASSY FOUR CHAMBER','GOODS','8512','','28','','','110','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PM 2138 ACE RELAY','GOODS','8536','','28','','','110','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('P.MP 2138 ACC RELAY','GOODS','8536','','28','','','110','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:611 H3 12V 55W PKs','GOODS','8531','','18','','','22','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:407 H412 V P43 100/90','GOODS','8539','','18','','','42','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARMACHER MARSAL','GOODS','8511','','28','','','910','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX: 61007405002 HLA-NL P43T CAB LH','GOODS','8512','','28','','','290','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 3397','GOODS','8511','','28','','','165','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 3397','GOODS','8511','','18','','','165','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH HOLDER REAR  BRACKET 522','GOODS','8511','','28','','','440','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ORC DRIVE CLUTCH 547','GOODS','8511','','28','','','600','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('STATER FRAME BODY POLE HOUSING 784','GOODS','8511','','28','','','1000','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('RELAY 061','GOODS','8512','','28','','','220','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ARMETURE 085','GOODS','8511','','28','','','1100','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SOLENOID SWITCH 016','GOODS','8511','','28','','','710','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('3397 BANDEX','GOODS','8511','','','','','165','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:402 H4 12V P43 60/55W','GOODS','85392120','','28','','','38.4','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('AI-422','GOODS','85365090','','28','','','410','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('S/LAMP GLASS 2214','GOODS','8512','','28','','31','33','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BACK LIGHT ASSY MATADOR','GOODS','8512','','28','','','70','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('A1-42/ALE COMBINATION','GOODS','','','28','','','400','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2462 070 HLU','GOODS','','','','','','138','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:407 H412 P43','GOODS','','','','','','42','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('AL-421 TATA ACE','GOODS','','','','','','400','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('AP C5 104 TATA 1612TC','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1176 BULB','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('P43/130/100','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1141 BULB','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H3(100W)','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ALTINATOR ASSEMBLY- 2251D','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('104 BASH ROCKER','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('90 M HORN-100','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H4 12 100/90CP P43','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 760 RELAY SWITCH','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('INGNATRON SWITCH','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ROCKER 840 BOSH','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L(121) 1612 P43','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR BANDIX','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('STATOR','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1613 H/L','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('M 100 HOM','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PUSH PULL SWITCH','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TEM ASSEMBLY','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('P43/(709)H/L-121','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BANDIX','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ALTINATOR ASSEMBLY','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ALMATURE','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('P-45T 130/90','GOODS','','','28','','','132','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H3 611','GOODS','','','28','','','24','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('101-H/L TATA CAB','GOODS','','','28','','','269','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('121-1613-H/L P-43T','GOODS','','','28','','','390','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR ARMACHER','GOODS','','','28','','','878','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1018 BANDEX','GOODS','','','28','','','170','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BANDEX 053 BOSCH','GOODS','','','28','','','515','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L.101 TATA CAB','GOODS','','','28','','','283','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SB.102 H/D','GOODS','','','28','','','128','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR ARMACHER','GOODS','','','28','','','886','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('210 REGULATOR','GOODS','','','28','','','414','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('333 AUTO SWITCH','GOODS','','','28','','','566','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('285 ROCKER','GOODS','','','28','','','697','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('STATER JCB','GOODS','','','28','','','388','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('443 ROCKER','GOODS','','','28','','','411','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('333 AUTO SWITCH','GOODS','','','28','','','388','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2441 BULB','GOODS','','','28','','','4.7','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('67  BULB','GOODS','','','28','','','2.61','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('2467 BULB','GOODS','','','28','','','2.88','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:406 H4 12V P45 100/90,CP                       406 H4                                                          ','GOODS','','','28','','','44','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1141AMBER','GOODS','','','28','','','6.8','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1016BULB','GOODS','','','28','','','2.22','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('101 H/L TATA CAB','GOODS','','','28','','','283','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('404 H/L','GOODS','','','28','','','340','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 118 TELCO','GOODS','','','28','','','340','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 121 709P43','GOODS','','','28','','','375','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L SWITCH','GOODS','','','28','','','22','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('STATOR FORD TRUCTOR','GOODS','','','28','','','243','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BL-334','GOODS','','','28','','110','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SB-102 MSR P43T','GOODS','','','28','','128','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 122 P45T','GOODS','','','28','','370','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('APH MINI','GOODS','','','28','','267','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 122 P43T','GOODS','','','28','','370','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H/L 1613 -121','GOODS','','','28','','390','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('743 ROCKER','GOODS','','','28','','411','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('210 REGULATOR','GOODS','','','28','','414','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HINO 24V ROTOR','GOODS','','','28','','593','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('841 ROCKER','GOODS','','','28','','297','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ROTARY VACAM 315','GOODS','','','28','','971','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('407 COBINATION','GOODS','','','28','','445','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('6, POLE FUSE BOX','GOODS','','','28','','45','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('407 COBINATION','GOODS','','','28','','445','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SILICON SIREN','GOODS','8512','','28','','117','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TAIL LIGHT ASSY. MAHINDRA MAXIMO','GOODS','8512','','28','','105','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TAIL LIGHT ASSY. MATADOOR','GOODS','8512','','28','','66','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('210 ROCKER','GOODS','','','28','','','414','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LEYLAND ROTOR','GOODS','','','28','','','593','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('840 ROCKER','GOODS','','','28','','','297','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ROTOR','GOODS','','','28','','','369','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('INTER ROCKER','GOODS','','','28','','','33','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1018 SELF BANDEX','GOODS','','','28','','','170','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MASSY ALTINATOR','GOODS','','','28','','','1060','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR ARMACHER','GOODS','','','28','','','1100','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BANDEX TRACTOR','GOODS','','','28','','','160','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('280 BANDEX','GOODS','','','28','','','432','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('7341 BANDEX','GOODS','','','28','','','168','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('407 ALTINATOR','GOODS','','','28','','','1110','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR ALTINATOR','GOODS','','','28','','','1100','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('3397 BANDEX','GOODS','','','28','','','168','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('104- COMBINATION','GOODS','','','28','','','290','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('25 SIG COMUTATOR','GOODS','','','28','','','151','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('21 SIG COMUTATOR608','GOODS','','','28','','','164','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('21 SIG COMUTATOR MICO','GOODS','','','28','','','160','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('23 SIG COMUTATOR','GOODS','','','28','','','150','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TRACTOR ARMACHER','GOODS','','','28','','','870','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('0724  BANDEX','GOODS','','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('1399 BANDEX','GOODS','','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SIDE LAMP GLASS 2214','GOODS','8512','','28','','31','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L.DOOM 4018 N/M PVC(MOTOR OPTION','GOODS','8708','','28','','70','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('12003 RELAY WIRING KIT','GOODS','8544','','28','','611','','Pieces','10','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:462 H4 24V P43 100/90W','GOODS','8539','','18','','55','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W H TLP 2515Ex TURBO SQFB CO','GOODS','8544','','28','','5000','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('S  B 2435','GOODS','8511','','28','','350','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HORN RELAY 12V','GOODS','8536','','28','','55','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('DHL. RELAY  SPL 12V','GOODS','8536','','28','','125','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARM.APE MICO LATEST','GOODS','8511','','28','','700','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('S.L.SWITCH TATA 407 N/M','GOODS','9026','','28','','43','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARM.MARUTI VAN MPFI','GOODS','8511','','28','','700','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('R.L.SWITCH  TC W/WIRE','GOODS','','','28','','80','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('REVERSE LIGHT SWITCH T.ACE','GOODS','','','28','','70','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('S.L SWITCH  TATA 407 N/M','GOODS','9026','','28','','43','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ING 1210SE ZUES TYPE NYLN','GOODS','8708','','28','','90','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('S.L. SWETCH 1612 TATA STEEL','GOODS','','','28','','50','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('MAGNET COIL  APE BSIII','GOODS','8511','','28','','385','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('R/R UNIT MAH ALFA 6 WIRE','GOODS','8536','','28','','414','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('R/R  UNIT APECNG/APE LATEST','GOODS','8511','5','28','','414','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('GLOW  PLUG TIMER TATA ACE BS 3','GOODS','8536','','28','','230','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('GLOW PLUG TIMER TATA ACE BSII','GOODS','8536','','28','','230','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L.ASSLY APE LATEST','GOODS','8512','','28','','110','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L. ASSLY APE WITCH BULB  LEFT SIDE','GOODS','8512','','28','','275','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HEADLIGHT  HOLDER  3 PIN  ','GOODS','8544','','28','','27','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L  ASSLY  APE  LATEST ','GOODS','8512','','28','','110','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SIDE IND LIGHT   APE  2 HOLE','GOODS','8512','','28','','70','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SIDE IND. ASSY APE 2 HOLE (LUM HOLE (LUMAX TYPE','GOODS','8512','','','','70','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HEADLIGHT  BEAM APE','GOODS','8512','','28','','75','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L. ASSY.APE 2010 MDL 4 CHAMBER RT','GOODS','8512','','','','127','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L. ASSY.APE 2010 MDL 4 CHAMBER LEFT','GOODS','8512','','28','','127','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L.ASSLY  APE WITH BULB RITE SULB RITE SIDE','GOODS','8512','','28','','275','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L.   DOOM 4018 N/M PVC (MOTOR  OPTTON','GOODS','8708','','28','','70','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TAIL LIGHT GLASS FOUR CHAMBER','GOODS','8512','','28','','51','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('TAIL LIGHT ASSY FOUR CHAMBER','GOODS','8512','','28','','100','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SIDE LIGHT ASSY 1210 S BUS','GOODS','8512','','28','','51','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP 1415 ALT  REGULATOR','GOODS','8511','','28','','185','','Pieces','45','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP 7196 BRUSH CARD ASSY','GOODS','8511','','28','','197','','Pieces','45','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP 2052 HORN RELAY 12V 3 PIN','GOODS','8536','','28','','120','','Pieces','45','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP 2138 ACC RELAY','GOODS','8536','','28','','182','','Pieces','45','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('PMP  2157 DUAL H L R KIT H1, H7','GOODS','8536','','28','','727','','Pieces','45','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('H.L.ASSLY  APE WITH BULB LIFT SULB LIFT SIDE','GOODS','8512','','','','275','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('T.L.ASSLY TATA  ACE','GOODS','8512','','28','','84','','Pieces','40','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SIDE LIGHT GLASS 2214','GOODS','85121000','','28','','31','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX:406 H4 12V P45 100/90,CP','GOODS','85392120','','28','','38.98','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX:61002468 070-HLU-PN REF,U7 FLAT W.P P-43','GOODS','85122010','','28','','101.56','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX:61000963  009-HLA-LMW T/ACE CUB MOTORISED','GOODS','85122010','','28','','271.87','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX:61007406  002-HLA-NR P43T CAP RH(WOC)','GOODS','85122010','','28','','278.91','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LX:61007405 002-HLA-NL P43T CAP LH (WOC)','GOODS','85122010','','28','','278.91','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HL-121  1613 P43T','GOODS','8512','','28','','580','','Pieces','42','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values (' -12V-052 HORAN REALY','GOODS','8512','60','28','','65','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARMATCHAR MARSAL 307','GOODS','','','28','','878','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF ARMATCHAR APE BAJAJ','GOODS','8511','','28','','435','','Pieces','','0');
+Insert into ITEM_MASTER () values ('ALTINATOR STATOR TC24V','GOODS','8511','','28','','380','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ALTINATOR ROTOR TC24V','GOODS','8511','','28','','480','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF COMUTATOR MARUTI ZEN','GOODS','8511','','28','','87','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF COMUTATOR INTER','GOODS','8511','','28','','131','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 8286','GOODS','8511','','28','','145','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 0053','GOODS','8511','','28','','155','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 2801','GOODS','8511','','28','','165','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 7643','GOODS','8511','','28','','165','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX 2761','GOODS','8511','','28','','155','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX  1399','GOODS','8511','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX  8331','GOODS','8511','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SELF BANDEX  3397','GOODS','8511','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('EGT GEAR  727','GOODS','8511','727','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH H 522OLDER REAR BRACKET','GOODS','8511','522','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('ORC DRIVE CLUTCH  349','GOODS','8511','349','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BRUSH HOLDER REAR BRACKET  886','GOODS','8511','886','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('SOLENOID SWITCH  333','GOODS','8511','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W H TLP2515Es TURBO CO','GOODS','','','','','','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BATTERY WIRE 440-14 DELUXE','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BATTERY WIRE 325-14 DELUXE','GOODS','','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('BATTERY WIRE 220-14 DELUXE','GOODS','','','','','','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W  H  TLP2515CEs DIGITAL SQFB CO','GOODS','','','','','','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W H TLPT2515CEs EX   E-II SQFB CO','GOODS','','','','','','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W H TATA LPT 1612/1613','GOODS','','','','','','','Set','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('W H  TATA ACE LOADER DIGITAL MT','GOODS','8544','','','','','','','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('LT WIRE 4MM S.DELUX','GOODS','','','','','','','Rolls','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HN8202M HORN DC D82','GOODS','8512','','28','','','','Pieces','21.87','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('12003 RELAY WIRING KIT','GOODS','8544','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('HLX 407 H4 12V P43 100/90CP','GOODS','85392120','','28','','','','Pieces','','0');
+Insert into ITEM_MASTER (Description,ItemType,HSN,ITEMCODE,TAXRATE,CESSAMOUNT,PURCHASEPRICE,SELLINGPRICE,UNIT,DISCOUNT,Quantity) values ('FCL:075 SQ FINOLEX PVC CABIL 4MM 24.21','GOODS','85443000','','','','','','Rolls','','0');
+

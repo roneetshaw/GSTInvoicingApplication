@@ -1,0 +1,410 @@
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Invoice</title>
+		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+				<link rel="stylesheet" href="invoice.css?v=3.2">
+		<?php include 'jslibrary.php';?>
+		<script src="invoice.js?v=1.3"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script type="text/javascript">
+
+			var i=0;
+			$( function() {
+				$( "#itemBillDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+			});
+			$( window ).load(function() {
+				
+			});
+			$(document).ready(function() {
+				var url = new URL(window.location.href);
+				var id = url.searchParams.get("cust_id");
+				var name = url.searchParams.get("name");
+				var invId = url.searchParams.get("invId");
+				$("#custName").html(name)
+				$("#invoiceId").html(invId);
+				$('#stateToShip').on('change', function() {
+					
+					$("#itemList tbody tr td:nth-child(4)").each(function()
+					{
+							calRow($(this).find('input'));
+					})
+				})
+				$('#itemList tbody tr').on('click','a',function(){
+					alert($('#itemList tbody tr').length);
+				});
+				$(".add").on('click',function(){
+					//alert(2);
+				});
+				function initTable()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 7 },
+						success: function (data1) {
+										var arr = JSON.parse(data1);
+										fillItemTable(arr);
+						},
+						error: function (log) {
+										console.log(log.message);
+						}
+					});
+				}
+				$("#btnInvoiceSave").on('click',function(){
+					if($('#invoiceAddress').val().trim().length > 0)
+					{
+						if($('#itemBillDate').val().trim().length > 0)
+						{
+							saveInvoiceTransaction()
+						}
+						else
+						{
+							alert("Bill Date required");
+						}
+					}
+					else
+					{
+						alert("Customer address required");
+					}
+				});
+				function saveInvoiceTransaction()
+				{
+					var JSONObject = JSON.stringify(tableJSON());
+					console.log(JSONObject)
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 12, invId: invId, JSONtableObject: JSONObject},
+						success: function (d) {
+							if(d == "1")
+							{
+								saveInvoiceDetails();
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				function saveInvoiceDetails()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 11, invId: invId, stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
+						success: function (d) {
+							if(d == "1")
+								alert("Invoice saved");
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				function tableJSON()
+				{
+					var elementTable = $('#itemList tbody tr');
+					var jObject = [];
+					elementTable.each(function(){
+						item = {}
+						item ["sr"] = $(this).find('td:nth-child(1)').find('span').text().trim();
+						item ["itemID"] = $(this).find('td:nth-child(15)').text().trim();
+						item ["HSN"] = $(this).find('td:nth-child(3)').text().trim();
+						item ["rate"] = $(this).find('td:nth-child(4)').find('input').val().trim();
+						item ["qty"] = $(this).find('td:nth-child(5)').find('input').val().trim();
+						item ["unit"] = $(this).find('td:nth-child(6)').text().trim();
+						item ["dis"] = $(this).find('td:nth-child(7)').find('input').val().trim();
+						item ["taxableVal"] = $(this).find('td:nth-child(8)').text().trim().substring(2);
+						item ["gstrate"] = $(this).find('td:nth-child(9)').find('input').val().trim().substring(0,2);
+						item ["cgst"] = $(this).find('td:nth-child(10)').text().trim().substring(2);
+						item ["sgst"] = $(this).find('td:nth-child(11)').text().trim().substring(2);
+						item ["igst"] = $(this).find('td:nth-child(12)').text().trim().substring(2);
+						item ["itemtotal"] = $(this).find('td:nth-child(13)').text().trim().substring(2);
+						item ["qtyLeft"] = $(this).find('td:nth-child(14)').text().trim();
+						jObject.push(item);
+					});
+					return jObject;
+				}
+			});
+			
+			
+		</script>
+		<style>
+			@media print
+			{    
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	</head>
+	<body >
+		<input type="hidden" id="customerType" name="customerType" value="B2C">
+		<div class="row no-print" style="text-align:center;">
+						<div class="col-sm-3">
+							<button type="button" class="btn btn-default" id="btnInvoiceSave">Save</button>
+						</div>
+						<div class="col-sm-3">
+							<button type="button" class="btn btn-default" id="btnInvoiceEdit">Edit</button>
+						</div>
+						<div class="col-sm-3">
+							<button type="button" onclick="window.history.go(-1); return false;" class="btn btn-default" id="btnInvoiceBackx">Back</button>
+						</div>
+						<div class="col-sm-3">
+							<button type="button" onclick="window.print(); return false;" class="btn btn-primary" id="btnInvoiceBackx">Print</button>
+						</div>
+		</div>
+		<header >
+			<h1>Invoice</h1>
+			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
+		</header>
+		<article>
+			<h1>Recipient</h1>
+			<address >
+				<p><span id="custName" >Some Company</span></p>
+				<textarea rows="4" cols="40" id="invoiceAddress" placeholder="Type customer address"></textarea>
+			</address>
+			<table class="meta">
+				<tr>
+					<th><span>Invoice #</span></th>
+					<td><span id="invoiceId">00001</span></td>
+				</tr>
+				<tr>
+					<th><span>Bill Date</span></th>
+					<td><input id="itemBillDate" placeholder="MM/DD/YYYY" type="text"/></td>
+				</tr>
+				<tr>
+					<th><span>Place of Supply</span></th>
+					<td>
+						<select id="stateToShip">
+							<option  value="Tamil Nadu">Tamil Nadu </option>
+								<option  value="West Bengal" selected>West Bengal </option>
+								<option  value="Orissa">Orissa </option>
+								<option  value="Delhi">Delhi </option>
+								<option  value="Karnataka">Karnataka </option>
+								<option  value="ANDAMANANDNICOBARISLANDS">Andaman and Nicobar Islands </option>
+								<option  value="Andhra Pradesh">Andhra Pradesh </option>
+								<option  value="ARUNACHALPRADESH">Arunachal Pradesh </option>
+								<option  value="Assam">Assam </option>
+								<option  value="Bihar">Bihar </option>
+								<option  value="Chandigarh">Chandigarh </option>
+								<option  value="Chhattisgarh">Chhattisgarh </option>
+								<option  value="Dadra Nagar Haveoption">Dadra Nagar Haveoption </option>
+								<option  value="Daman and Diu">Daman and Diu </option>					
+								<option  value="Goa">Goa </option>
+								<option  value="Gujarat">Gujarat </option>
+								<option  value="Haryana">Haryana </option>
+								<option  value="Himachal Pradesh">Himachal Pradesh </option>
+								<option  value="Jammu and Kashmir">Jammu and Kashmir </option>
+								<option  value="Jharkhand">Jharkhand </option>
+								
+								<option  value="Kerala">Kerala </option>
+								<option  value="Lakshadweep">Lakshadweep </option>
+								<option  value="Madhya Pradesh">Madhya Pradesh </option>
+								<option  value="Maharashtra">Maharashtra </option>
+								<option  value="Manipur">Manipur </option>
+								<option  value="Meghalaya">Meghalaya </option>
+								<option  value="Mizoram">Mizoram </option>
+								<option  value="Pondicherry">Pondicherry </option>
+								<option  value="Punjab">Punjab </option>
+								<option  value="Rajasthan">Rajasthan </option>
+								<option  value="Sikkim">Sikkim </option>
+								<option  value="OTHERTERRITORY">OTHERTERRITORY </option>
+						</select>
+					</td>
+				</tr>
+			</table>
+			
+			<table class="inventory" id="itemList">
+				<thead>
+					<tr>
+						<th style="width:15px"><span >#</span></th>
+						<th style="width:130px"><span >Item Description</span></th>
+						<th style="width:30px"><span >HSN</span></th>
+						<th style="width:25px"><span >Rate</span></th>
+						<th style="width:20px"; ><span >Qty.</span></th>
+						<th style="width:25px"><span >Unit</span></th>
+						<th style="width:25px"><span >Dis.</span></th>
+						<th style="width:40px"><span >Taxable Value</span></th>
+						<th style="width:30px"><span >GST Rate</span></th>
+						<th style="width:40px"><span >CGST(₹)</span></th>
+						<th style="width:40px"><span >SGST(₹)</span></th>
+						<th style="width:40px"><span >IGST(₹)</span></th>
+						<th style="width:40px"><span >Total(₹)</span></th>
+						<th style="width:1px;display:none;"><span >lQty</span></th>
+						<th style="width:1px;display:none;"><span >itemId</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--<tr>
+						<td><a class="cut" id="minus">-</a><span contenteditable>1</span></td>
+						<td><span contenteditable>Experience Review</span></td>
+						<td><span contenteditable>150</span></td>
+						<td><span contenteditable>4</span></td>
+						<td><span contenteditable>4</span></td>
+						<td><span>600.00</span></td>
+						<td><span contenteditable>10%</span></td>
+						<td><span data-prefix>₹</span><span contenteditable>12,00</span></td>						
+						<td><span contenteditable>4</span></td>
+						<td><span data-prefix>₹</span><span contenteditable>150.00</span></td>
+						<td><span data-prefix>₹</span><span>600.00</span></td>
+						<td><span data-prefix>₹</span><span>600.00</span></td>
+						<td><span data-prefix>₹</span><span>600.00</span></td>
+					</tr>-->
+				</tbody>
+			</table>
+			<a class="add" style="text-align:center;">+</a>
+			<table class="balance">
+				<tr>
+					<th><span>Total(₹)</span></th>
+					<td id="taxableTotal">0.00</td>
+				</tr>
+				<tr>
+					<th><span >CGST(₹)</span></th>
+					<td id="grandTotalCGST">0.00</td>
+				</tr>
+				<tr>
+					<th><span >SGST(₹)</span></th>
+					<td id="grandTotalSGST">0.00</td>
+				</tr>
+				<tr>
+					<th><span >IGST(₹)</span></th>
+					<td id="grandTotalIGST">0.00</td>
+				</tr>
+				<tr>
+					<th><span >Grand Total(₹)</span></th>
+					<td id="grandTotal">0.00</td>
+				</tr>
+			</table>
+			<div class="modal fade" id="addItemModal" role="dialog">
+		<div class="modal-dialog">
+		
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+				<div class="row">
+					<div class="col-sm-4">
+						<h4 class="modal-title">Add Item</h4>
+					</div>
+					<div class="col-sm-6" style="text-align:center">
+						<button type="button" class="btn btn-default" id="btnItemSave">Save</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<label for="usr">Item Description (*required)</label>
+						<input type="text" class="form-control" id="itemDesp">
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="usr">Item Type (*required)</label>
+						<div class="dropdown" id="itemType">
+							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Item Type 
+							<span class="caret"></span></button>
+						    <ul class="dropdown-menu" style="width:250px">
+								<li><a href="#">Goods</a></li>
+								<li><a href="#">Services</a></li>
+						    </ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label for="usr">HSN/SAC code (*required)</label>
+						<input type="text" class="form-control" id="itemHSNCode">
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="usr">Item/SKU code</label>
+						<input type="text" class="form-control" id="itemSKUCode">
+					</div>
+					<div class="col-sm-6">
+						<label for="usr">Unit</label>
+						<div class="dropdown" id="itemUnit">
+							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Unit
+							<span class="caret"></span></button>
+						    <ul class="dropdown-menu" style="width:250px">
+								<li><a value="Pieces">Pieces</a></li>
+								<li><a value="Packs">Packs</a></li>
+								<li><a value="Pairs">Pairs</a></li>
+								<li><a value="Rolls">Rolls</a></li>
+								<li><a value="Set">Set</a></li>
+								<li><a value="Boxes">Boxes</a></li>																
+								<li><a value="Dorzen">Dorzen</a></li>																
+								<li><a value="Others">Others</a></li>																
+						    </ul>
+						</div>
+					</div>
+					
+				</div>
+				<br/>
+				<div class="row">				
+					<div class="col-sm-6">
+						<label for="usr">Tax Rate</label>
+						<div class="dropdown" id="itemTaxRate">
+							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Tax Rate
+							<span class="caret"></span></button>
+						    <ul class="dropdown-menu" style="width:250px">
+								<li><a href="#">0.25%</a></li>
+								<li><a href="#">12%</a></li>
+								<li><a href="#">18%</a></li>
+								<li><a href="#">28%</a></li>
+								<li><a href="#">3%</a></li>
+								<li><a href="#">5%</a></li>																
+						    </ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label for="usr">Discount</label>
+						<input type="text" class="form-control" id="itemDiscount">
+					</div>										
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="usr">Cess Amount</label>
+						<input type="text" class="form-control" id="itemCess">
+					</div>				
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="usr">Purchase Price</label>
+						<input type="text" class="form-control" id="itemPurchase">
+					</div>
+					
+					<div class="col-sm-6">
+						<label for="usr">Selling price</label>
+						<input type="text" class="form-control" id="itemSelling">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	</div>
+	
+		</article>
+		<aside>
+			<h1><span contenteditable>Additional Notes</span></h1>
+			<div contenteditable>
+				<p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+			</div>
+		</aside>
+		
+	</body>
+</html>
