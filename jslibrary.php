@@ -12,4 +12,4 @@
 	<script type="text/javascript" src="buttons.print.min.js"></script>
 	<script type="text/javascript" src="https://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="customJS/gstCustom.js"></script>
+	<script type="text/javascript" src="customJS/gstCustom.js?v=1.1"></script>

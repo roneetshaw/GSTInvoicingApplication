@@ -16,6 +16,7 @@
 	<style>
 	
 		table.dataTable thead th { font-size: 15px; color: black;}
+		table.dataTable tbody tr { cursor:pointer;}
 	</style>
 	
 </head>
@@ -44,7 +45,7 @@
                             </div>
                             <div class="content">
                                 <div class="row" style="margin:20px;">
-									<table id="itemDisplay" class="table table-condensed table-hover" width="100%"></table>
+									<table id="invoiceGrandDisplay" style="text-align:center;" class="table table-condensed table-hover" width="100%"></table>
 								</div>
                             </div>
                         </div>
@@ -91,6 +92,7 @@
     	$(document).ready(function(){
 			var availableTags = [];
 			initCustomerName();
+			initInvoiceTable();
 			function initCustomerName()
 			{
 				$.ajax({ 
@@ -143,7 +145,7 @@
 							d=d.split(',');
 							if(d[0] == "1")
 							{
-								window.location.href = "/gst/salesinvoice.php?cust_id="+d[1]+"&name="+$('#customerName').val().trim()+"&invId="+d[2];
+								window.location.href = "/gst/salesinvoice.php?action=new&cust_id="+d[1]+"&name="+$('#customerName').val().trim()+"&invId="+d[2];
 							}
 						},
 						error: function (log) {
@@ -157,41 +159,44 @@
 			$( function() {
 				$( "#itemBillDate" ).datepicker();
 			});
-			var dataSet = [
-				[ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
-				[ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
-				[ "Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000" ],
-				[ "Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060" ],
-				[ "Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700" ],
-				[ "Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000" ],
-				[ "Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500" ],
-				[ "Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900" ],
-				[ "Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500" ],
-				[ "Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600" ],
-				[ "Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560" ],
-				[ "Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000" ],
-				[ "Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600" ]
-			];
-			$('#itemDisplay').DataTable( {
-				data: dataSet,
-				dom: 'Bfrtip',
-				buttons: [
-					'pdf'
-				],
-				destroy: true,
-				columns: [
-					{ title: "DATE" },
-					{ title: "ID" },
-					{ title: "CUSTOMER" },
-					{ title: "GSTIN" },
-					{ title: "TAXABLE AMOUNT" },
-					{ title: "TAX" }
-					//{ title: "TOTAL AMOUNT" }
-					//{ title: "TYPE" }
-					//{ title: "STATUS" }
-					
-				]
-			} );
+			
+			function initInvoiceTable()
+			{
+				$.ajax({ 
+					url: 'webmethods.php',
+					type: 'POST',
+					data: {type: 13 },
+					success: function (data1) {
+									var arr = JSON.parse(data1);
+									fillInvoiceTable(arr);
+					},
+					error: function (log) {
+									console.log(log.message);
+					}
+				});
+			}
+			
+			function fillInvoiceTable(dataSet)
+			{
+				$('#invoiceGrandDisplay').DataTable( {
+					data: dataSet,
+					dom: 'Bfrtip',
+					buttons: [
+						'pdf'
+					],
+					destroy: true,
+					columns: [
+						{ title: "DATE" },
+						{ title: "INVOICE NO." },
+						{ title: "CUSTOMER" },
+						{ title: "GSTIN" },
+						{ title: "TAXABLE AMOUNT" },
+						{ title: "TAX" },
+						{ title: "TOTAL AMOUNT" },
+						{ title: "TYPE" }					
+					]
+				});
+			}
     	});
 	</script>
 

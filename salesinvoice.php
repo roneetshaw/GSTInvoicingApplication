@@ -20,11 +20,19 @@
 			});
 			$(document).ready(function() {
 				var url = new URL(window.location.href);
-				var id = url.searchParams.get("cust_id");
-				var name = url.searchParams.get("name");
 				var invId = url.searchParams.get("invId");
-				$("#custName").html(name)
-				$("#invoiceId").html(invId);
+				var action = url.searchParams.get("action");
+				if(action == "new")
+				{
+					var id = url.searchParams.get("cust_id");
+					var name = url.searchParams.get("name");
+					$("#custName").html(name)
+					$("#invoiceId").html(invId);
+				}
+				else if(action == "edit")
+				{
+					loadInvoiceFromDB(invId);
+				}
 				$('#stateToShip').on('change', function() {
 					
 					$("#itemList tbody tr td:nth-child(4)").each(function()
@@ -35,9 +43,77 @@
 				$('#itemList tbody tr').on('click','a',function(){
 					alert($('#itemList tbody tr').length);
 				});
-				$(".add").on('click',function(){
-					//alert(2);
-				});
+				
+				function loadInvoiceFromDB(invId)
+				{
+					initHeader(invId)
+					fillInvoiceTableRows();
+				}
+				
+				function initHeader(invId)
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 14, invId: invId},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							$('#itemBillDate').val(arr.Date);
+							$('#invoiceId').text(invId);
+							$('#stateToShip').val(arr.PlaceOfSupply);
+							$('#custName').text(arr.custName);
+							$('#invoiceAddress').val(arr.InvoiceAddress);
+							$('#taxableTotal').text(arr.TotalTaxable);
+							$('#grandTotalCGST').text(arr.TOTALCGST);
+							$('#grandTotalSGST').text(arr.TOTALSGST);
+							$('#grandTotalIGST').text(arr.TOTALIGST);
+							$('#grandTotal').text(arr.GrandTotal);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
+				function fillInvoiceTableRows()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 15, invId: invId},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							console.log(arr);
+							generateItemRows(arr);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
+				
+				function generateItemRows(arr)
+				{
+					var i=0;
+					for(i=0 ;i<arr[0].length;  i++)
+					{var emptyColumn = document.createElement('tr');
+						emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(i+1)+'</span></td>' +
+						'<td><input class="itemDespText" placeholder="Type an Item" value="'+arr[12][i]+'" style="width:100%;text-align:left;" type="search" ></input></td>' +
+						'<td>'+arr[13][i]+'</td>' +
+						'<td><input  style="width:100%;text-align:right;" type="text"value="'+arr[7][i]+'" onchange="rateChange($(this))"></input></td>' +
+						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[8][i]+'" onchange="qtyChange($(this))"></input></td>'+
+						'<td style="text-align:center;"><span >'+arr[14][i]+'</span></td>' +
+						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[5][i]+'" onchange="disChange($(this))"></td>' +
+						'<td>'+arr[4][i]+'</td>' +
+						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[6][i]+'%" onchange="gstChange($(this))"></td>'+
+						'<td>'+arr[0][i]+'</td>' +
+						'<td>'+arr[1][i]+'</td>' +
+						'<td>'+arr[2][i]+'</td>' +
+						'<td>'+arr[3][i]+'</td>' +
+						'<td style="display:none;">'+arr[11][i]+'</td>'+
+						'<td style="display:none;">'+arr[9][i]+'</td>';
+						$('#itemList tbody').append($(emptyColumn));
+					}
+				}
 				function initTable()
 				{
 					$.ajax({ 

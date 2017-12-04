@@ -238,4 +238,70 @@
 		}
 		echo $invStatus;
 	}
+	
+	else if($type=="13")
+	{
+		$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+		sm.GrandTotal as GrandTotal, sm.TYPE as custType
+		FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
+		$result = mysqli_query($db,$sql13);
+		$Date = Array();$InvoiceNo = Array();$custName = Array();$GST = Array();$TotalTaxable = Array();$Tax = Array();$GrandTotal = Array();$custType = Array();
+		while ($row = mysqli_fetch_array($result)) 
+		{
+			$Date[] = $row["Date"]; 
+			$InvoiceNo[] = $row["InvoiceNo"];
+			$custName[] = $row["custName"]; 
+			$GST[] = $row["GST"];
+			$TotalTaxable[] = $row["TotalTaxable"]; 
+			$Tax[] = $row["Tax"]; 
+			$GrandTotal[] = $row["GrandTotal"]; 
+			$custType[] = $row["custType"]; 
+		}
+		//$row = mysqli_fetch_array($result);
+		$res = array($Date, $InvoiceNo, $custName, $GST, $TotalTaxable, $Tax, $GrandTotal, $custType);
+		$res=transpose($res);
+		echo json_encode($res);
+	}
+	
+	else if($type=="14")
+	{
+		$invId = mysqli_real_escape_string($db,$_POST['invId']);
+		$sql14="SELECT sm.BillDate as Date, sm.PlaceOfSupply as PlaceOfSupply, sm.InvoiceAddress as InvoiceAddress,sm.TOTALCGST as TOTALCGST,sm.TOTALSGST as TOTALSGST,sm.TOTALIGST as TOTALIGST, sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+		sm.GrandTotal as GrandTotal, sm.TYPE as custType
+		FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where sm.InvoiceNo='".$invId."'";
+		$result=mysqli_query($db,$sql14);
+		$rows = mysqli_fetch_assoc($result);
+		echo json_encode($rows);
+		
+	}
+	else if($type=="15")
+	{
+		$invId = mysqli_real_escape_string($db,$_POST['invId']);
+		$sql15="select *,SALES_TRANSACTIONS.Quantity as iQty,im.Quantity as qtyLeft,im.Description as desp, im.HSN as hsn, im.UNIT as un from SALES_TRANSACTIONS INNER JOIN item_master im on im.ID=sales_transactions.ItemID where InvoiceNo='".$invId."'";
+		$result = mysqli_query($db,$sql15);
+		$CGST = Array();$SGST = Array();$IGST = Array();$TotalItemValue = Array();$TaxableValue = Array();$Discount = Array();$GSTRate = Array();$Rate = Array();$Quantity = Array();$ItemID = Array();$InvoiceNo = Array();$ID = Array();$qtyLeft = Array();$desp = Array();$hsn = Array();$un = Array();
+		while ($row = mysqli_fetch_array($result)) 
+		{
+			$CGST[] = $row["CGST"]; 
+			$SGST[] = $row["SGST"];
+			$IGST[] = $row["IGST"]; 
+			$TotalItemValue[] = $row["TotalItemValue"];
+			$TaxableValue[] = $row["TaxableValue"]; 
+			$Discount[] = $row["Discount"]; 
+			$GSTRate[] = $row["GSTRate"]; 
+			$Rate[] = $row["Rate"]; 
+			$Quantity[] = $row["iQty"]; 
+			$ItemID[] = $row["ItemID"]; 
+			$InvoiceNo[] = $row["InvoiceNo"]; 
+			$ID[] = $row["ID"]; 
+			$qtyLeft[] = $row["qtyLeft"]; 
+			$desp[] = $row["desp"]; 
+			$hsn[] = $row["hsn"]; 
+			$un[] = $row["un"]; 
+		}
+		$res = array($CGST, $SGST, $IGST,$TotalItemValue,$TaxableValue,$Discount, $GSTRate, $Rate,$Quantity	,$ItemID, $ID, $qtyLeft, $desp, $hsn, $un);
+		echo json_encode($res);
+	}
 ?>
