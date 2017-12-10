@@ -65,6 +65,7 @@
 /* Helper Functions
 /* ========================================================================== */
 var x=1;
+var tempRow;
 initItemName()
 var autocompleteOptions= [];
 function initItemName()
@@ -75,56 +76,74 @@ function initItemName()
 		data: {type: 9},
 		success: function (d) {
 			dataRET=JSON.parse(d);
-			autocompleteOptions = {
-				source: dataRET[0]
-			};
+			autocompleteOptions = dataRET[0]
+			$('.itemDespText').autocomplete({
+				source: autocompleteOptions,
+				response: function(event, ui){
+					ui.content.push({id:'New Item', label:'New Item', value:''});
+				},
+				minLength: 0,
+				autoFocus: true,
+				open: function(event) {},
+				close: function() {},
+				focus: function(event,ui) {
+				},
+				select: function (e, ui) {
+
+					if(ui.item.label.trim() == "New Item")
+					{
+						$("#addItemModal").modal('show');
+					}
+					else
+					{
+						fillItemDetails(ui.item.label.trim(),tempRow);
+					}
+				}
+			});
 		},
 		error: function (log) {
 			console.log(log);
 		}
 	});
 }
-$(document).on("click", "li", function(event) {
-		if($(this).text().trim() == "New Item")
-		{
-			$("#addItemModal").modal('show');
-		}
-		else
-		{
-			fillItemDetails($(this).text().trim());
-		}
+	$('#itemDesp').on("click", "li", function(event) {
+		
     });
-function fillItemDetails(itemDesp)
-{
-	var tableElem;
-	$("#itemList tbody tr td:nth-child(2)").each(function(){
-		if($(this).find('input').val().trim() == itemDesp)
-		{
-			tableElem=$(this);
-		}
-			
-	})
-	$.ajax({ 
-		url: 'webmethods.php',
-		type: 'POST',
-		data: {type: 10, Description: itemDesp},
-		success: function (d) {
-			dataRET=JSON.parse(d);
-			console.log(dataRET);
-			tableElem.parent().find('td:nth-child(3)').text(dataRET.HSN)
-			tableElem.parent().find('td:nth-child(6)').text(dataRET.UNIT)
-			tableElem.parent().find('td:nth-child(14)').text(dataRET.Quantity)
-			tableElem.parent().find('td:nth-child(15)').text(dataRET.ID);
-			if(dataRET.TAXRATE.trim().indexOf("%") == -1)
-				tableElem.parent().find('td:nth-child(9) input').val(dataRET.TAXRATE.trim()+"%")
-			else
-				tableElem.parent().find('td:nth-child(9) input').val(dataRET.TAXRATE.trim())
-		},
-		error: function (log) {
-			console.log(log);
-		}
-	});
-}
+	function fillItemDetails(itemDesp,ele)
+	{
+		console.log('Roneet :'+itemDesp);
+		var tableElem = ele.parent();
+		/*$("#itemList tbody tr td:nth-child(2)").each(function(){
+			if($(this).find('input').val().trim() == itemDesp)
+			{
+				tableElem=$(this);
+			}
+				
+		})*/
+		$.ajax({ 
+			url: 'webmethods.php',
+			type: 'POST',
+			data: {type: 10, Description: itemDesp},
+			success: function (d) {
+				dataRET=JSON.parse(d);
+				console.log(dataRET);
+				tableElem.parent().find('td:nth-child(3)').text(dataRET.HSN)
+				tableElem.parent().find('td:nth-child(6)').text(dataRET.UNIT)
+				tableElem.parent().find('td:nth-child(14)').text(dataRET.Quantity)
+				tableElem.parent().find('td:nth-child(15)').text(dataRET.ID);
+				tableElem.parent().find('td:nth-child(16)').text('0');
+				if(dataRET.TAXRATE.trim().indexOf("%") == -1)
+					tableElem.parent().find('td:nth-child(9) input').val(dataRET.TAXRATE.trim()+"%")
+				else
+					tableElem.parent().find('td:nth-child(9) input').val(dataRET.TAXRATE.trim())
+				if(dataRET.DISCOUNT.length > 0)
+					tableElem.parent().find('td:nth-child(7) input').val(dataRET.DISCOUNT.trim())
+			},
+			error: function (log) {
+				console.log(log);
+			}
+		});
+	}
 
 function calRow(elem)
 {
@@ -164,7 +183,7 @@ function calRow(elem)
 			}
 		}
 		taxValue=taxValue-parseFloat(discount);
-		taxVal.text('₹ '+taxValue.toFixed(2));
+		taxVal.text(taxValue.toFixed(2));
 		var gstRate='';
 		if(gstVal.val().trim().indexOf("%") != -1)
 		{
@@ -183,17 +202,17 @@ function calRow(elem)
 			var sGST=(0.5*gstTaxVal).toFixed(2);
 			if(invoiceType == "West Bengal")
 			{
-				cGSTVal.text('₹ '+cGST);
-				sGSTVal.text('₹ '+sGST);
-				iGSTVal.text('₹ 0.00');
+				cGSTVal.text(cGST);
+				sGSTVal.text(sGST);
+				iGSTVal.text('0.00');
 			}
 			else
 			{
-				iGSTVal.text('₹ '+iGST);
-				cGSTVal.text('₹ 0.00');
-				sGSTVal.text('₹ 0.00');
+				iGSTVal.text(iGST);
+				cGSTVal.text('0.00');
+				sGSTVal.text('0.00');
 			}
-			totalVal.text('₹ '+(parseFloat(taxValue)+parseFloat(iGST)).toFixed(2));
+			totalVal.text((parseFloat(taxValue)+parseFloat(iGST)).toFixed(2));
 			var grandTotal= 0.00;
 			var grandTotalIGST= 0.00;
 			var grandTotalCGST= 0.00;
@@ -201,11 +220,11 @@ function calRow(elem)
 			var grandTotalTaxableVal= 0.00;
 			$("#itemList tbody tr td:nth-child(10)").each(function()
 			{
-				var tbltaxVal=parseFloat($(this).prev().prev().text().trim().substring(2));
-				var tblcGST=parseFloat($(this).text().trim().substring(2));
-				var tblsGST=parseFloat($(this).next().text().trim().substring(2));
-				var tbliGST=parseFloat($(this).next().next().text().trim().substring(2));
-				var tblTotal=parseFloat($(this).next().next().next().text().trim().substring(2));
+				var tbltaxVal=parseFloat($(this).prev().prev().text().trim());
+				var tblcGST=parseFloat($(this).text().trim());
+				var tblsGST=parseFloat($(this).next().text().trim());
+				var tbliGST=parseFloat($(this).next().next().text().trim());
+				var tblTotal=parseFloat($(this).next().next().next().text().trim());
 				grandTotal= grandTotal+tblTotal;
 				grandTotalIGST = grandTotalIGST + tbliGST;
 				grandTotalCGST = grandTotalCGST + tblcGST;
@@ -226,11 +245,12 @@ function rateChange(elem)
 	calRow(elem)
 }
 
-function qtyChange(elem)
+function qtyChange(elem,txt)
 {
+	var oldval=parseInt(elem.parent().parent().find('td:nth-child(16)').text().trim());
 	var itemDesp=elem.parent().prev().prev().prev().find('input')
-	var askQuant = parseFloat(elem.val());
-	var savedQuant = parseFloat(elem.parent().parent().find('td:nth-child(14)').text().trim());
+	var askQuant = parseInt(elem.val());
+	var savedQuant = parseInt(elem.parent().parent().find('td:nth-child(14)').text().trim()) + oldval;
 	if( askQuant <= savedQuant )
 		calRow(elem.parent().prev().find('input'))
 	else
@@ -254,15 +274,15 @@ function emptyRow(elem)
 {
 	elem.val('');
 		if(elem.parent().parent().find('td:nth-child(13)').text().trim().length>0)
-			$('#grandTotal').text((parseFloat($('#grandTotal').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(13)').text().substring(2).trim())).toFixed(2));
+			$('#grandTotal').text((parseFloat($('#grandTotal').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(13)').text().trim())).toFixed(2));
 		if(elem.parent().parent().find('td:nth-child(10)').text().trim().length>0)
-			$('#grandTotalCGST').text((parseFloat($('#grandTotalCGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(10)').text().substring(2).trim())).toFixed(2));
+			$('#grandTotalCGST').text((parseFloat($('#grandTotalCGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(10)').text().trim())).toFixed(2));
 		if(elem.parent().parent().find('td:nth-child(11)').text().trim().length>0)
-			$('#grandTotalSGST').text((parseFloat($('#grandTotalSGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(11)').text().substring(2).trim())).toFixed(2));
+			$('#grandTotalSGST').text((parseFloat($('#grandTotalSGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(11)').text().trim())).toFixed(2));
 		if(elem.parent().parent().find('td:nth-child(12)').text().trim().length>0)
-			$('#grandTotalIGST').text((parseFloat($('#grandTotalIGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(12)').text().substring(2).trim())).toFixed(2));
+			$('#grandTotalIGST').text((parseFloat($('#grandTotalIGST').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(12)').text().trim())).toFixed(2));
 		if(elem.parent().parent().find('td:nth-child(8)').text().trim().length>0)
-			$('#taxableTotal').text((parseFloat($('#taxableTotal').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(8)').text().substring(2).trim())).toFixed(2));
+			$('#taxableTotal').text((parseFloat($('#taxableTotal').text().trim())-parseFloat(elem.parent().parent().find('td:nth-child(8)').text().trim())).toFixed(2));
 		elem.parent().parent().find('td:nth-child(10)').text('');
 		elem.parent().parent().find('td:nth-child(11)').text('');
 		elem.parent().parent().find('td:nth-child(12)').text('');
@@ -270,6 +290,7 @@ function emptyRow(elem)
 		elem.parent().parent().find('td:nth-child(8)').text('');
 }
 function generateTableRow() {
+	
 	var emptyColumn = document.createElement('tr');
 	//var input=$('<input class="itemDesp" placeholder="Type a Location" style="width:100%;text-align:left;" type="text" ></input>');
     
@@ -278,8 +299,8 @@ function generateTableRow() {
 		'<td><input class="itemDespText" placeholder="Type an Item" style="width:100%;text-align:left;" type="search" ></input></td>' +
 		'<td></td>' +
 		'<td><input  style="width:100%;text-align:right;" type="text" onchange="rateChange($(this))"></input></td>' +
-		'<td><input style="width:100%;text-align:right;" type="text" onchange="qtyChange($(this))"></input></td>'+
-		'<td style="text-align:center;"><span >Piece</span></td>' +
+		'<td><input style="width:100%;text-align:right;" type="number" min="0" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
+		'<td style="text-align:center;"><span ></span></td>' +
 		'<td><input style="width:100%;text-align:right;" type="text" onchange="disChange($(this))"></td>' +
 		'<td></td>' +
 		'<td><input style="width:100%;text-align:right;" type="text" onchange="gstChange($(this))"></td>'+
@@ -288,17 +309,38 @@ function generateTableRow() {
 		'<td></td>' +
 		'<td></td>' +
 		'<td style="display:none;"></td>'+
+		'<td style="display:none;"></td>'+
 		'<td style="display:none;"></td>';
-	$('.itemDespText', emptyColumn).autocomplete(autocompleteOptions);
-	var render = $('.itemDespText', emptyColumn).autocomplete('instance')._renderMenu;
+	$('.itemDespText', emptyColumn).autocomplete({
+		source: autocompleteOptions,
+		response: function(event, ui){
+            ui.content.push({id:'New Item', label:'New Item', value:''});
+        },
+        minLength: 0,
+        autoFocus: true,
+        open: function(event) {},
+        close: function() {},
+        focus: function(event,ui) {
 
-						/* overrides the default method */
+        },
+		select: function (e, ui) {
+
+			if(ui.item.label.trim() == "New Item")
+			{
+				$("#addItemModal").modal('show');
+				tempRow=$(emptyColumn).find('td:nth-child(2) input');
+			}
+			else
+			{
+				fillItemDetails(ui.item.label.trim(),$(emptyColumn).find('td:nth-child(2) input'));
+			}
+		}
+	});
+	/*var render = $('.itemDespText', emptyColumn).autocomplete('instance')._renderMenu;
 						$('.itemDespText', emptyColumn).autocomplete('instance')._renderMenu = function(ul, items) {
-						  /* adds your fixed item */
 						  items.push({ label: 'New Item', value: '' });
-						  /* calls the default behavior again */
 						  render.call(this, ul, items);
-						};
+						};*/
 	return emptyColumn;
 }
 
@@ -369,9 +411,9 @@ function onContentLoad() {
 
 	function onClick(e) {
 		var element = e.target.querySelector('[contenteditable]'), row;
-
+		
 		element && e.target != document.documentElement && e.target != document.body && element.focus();
-
+		
 		if (e.target.matchesSelector('.add')) {
 			document.querySelector('table.inventory tbody').appendChild(generateTableRow());
 			x++;

@@ -4,6 +4,33 @@
 	function transpose($array) {
 		return array_map(null, ...$array);
 	}
+	
+	function insertItemInvoice($data,$invId,$db)
+	{
+		$invStatus=1;
+		deleteItemsfromInvoice($invId,$db);
+		for ($i = 0; $i < count($data); $i++) {
+			$runcheck=mysqli_query($db,$insert_query);
+			if ( false===$runcheck ) {
+				$invStatus = 0;
+				printf("error: %s\n", mysqli_error($db));
+			}
+			$UPDATE_ITEM_QUERY = "Update ITEM_MASTER set Quantity= Quantity-'".$data[$i]['qty']."' where id=".$data[$i]['itemID'];
+			$runcheck=mysqli_query($db,$UPDATE_ITEM_QUERY);
+		}
+		return $invStatus;
+	}
+	
+	function deleteItemsfromInvoice($invId,$db)
+	{
+		$get_items="update sales_transactions st 
+		INNER JOIN item_master im on im.ID=st.ItemID 
+		set im.Quantity=im.Quantity+st.Quantity where st.InvoiceNo= '".$invId."'";
+		$runcheck=mysqli_query($db,$get_items);
+		$deleteItem_query="Delete from SALES_TRANSACTIONS where InvoiceNo = '".$invId."'";
+		$runcheck=mysqli_query($db,$deleteItem_query);
+	}
+	
 	if($type=="1")
 	{
 		$query_type = mysqli_real_escape_string($db,$_POST['query_type']);
@@ -210,8 +237,8 @@
 		$grandTotalIGST = mysqli_real_escape_string($db,$_POST['grandTotalIGST']);
 		$grandTotal = mysqli_real_escape_string($db,$_POST['grandTotal']);
 		$invoiceAddress = str_replace(array("/:", "/-", "//", "/*","/'"), ' ',mysqli_real_escape_string($db,$_POST['invoiceAddress']));	
-		$insert_query = "update SALES_MASTER set PlaceOfSupply ='".$stateToShip."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."' where InvoiceNo='".$invId."'";
-		$runcheck=mysqli_query($db,$insert_query);
+		$sql11 = "update SALES_MASTER set PlaceOfSupply ='".$stateToShip."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."' where InvoiceNo='".$invId."'";
+		$runcheck=mysqli_query($db,$sql11);
 		if ( false===$runcheck ) {
 			printf("error: %s\n", mysqli_error($db));
 		}
@@ -223,20 +250,10 @@
 	{
 		$invId = mysqli_real_escape_string($db,$_POST['invId']);
 		$tableJSONObj =$_POST['JSONtableObject'];
+		$action = mysqli_real_escape_string($db,$_POST['action']);
 		$data = json_decode($tableJSONObj,true);
-		$invStatus=1;
-		for ($i = 0; $i < count($data); $i++) {
-			$insert_query = "insert into SALES_TRANSACTIONS (CGST, Discount, GSTRate, IGST, InvoiceNo, ItemID, Quantity, Rate, SGST, TaxableValue, TotalItemValue) values ('".$data[$i]['cgst']."','".$data[$i]['dis']."','".$data[$i]['gstrate']."','".$data[$i]['igst']."','".$invId."','".$data[$i]['itemID']."','".$data[$i]['qty']."','".$data[$i]['rate']."','".$data[$i]['sgst']."','".$data[$i]['taxableVal']."','".$data[$i]['itemtotal']."')";
-			$runcheck=mysqli_query($db,$insert_query);
-			if ( false===$runcheck ) {
-				$invStatus = 0;
-				printf("error: %s\n", mysqli_error($db));
-			}
-			$remQty=(int)$data[$i]['qtyLeft']-(int)$data[$i]['qty'];
-			$UPDATE_ITEM_QUERY = "Update ITEM_MASTER set Quantity= '".$remQty."' where id=".$data[$i]['itemID'];
-			$runcheck=mysqli_query($db,$UPDATE_ITEM_QUERY);
-		}
-		echo $invStatus;
+		$query_result = insertItemInvoice($data, $invId,$db);
+		echo $query_result;
 	}
 	
 	else if($type=="13")

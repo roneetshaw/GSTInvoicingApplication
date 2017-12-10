@@ -7,8 +7,11 @@
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 				<link rel="stylesheet" href="invoice.css?v=3.2">
 		<?php include 'jslibrary.php';?>
-		<script src="invoice.js?v=1.3"></script>
+		<script src="invoice.js?v=1.1"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<style>
+			input,textarea:disabled{background-color:white;}
+		</style>
 		<script type="text/javascript">
 
 			var i=0;
@@ -49,7 +52,24 @@
 					initHeader(invId)
 					fillInvoiceTableRows();
 				}
-				
+				function DisableInvoice(state)
+				{
+					$('#btnInvoiceSave').prop('disabled', state);
+					$('#itemBillDate').prop('disabled', state);
+					$('#stateToShip').prop('disabled', state);
+					$('#itemList td input').prop('disabled', state);
+					$('#invoiceAddress').prop('disabled', state);
+					if(state)
+					{
+						$('.add').click(function () {return false;});
+						$('.cut').click(function () {return false;});
+					}
+					else
+					{
+						$('.add').unbind('click');
+						$('.cut').unbind('click');
+					}
+				}
 				function initHeader(invId)
 				{
 					$.ajax({ 
@@ -94,13 +114,14 @@
 				function generateItemRows(arr)
 				{
 					var i=0;
+					$('#itemList tbody').empty();
 					for(i=0 ;i<arr[0].length;  i++)
 					{var emptyColumn = document.createElement('tr');
 						emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(i+1)+'</span></td>' +
 						'<td><input class="itemDespText" placeholder="Type an Item" value="'+arr[12][i]+'" style="width:100%;text-align:left;" type="search" ></input></td>' +
 						'<td>'+arr[13][i]+'</td>' +
 						'<td><input  style="width:100%;text-align:right;" type="text"value="'+arr[7][i]+'" onchange="rateChange($(this))"></input></td>' +
-						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[8][i]+'" onchange="qtyChange($(this))"></input></td>'+
+						'<td><input style="width:100%;text-align:right;" type="number" min="0" value="'+arr[8][i]+'" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
 						'<td style="text-align:center;"><span >'+arr[14][i]+'</span></td>' +
 						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[5][i]+'" onchange="disChange($(this))"></td>' +
 						'<td>'+arr[4][i]+'</td>' +
@@ -110,9 +131,12 @@
 						'<td>'+arr[2][i]+'</td>' +
 						'<td>'+arr[3][i]+'</td>' +
 						'<td style="display:none;">'+arr[11][i]+'</td>'+
-						'<td style="display:none;">'+arr[9][i]+'</td>';
+						'<td style="display:none;">'+arr[9][i]+'</td>'+
+						'<td style="display:none;">'+arr[8][i]+'</td>';
 						$('#itemList tbody').append($(emptyColumn));
 					}
+					x=(i+1);
+					DisableInvoice(true);
 				}
 				function initTable()
 				{
@@ -134,7 +158,8 @@
 					{
 						if($('#itemBillDate').val().trim().length > 0)
 						{
-							saveInvoiceTransaction()
+							$('#grandTotal').click();
+							saveInvoiceTransaction();	
 						}
 						else
 						{
@@ -146,14 +171,20 @@
 						alert("Customer address required");
 					}
 				});
+				
+				$("#btnInvoiceEdit").on('click',function(){
+					DisableInvoice(false);
+				});
+				
 				function saveInvoiceTransaction()
 				{
+					
 					var JSONObject = JSON.stringify(tableJSON());
 					console.log(JSONObject)
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
-						data: {type: 12, invId: invId, JSONtableObject: JSONObject},
+						data: {type: 12, invId: invId, JSONtableObject: JSONObject, action: action},
 						success: function (d) {
 							if(d == "1")
 							{
@@ -170,10 +201,14 @@
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
-						data: {type: 11, invId: invId, stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
+						data: {type: 11,action: action, invId: invId, stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
 						success: function (d) {
 							if(d == "1")
+							{
 								alert("Invoice saved");
+								DisableInvoice(true);
+								loadInvoiceFromDB(invId);
+							}
 						},
 						error: function (log) {
 							console.log(log);
@@ -193,17 +228,45 @@
 						item ["qty"] = $(this).find('td:nth-child(5)').find('input').val().trim();
 						item ["unit"] = $(this).find('td:nth-child(6)').text().trim();
 						item ["dis"] = $(this).find('td:nth-child(7)').find('input').val().trim();
-						item ["taxableVal"] = $(this).find('td:nth-child(8)').text().trim().substring(2);
+						item ["taxableVal"] = $(this).find('td:nth-child(8)').text().trim();
 						item ["gstrate"] = $(this).find('td:nth-child(9)').find('input').val().trim().substring(0,2);
-						item ["cgst"] = $(this).find('td:nth-child(10)').text().trim().substring(2);
-						item ["sgst"] = $(this).find('td:nth-child(11)').text().trim().substring(2);
-						item ["igst"] = $(this).find('td:nth-child(12)').text().trim().substring(2);
-						item ["itemtotal"] = $(this).find('td:nth-child(13)').text().trim().substring(2);
+						item ["cgst"] = $(this).find('td:nth-child(10)').text().trim();
+						item ["sgst"] = $(this).find('td:nth-child(11)').text().trim();
+						item ["igst"] = $(this).find('td:nth-child(12)').text().trim();
+						item ["itemtotal"] = $(this).find('td:nth-child(13)').text().trim();
 						item ["qtyLeft"] = $(this).find('td:nth-child(14)').text().trim();
 						jObject.push(item);
 					});
 					return jObject;
 				}
+				function saveIteminDB()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 4, Description: $("#addItemModal input:eq(0)").val(),ItemType: $("#addItemModal button:eq(2)").text(),HSN: $("#addItemModal input:eq(1)").val(),ITEMCODE: $("#addItemModal input:eq(2)").val(),UNIT: $("#addItemModal button:eq(3)").text(),TAXRATE: $("#addItemModal button:eq(4)").text(), DISCOUNT: $("#addItemModal input:eq(3)").val(),CESSAMOUNT: $("#addItemModal input:eq(4)").val(),PURCHASEPRICE: $("#addItemModal input:eq(5)").val(),SELLINGPRICE:$("#addItemModal input:eq(6)").val(), query_type: "-99" },
+						success: function (d) {
+							if(d == "1")
+							{
+								alert("Item Saved");
+								$("#addItemModal").modal('hide');
+								initItemName();
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				
+				$("#btnItemSave").on('click',function(){
+					if($("#itemDesp").val().length > 0)
+					{
+						saveIteminDB();
+					}
+					else
+						alert("Please enter Item Description");
+				})
 			});
 			
 			
@@ -303,7 +366,7 @@
 						<th style="width:30px"><span >HSN</span></th>
 						<th style="width:25px"><span >Rate</span></th>
 						<th style="width:20px"; ><span >Qty.</span></th>
-						<th style="width:25px"><span >Unit</span></th>
+						<th style="width:30px"><span >Unit</span></th>
 						<th style="width:25px"><span >Dis.</span></th>
 						<th style="width:40px"><span >Taxable Value</span></th>
 						<th style="width:30px"><span >GST Rate</span></th>
@@ -316,21 +379,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!--<tr>
-						<td><a class="cut" id="minus">-</a><span contenteditable>1</span></td>
-						<td><span contenteditable>Experience Review</span></td>
-						<td><span contenteditable>150</span></td>
-						<td><span contenteditable>4</span></td>
-						<td><span contenteditable>4</span></td>
-						<td><span>600.00</span></td>
-						<td><span contenteditable>10%</span></td>
-						<td><span data-prefix>₹</span><span contenteditable>12,00</span></td>						
-						<td><span contenteditable>4</span></td>
-						<td><span data-prefix>₹</span><span contenteditable>150.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-					</tr>-->
 				</tbody>
 			</table>
 			<a class="add" style="text-align:center;">+</a>
