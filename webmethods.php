@@ -10,6 +10,7 @@
 		$invStatus=1;
 		deleteItemsfromInvoice($invId,$db);
 		for ($i = 0; $i < count($data); $i++) {
+			$insert_query = "insert into SALES_TRANSACTIONS (CGST, Discount, GSTRate, IGST, InvoiceNo, ItemID, Quantity, Rate, SGST, TaxableValue, TotalItemValue) values ('".$data[$i]['cgst']."','".$data[$i]['dis']."','".$data[$i]['gstrate']."','".$data[$i]['igst']."','".$invId."','".$data[$i]['itemID']."','".$data[$i]['qty']."','".$data[$i]['rate']."','".$data[$i]['sgst']."','".$data[$i]['taxableVal']."','".$data[$i]['itemtotal']."')";
 			$runcheck=mysqli_query($db,$insert_query);
 			if ( false===$runcheck ) {
 				$invStatus = 0;
