@@ -7,7 +7,7 @@
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 				<link rel="stylesheet" href="invoice.css?v=3.2">
 		<?php include 'jslibrary.php';?>
-		<script src="invoice.js?v=1.1"></script>
+		<script src="salesinvoice.js?v=1.1"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<style>
 			input,textarea:disabled{background-color:white;}

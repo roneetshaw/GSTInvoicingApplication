@@ -5,7 +5,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Items Warehouse</title>
+	<title>Purchase Billing</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -16,6 +16,7 @@
 	<style>
 	
 		table.dataTable thead th { font-size: 15px; color: black;}
+		table.dataTable tbody tr { cursor:pointer;}
 	</style>
 	
 </head>
@@ -31,12 +32,20 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Item Lookup</h4>
-                                <p class="category">*All Items history</p>
+                                
+								<div class="row" style="margin:10px;">
+									<div class="col-md-9">
+										<h4 class="title">Purchase Invoices</h4>
+										<p class="category">*All Purchase history</p>
+									</div>
+									<div class="col-md-3" style="padding-left:37px;">
+										<input type="button" value="+New Purchase Invoice" id="btnAddPurchase" >
+									</div>
+								</div>
                             </div>
                             <div class="content">
                                 <div class="row" style="margin:20px;">
-									<table id="itemDisplay" class="table table-condensed table-hover" width="100%"></table>
+									<table id="invoicePurchaseGrandDisplay" style="text-align:center;" class="table table-condensed table-hover" width="100%"></table>
 								</div>
                             </div>
                         </div>
@@ -48,60 +57,109 @@
             </div>
         </div>
     </div>
-	<div class="modal fade" id="addItemModal" role="dialog">
+	<div class="modal fade" id="addNewPurchaseInvoice" role="dialog">
 		<div class="modal-dialog">
 		
 		  <!-- Modal content-->
 		  <div class="modal-content">
 			<div class="modal-header">
 			  <button type="button" class="close" data-dismiss="modal">&times;</button>
-			  <h4 class="modal-title">Add Item</h4>
+			  <h4 class="modal-title">Add Purchase Invoice</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<label for="usr">Item Description (*required)</label>
-						<input type="text" class="form-control" id="itemDesp">
+						<label for="usr">Select a Customer</label>
+						<input id="customerName" placeholder="Type customer name" style="width:100%;text-align:left;" type="text"></input>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" id="btnCreatePurchaseInvoice">Create Invoice</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	</div>
+	<div class="modal fade" id="addCustomerModal" role="dialog">
+		<div class="modal-dialog">
+		
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+			  
+				<div class="row">
+					<div class="col-sm-4">
+						<h4 class="modal-title">Add Customer</h4>
+					</div>
+					<div class="col-sm-6" style="text-align:center">
+						<button type="button" class="btn btn-default" id="btnCustSave">Save</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<label for="usr">Customer Name(*required)</label>
+						<input type="text" value="" class="form-control" id="custName">
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-sm-12">
+						<label for="usr">GST Number</label>
+						<input type="text" value="" class="form-control" id="custGST">
 					</div>
 				</div>
 				<br/>
 				<div class="row">
 					<div class="col-sm-6">
-						<label for="usr">Item Type (*required)</label>
-						<div class="dropdown" id="itemType">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Item Type 
+						<label for="usr">City</label>
+						<input type="text" class="form-control" id="custCity">
+					</div>
+					<div class="col-sm-6">
+						<label for="usr">State</label>
+						<div class="dropdown" id="drpState">
+							<button class="btn btn-default dropdown-toggle" id="custDrpstate" style="width:250px" type="button" data-toggle="dropdown">Select State
 							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">Goods</a></li>
-								<li><a href="#">Services</a></li>
-						    </ul>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<label for="usr">HSN/SAC code (*required)</label>
-						<input type="text" class="form-control" id="itemHSNCode">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="usr">Item/SKU code</label>
-						<input type="text" class="form-control" id="itemSKUCode">
-					</div>
-					<div class="col-sm-6">
-						<label for="usr">Unit</label>
-						<div class="dropdown" id="itemUnit">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Unit
-							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">Pieces</a></li>
-								<li><a href="#">Packs</a></li>
-								<li><a href="#">Pairs</a></li>
-								<li><a href="#">Rolls</a></li>
-								<li><a href="#">Set</a></li>
-								<li><a href="#">Boxes</a></li>																
-								<li><a href="#">Dorzen</a></li>																
-								<li><a href="#">Others</a></li>																
+						    <ul class="dropdown-menu" style="width:250px;height: 200px;overflow:auto">
+								<li><a value="Tamil Nadu">Tamil Nadu</a></li>
+								<li><a value="West Bengal">West Bengal</a></li>
+								<li><a value="Orissa">Orissa</a></li>
+								<li><a value="Delhi">Delhi</a></li>
+								<li><a value="Karnataka">Karnataka</a></li>
+								<li><a value="ANDAMANANDNICOBARISLANDS">Andaman and Nicobar Islands</a></li>
+								<li><a value="Andhra Pradesh">Andhra Pradesh</a></li>
+								<li><a value="ARUNACHALPRADESH">Arunachal Pradesh</a></li>
+								<li><a value="Assam">Assam</a></li>
+								<li><a value="Bihar">Bihar</a></li>
+								<li><a value="Chandigarh">Chandigarh</a></li>
+								<li><a value="Chhattisgarh">Chhattisgarh</a></li>
+								<li><a value="Dadra Nagar Haveli">Dadra Nagar Haveli</a></li>
+								<li><a value="Daman and Diu">Daman and Diu</a></li>					
+								<li><a value="Goa">Goa</a></li>
+								<li><a value="Gujarat">Gujarat</a></li>
+								<li><a value="Haryana">Haryana</a></li>
+								<li><a value="Himachal Pradesh">Himachal Pradesh</a></li>
+								<li><a value="Jammu and Kashmir">Jammu and Kashmir</a></li>
+								<li><a value="Jharkhand">Jharkhand</a></li>
+								
+								<li><a value="Kerala">Kerala</a></li>
+								<li><a value="Lakshadweep">Lakshadweep</a></li>
+								<li><a value="Madhya Pradesh">Madhya Pradesh</a></li>
+								<li><a value="Maharashtra">Maharashtra</a></li>
+								<li><a value="Manipur">Manipur</a></li>
+								<li><a value="Meghalaya">Meghalaya</a></li>
+								<li><a value="Mizoram">Mizoram</a></li>
+								<li><a value="Pondicherry">Pondicherry</a></li>
+								<li><a value="Punjab">Punjab</a></li>
+								<li><a value="Rajasthan">Rajasthan</a></li>
+								<li><a value="Sikkim">Sikkim</a></li>
+								<li><a value="OTHERTERRITORY">OTHERTERRITORY</a></li>
 						    </ul>
 						</div>
 					</div>
@@ -110,97 +168,35 @@
 				<br/>
 				<div class="row">				
 					<div class="col-sm-6">
-						<label for="usr">Tax Rate</label>
-						<div class="dropdown" id="itemTaxRate">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Tax Rate
-							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">0.25%</a></li>
-								<li><a href="#">12%</a></li>
-								<li><a href="#">18%</a></li>
-								<li><a href="#">28%</a></li>
-								<li><a href="#">3%</a></li>
-								<li><a href="#">5%</a></li>																
-						    </ul>
-						</div>
+						<label for="usr">Contact person</label>
+						<input type="text" value=""  class="form-control" id="custContactName">
 					</div>
 					<div class="col-sm-6">
-						<label for="usr">Discount</label>
-						<input type="text" class="form-control" id="itemDiscount">
+						<label for="usr">Mobile No.</label>
+						<input type="text" value=""  class="form-control" id="custMobileNumber">
 					</div>										
 				</div>
 				<br/>
 				<div class="row">
 					<div class="col-sm-6">
-						<label for="usr">Cess Amount</label>
-						<input type="text" class="form-control" id="itemCess">
-					</div>				
-				</div>
-				<br/>
-				<div class="row">
+						<label for="usr">PAN</label>
+						<input type="text" value=""  class="form-control" id="custPAN">
+					</div>
 					<div class="col-sm-6">
-						<label for="usr">Purchase Price</label>
-						<input type="text" class="form-control" id="itemPurchase">
-					</div>
-					
-					<div class="col-sm-6">
-						<label for="usr">Selling price</label>
-						<input type="text" class="form-control" id="itemSelling">
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		  
-		</div>
-	</div>
-	<div class="modal fade" id="changeItemModal" role="dialog">
-		<div class="modal-dialog">
-		
-		  <!-- Modal content-->
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal">&times;</button>
-			  <h4 class="modal-title">Change Item</h4>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-3">
-						<label for="usr" style="margin-top:10px;">Item Name:</label>
-					</div>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="itemDespName" placeholder="Type an Item">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-3">
-						<label for="usr" style="margin-top:10px;">Bill Date:</label>
-					</div>
-					<div class="col-sm-9">
-						<input class="form-control" id="itemBillDate" name="date" placeholder="MM/DD/YYYY" type="text"/>
+						<label for="usr">Pin code</label>
+						<input type="text" value=""  class="form-control" id="custPin">
 					</div>
 				</div>
 				<br/>
 				<div class="row">
 					<div class="col-sm-12">
-						<input type="text" class="form-control" id="itemChangeValue" style="text-align:center;">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-12" style="text-align:center;">
-						<button type="button" class="btn btn-default" id="btnItemAdd" style="width:80px;font-weight:bold; color: black;" >Add</button>
-						<button type="button" class="btn btn-default" id="btnItemMinus" style="width:80px;font-weight:bold; color: black;" >Minus</button>
-						<button type="button" class="btn btn-default" id="btnItemEdit" style="width:80px;font-weight:bold; color: black;" >Edit</button>
+						<label for="usr">Address</label>
+						<input type="text" value=""  class="form-control" id="custAddress">
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+			  
 			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		  </div>
@@ -208,67 +204,149 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myLargeModalLabel" aria-hidden="true"  id="onload">
 
-    <div class="modal-dialog">
-		<!-- Modal content-->
-        <div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h4 class="modal-title" align="center" >Enter Year</h4>
-			</div>
-			<form action="/predict/settings.php">
-				<div class="modal-body" align="center">
-					<input class="form-control" maxlength="4" onkeypress="return isNumber(event)" style="text-align:center;font-size: 20px;" placeholder="2014" id="onloadYear" name="onloadYear" style="width: 100px;" type="text">
-					<p id="vldYearErr" style="color: red; display: none;">Please enter a valid Year</p>
-				</div>
-				<div class="modal-footer">
-					<button type="submit"  style="display: none;" id="btnGoToSettings" class="btn btn-default" >Settings</button>
-					<button type="button"  id="btnGlobalYearSubmit" class="btn btn-default" >Submit</button>
-					
-				</div>
-			</form>
-        </div>
-    </div>
-</div>
 
 </body>
 	<script type="text/javascript">
     	$(document).ready(function(){
+			var availableTags = [];
+			initCustomerName();
+			initInvoiceTable();
+			function initCustomerName()
+			{
+				$.ajax({ 
+					url: 'webmethods.php',
+					type: 'POST',
+					data: {type: 7},
+					success: function (d) {
+						dataRET=JSON.parse(d);
+						var autocompleteOptions = dataRET[1];
+						$('#customerName').autocomplete({
+							source: autocompleteOptions,
+							response: function(event, ui){
+								ui.content.push({id:'New Customer', label:'New Customer', value:''});
+							},
+							minLength: 0,
+							autoFocus: true,
+							open: function(event) {},
+							close: function() {},
+							focus: function(event,ui) {
+
+							},
+							select: function (e, ui) {
+
+								if(ui.item.label.trim() == "New Customer")
+								{
+									$("#addCustomerModal").modal('show');
+									//tempRow=$(emptyColumn).find('td:nth-child(2) input');
+								}
+							}
+						});
+						$(".ui-autocomplete").css("z-index", "2147483647");
+
+					},
+					error: function (log) {
+						console.log(log);
+					}
+				});
+			}
+			
+			$('#btnAddPurchase').on('click',function(){
+				$("#addNewPurchaseInvoice").modal('show');
+				$('#customerName').val('');
+			})
+			$("#btnCustSave").on('click',function(){
+				if($("#custName").val().length > 0)
+				{
+					saveCustomerinDB();
+				}
+				else
+					alert("Please add Vendor Name");
+			})
+			function saveCustomerinDB()
+			{
+				$.ajax({ 
+					url: 'webmethods.php',
+					type: 'POST',
+					data: {type: 1, vendorName: $("#custName").val(),custGST: $("#custGST").val(),custCity: $("#custCity").val(),drpState: $("#drpState button").text(),custContactName: $("#custContactName").val(),custMobileNumber: $("#custMobileNumber").val(), custPAN: $("#custPAN").val(),custPin: $("#custPin").val(),custAddress: $("#custAddress").val(), query_type: "-99" },
+					success: function (d) {
+						console.log(d);
+						if(d == "1")
+						{
+							$("#addCustomerModal").modal('hide');
+							alert("Customer Saved");
+							initCustomerName();
+						}
+					},
+					error: function (log) {
+						console.log(log);
+					}
+				});
+			}
+			$('#btnCreatePurchaseInvoice').on('click',function(){
+				if($('#customerName').val().length> 0)
+				{
+					$("#addNewPurchaseInvoice").modal('hide');
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 17, customerName: $("#customerName").val()},
+						success: function (d) {
+							d=d.split(',');
+							if(d[0] == "1")
+							{
+								window.location.href = "/gst/purchaseinvoice.php?action=new&cust_id="+d[1]+"&name="+$('#customerName').val().trim()+"&invId="+d[2];
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				else
+					alert("Select a customer")
+			})
 			$( function() {
 				$( "#itemBillDate" ).datepicker();
 			});
-			var dataSet = [
-				[ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
-				[ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
-				[ "Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000" ],
-				[ "Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060" ],
-				[ "Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700" ],
-				[ "Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000" ],
-				[ "Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500" ],
-				[ "Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900" ],
-				[ "Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500" ],
-				[ "Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600" ],
-				[ "Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560" ],
-				[ "Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000" ],
-				[ "Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600" ]
-			];
-			$('#itemDisplay').DataTable( {
-				data: dataSet,
-				dom: 'Bfrtip',
-				buttons: [
-					'pdf'
-				],
-				destroy: true,
-				columns: [
-					{ title: "Name" },
-					{ title: "Position" },
-					{ title: "Office" },
-					{ title: "Extn." },
-					{ title: "Start date" },
-					{ title: "Salary" }
-				]
-			} );
+			
+			function initInvoiceTable()
+			{
+				$.ajax({ 
+					url: 'webmethods.php',
+					type: 'POST',
+					data: {type: 16 },
+					success: function (data1) {
+						var arr = JSON.parse(data1);
+						fillInvoiceTable(arr);
+					},
+					error: function (log) {
+									console.log(log.message);
+					}
+				});
+			}
+			
+			function fillInvoiceTable(dataSet)
+			{
+				$('#invoicePurchaseGrandDisplay').DataTable( {
+					data: dataSet,
+					dom: 'Bfrtip',
+					buttons: [
+						'pdf'
+					],
+					destroy: true,
+					columns: [
+						{ title: "DATE" },
+						{ title: "INVOICE NO." },
+						{ title: "CUSTOMER" },
+						{ title: "GSTIN" },
+						{ title: "TAXABLE AMOUNT" },
+						{ title: "TAX" },
+						{ title: "TOTAL AMOUNT" },
+						{ title: "TYPE" }					
+					]
+				});
+			}
     	});
 	</script>
 

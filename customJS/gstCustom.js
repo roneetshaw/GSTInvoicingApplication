@@ -57,4 +57,7 @@ $(document).ready(function() {
 	$("#invoiceGrandDisplay").on('click','tbody tr',function(){
 		window.location.href = "/gst/salesinvoice.php?action=edit&invId="+$(this).find(':nth-child(2)').text().trim();
 	});
+	$("#invoicePurchaseGrandDisplay").on('click','tbody tr',function(){
+		window.location.href = "/gst/purchaseinvoice.php?action=edit&invId="+$(this).find(':nth-child(2)').text().trim();
+	});
 });

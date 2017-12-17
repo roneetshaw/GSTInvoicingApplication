@@ -5,28 +5,142 @@
 		<title>Invoice</title>
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-				<link rel="stylesheet" href="invoice.css?v=3.1">
+				<link rel="stylesheet" href="invoice.css?v=3.2">
 		<?php include 'jslibrary.php';?>
-		<script src="invoice.js?v=4"></script>
+		<script src="purchaseinvoice.js?v=1.2"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<style>
+			input,textarea:disabled{background-color:white;}
+		</style>
 		<script type="text/javascript">
-			var url = new URL(window.location.href);
-			var c = url.searchParams.get("cust_id");
-			alert(c);
+
 			var i=0;
 			$( function() {
 				$( "#itemBillDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			});
+			$( window ).load(function() {
+				
+			});
 			$(document).ready(function() {
+				var url = new URL(window.location.href);
+				var invId = url.searchParams.get("invId");
+				var action = url.searchParams.get("action");
+				if(action == "new")
+				{
+					var id = url.searchParams.get("cust_id");
+					var name = url.searchParams.get("name");
+					$("#custName").html(name)
+					$("#invoiceId").val(invId);
+				}
+				else if(action == "edit")
+				{
+					loadInvoiceFromDB(invId);
+				}
+				$('#stateToShip').on('change', function() {
+					
+					$("#itemList tbody tr td:nth-child(4)").each(function()
+					{
+							calRow($(this).find('input'));
+					})
+				})
 				$('#itemList tbody tr').on('click','a',function(){
 					alert($('#itemList tbody tr').length);
 				});
-				$(".add").on('click',function(){
-					//alert(2);
-				});
-				$("#btnInvoiceSave").on('click',function(){
-					alert("Hello")
-				})
+				
+				function loadInvoiceFromDB(invId)
+				{
+					initHeader(invId)
+					fillInvoiceTableRows();
+				}
+				function DisableInvoice(state)
+				{
+					$('#btnInvoiceSave').prop('disabled', state);
+					$('#itemBillDate').prop('disabled', state);
+					$('#stateToShip').prop('disabled', state);
+					$('#itemList td input').prop('disabled', state);
+					$('#invoiceAddress').prop('disabled', state);
+					$('#purchaseNo').prop('disabled', state);
+					if(state)
+					{
+						$('.add').click(function () {return false;});
+						$('.cut').click(function () {return false;});
+					}
+					else
+					{
+						$('.add').unbind('click');
+						$('.cut').unbind('click');
+					}
+				}
+				function initHeader(invId)
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 18, invId: invId},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							$('#itemBillDate').val(arr.Date);
+							$('#invoiceId').val(invId);
+							$('#purchaseNo').val(arr.PurchaseNo);
+							$('#stateToShip').val(arr.PlaceOfSupply);
+							$('#custName').text(arr.custName);
+							$('#invoiceAddress').val(arr.InvoiceAddress);
+							$('#taxableTotal').text(arr.TotalTaxable);
+							$('#grandTotalCGST').text(arr.TOTALCGST);
+							$('#grandTotalSGST').text(arr.TOTALSGST);
+							$('#grandTotalIGST').text(arr.TOTALIGST);
+							$('#grandTotal').text(arr.GrandTotal);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
+				function fillInvoiceTableRows()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 19, invId: invId},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							console.log(arr);
+							generateItemRows(arr);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
+				
+				function generateItemRows(arr)
+				{
+					var i=0;
+					$('#itemList tbody').empty();
+					for(i=0 ;i<arr[0].length;  i++)
+					{var emptyColumn = document.createElement('tr');
+						emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(i+1)+'</span></td>' +
+						'<td><input class="itemDespText" placeholder="Type an Item" value="'+arr[12][i]+'" style="width:100%;text-align:left;" type="search" ></input></td>' +
+						'<td>'+arr[13][i]+'</td>' +
+						'<td><input  style="width:100%;text-align:right;" type="text"value="'+arr[7][i]+'" onchange="rateChange($(this))"></input></td>' +
+						'<td><input style="width:100%;text-align:right;" type="number" min="0" value="'+arr[8][i]+'" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
+						'<td style="text-align:center;"><span >'+arr[14][i]+'</span></td>' +
+						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[5][i]+'" onchange="disChange($(this))"></td>' +
+						'<td>'+arr[4][i]+'</td>' +
+						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[6][i]+'%" onchange="gstChange($(this))"></td>'+
+						'<td>'+arr[0][i]+'</td>' +
+						'<td>'+arr[1][i]+'</td>' +
+						'<td>'+arr[2][i]+'</td>' +
+						'<td>'+arr[3][i]+'</td>' +
+						'<td style="display:none;">'+arr[11][i]+'</td>'+
+						'<td style="display:none;">'+arr[9][i]+'</td>'+
+						'<td style="display:none;">'+arr[8][i]+'</td>';
+						$('#itemList tbody').append($(emptyColumn));
+					}
+					x=(i+1);
+					DisableInvoice(true);
+				}
+				
 				function initTable()
 				{
 					$.ajax({ 
@@ -42,17 +156,137 @@
 						}
 					});
 				}
+				$("#btnInvoiceSave").on('click',function(){
+					if($('#invoiceAddress').val().trim().length > 0)
+					{
+						if($('#itemBillDate').val().trim().length > 0)
+						{
+							$('#grandTotal').click();
+							saveInvoiceTransaction();	
+						}
+						else
+						{
+							alert("Bill Date required");
+						}
+					}
+					else
+					{
+						alert("Customer address required");
+					}
+				});
 				
+				$("#btnInvoiceEdit").on('click',function(){
+					DisableInvoice(false);
+				});
+				
+				function saveInvoiceTransaction()
+				{
+					
+					var JSONObject = JSON.stringify(tableJSON());
+					console.log(JSONObject)
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 20, invId: invId, JSONtableObject: JSONObject, action: action},
+						success: function (d) {
+							if(d == "1")
+							{
+								saveInvoiceDetails();
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				function saveInvoiceDetails()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 21,action: action, invId: invId, purchaseNo: $('#purchaseNo').val().trim() , stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
+						success: function (d) {
+							if(d == "1")
+							{
+								alert("Invoice saved");
+								DisableInvoice(true);
+								loadInvoiceFromDB(invId);
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				function tableJSON()
+				{
+					var elementTable = $('#itemList tbody tr');
+					var jObject = [];
+					elementTable.each(function(){
+						item = {}
+						item ["sr"] = $(this).find('td:nth-child(1)').find('span').text().trim();
+						item ["itemID"] = $(this).find('td:nth-child(15)').text().trim();
+						item ["HSN"] = $(this).find('td:nth-child(3)').text().trim();
+						item ["rate"] = $(this).find('td:nth-child(4)').find('input').val().trim();
+						item ["qty"] = $(this).find('td:nth-child(5)').find('input').val().trim();
+						item ["unit"] = $(this).find('td:nth-child(6)').text().trim();
+						item ["dis"] = $(this).find('td:nth-child(7)').find('input').val().trim();
+						item ["taxableVal"] = $(this).find('td:nth-child(8)').text().trim();
+						item ["gstrate"] = $(this).find('td:nth-child(9)').find('input').val().trim().substring(0,2);
+						item ["cgst"] = $(this).find('td:nth-child(10)').text().trim();
+						item ["sgst"] = $(this).find('td:nth-child(11)').text().trim();
+						item ["igst"] = $(this).find('td:nth-child(12)').text().trim();
+						item ["itemtotal"] = $(this).find('td:nth-child(13)').text().trim();
+						item ["qtyLeft"] = $(this).find('td:nth-child(14)').text().trim();
+						jObject.push(item);
+					});
+					return jObject;
+				}
+				function saveIteminDB()
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 4, Description: $("#addItemModal input:eq(0)").val(),ItemType: $("#addItemModal button:eq(2)").text(),HSN: $("#addItemModal input:eq(1)").val(),ITEMCODE: $("#addItemModal input:eq(2)").val(),UNIT: $("#addItemModal button:eq(3)").text(),TAXRATE: $("#addItemModal button:eq(4)").text(), DISCOUNT: $("#addItemModal input:eq(3)").val(),CESSAMOUNT: $("#addItemModal input:eq(4)").val(),PURCHASEPRICE: $("#addItemModal input:eq(5)").val(),SELLINGPRICE:$("#addItemModal input:eq(6)").val(), query_type: "-99" },
+						success: function (d) {
+							if(d == "1")
+							{
+								alert("Item Saved");
+								$("#addItemModal").modal('hide');
+								initItemName();
+							}
+						},
+						error: function (log) {
+							console.log(log);
+						}
+					});
+				}
+				
+				$("#btnItemSave").on('click',function(){
+					if($("#itemDesp").val().length > 0)
+					{
+						saveIteminDB();
+					}
+					else
+						alert("Please enter Item Description");
+				})
 			});
 			
 			
 		</script>
 		<style>
-
+			@media print
+			{    
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
 		</style>
 	</head>
 	<body >
-		<div class="row" style="text-align:center;">
+		<input type="hidden" id="customerType" name="customerType" value="B2C">
+		<div class="row no-print" style="text-align:center;">
 						<div class="col-sm-3">
 							<button type="button" class="btn btn-default" id="btnInvoiceSave">Save</button>
 						</div>
@@ -60,38 +294,71 @@
 							<button type="button" class="btn btn-default" id="btnInvoiceEdit">Edit</button>
 						</div>
 						<div class="col-sm-3">
-							<button type="button" onclick="window.history.go(-1); return false;" class="btn btn-default" id="btnInvoiceBackx">Back</button>
+							<button type="button" onclick="window.history.go(-1); return false;" class="btn btn-default" id="btnInvoiceBack">Back</button>
 						</div>
 						<div class="col-sm-3">
-							<button type="button" class="btn btn-primary" id="btnInvoiceBackx">Print</button>
+							<button type="button" onclick="window.print(); return false;" class="btn btn-primary" id="btnInvoiceBack">Print</button>
 						</div>
 		</div>
-		<header>
-			<h1>Invoice</h1>
-			<address contenteditable>
-				<p>Jonathan Neal</p>
-				<p>101 E. Chapman Ave<br>Orange, CA 92866</p>
-				<p>(800) 555-1234</p>
-			</address>
+		<header >
+			<h1>Purchase Invoice</h1>
 			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
 		</header>
 		<article>
 			<h1>Recipient</h1>
-			<address contenteditable>
-				<p>Some Company<br>c/o Some Guy</p>
+			<address >
+				<p><span id="custName" >Some Company</span></p>
+				<textarea rows="4" cols="40" id="invoiceAddress" placeholder="Type Vendor Address"></textarea>
 			</address>
 			<table class="meta">
 				<tr>
-					<th><span>Invoice #</span></th>
-					<td><span contenteditable>00001</span></td>
+					<th><span>Purchase Invoice #</span></th>
+					<td><input id="purchaseNo" placeholder="Invoice #" type="text"/></td>
+					<input id="invoiceId" name="invoiceId" type="hidden" >
 				</tr>
 				<tr>
 					<th><span>Bill Date</span></th>
 					<td><input id="itemBillDate" placeholder="MM/DD/YYYY" type="text"/></td>
 				</tr>
 				<tr>
-					<th><span>Place of Supply</span></th>
-					<td><span contenteditable>West Bengal</span></td>
+					<th><span>Place of Purchase</span></th>
+					<td>
+						<select id="stateToShip">
+							<option  value="Tamil Nadu">Tamil Nadu </option>
+								<option  value="West Bengal" selected>West Bengal </option>
+								<option  value="Orissa">Orissa </option>
+								<option  value="Delhi">Delhi </option>
+								<option  value="Karnataka">Karnataka </option>
+								<option  value="ANDAMANANDNICOBARISLANDS">Andaman and Nicobar Islands </option>
+								<option  value="Andhra Pradesh">Andhra Pradesh </option>
+								<option  value="ARUNACHALPRADESH">Arunachal Pradesh </option>
+								<option  value="Assam">Assam </option>
+								<option  value="Bihar">Bihar </option>
+								<option  value="Chandigarh">Chandigarh </option>
+								<option  value="Chhattisgarh">Chhattisgarh </option>
+								<option  value="Dadra Nagar Haveoption">Dadra Nagar Haveoption </option>
+								<option  value="Daman and Diu">Daman and Diu </option>					
+								<option  value="Goa">Goa </option>
+								<option  value="Gujarat">Gujarat </option>
+								<option  value="Haryana">Haryana </option>
+								<option  value="Himachal Pradesh">Himachal Pradesh </option>
+								<option  value="Jammu and Kashmir">Jammu and Kashmir </option>
+								<option  value="Jharkhand">Jharkhand </option>
+								
+								<option  value="Kerala">Kerala </option>
+								<option  value="Lakshadweep">Lakshadweep </option>
+								<option  value="Madhya Pradesh">Madhya Pradesh </option>
+								<option  value="Maharashtra">Maharashtra </option>
+								<option  value="Manipur">Manipur </option>
+								<option  value="Meghalaya">Meghalaya </option>
+								<option  value="Mizoram">Mizoram </option>
+								<option  value="Pondicherry">Pondicherry </option>
+								<option  value="Punjab">Punjab </option>
+								<option  value="Rajasthan">Rajasthan </option>
+								<option  value="Sikkim">Sikkim </option>
+								<option  value="OTHERTERRITORY">OTHERTERRITORY </option>
+						</select>
+					</td>
 				</tr>
 			</table>
 			
@@ -101,7 +368,7 @@
 						<th style="width:15px"><span >#</span></th>
 						<th style="width:130px"><span >Item Description</span></th>
 						<th style="width:30px"><span >HSN</span></th>
-						<th style="width:20px"><span >Rate</span></th>
+						<th style="width:25px"><span >Rate</span></th>
 						<th style="width:20px"; ><span >Qty.</span></th>
 						<th style="width:30px"><span >Unit</span></th>
 						<th style="width:25px"><span >Dis.</span></th>
@@ -111,50 +378,37 @@
 						<th style="width:40px"><span >SGST(₹)</span></th>
 						<th style="width:40px"><span >IGST(₹)</span></th>
 						<th style="width:40px"><span >Total(₹)</span></th>
+						<th style="width:1px;display:none;"><span >lQty</span></th>
+						<th style="width:1px;display:none;"><span >itemId</span></th>
 					</tr>
 				</thead>
 				<tbody>
-					<!--<tr>
-						<td><a class="cut" id="minus">-</a><span contenteditable>1</span></td>
-						<td><span contenteditable>Experience Review</span></td>
-						<td><span contenteditable>150</span></td>
-						<td><span contenteditable>4</span></td>
-						<td><span contenteditable>4</span></td>
-						<td><span>600.00</span></td>
-						<td><span contenteditable>10%</span></td>
-						<td><span data-prefix>₹</span><span contenteditable>12,00</span></td>						
-						<td><span contenteditable>4</span></td>
-						<td><span data-prefix>₹</span><span contenteditable>150.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-						<td><span data-prefix>₹</span><span>600.00</span></td>
-					</tr>-->
 				</tbody>
 			</table>
-			<a class="add">+</a>
+			<a class="add" style="text-align:center;">+</a>
 			<table class="balance">
 				<tr>
 					<th><span>Total(₹)</span></th>
-					<td><span>600.00</span></td>
+					<td id="taxableTotal">0.00</td>
 				</tr>
 				<tr>
 					<th><span >CGST(₹)</span></th>
-					<td><span >0.00</span></td>
+					<td id="grandTotalCGST">0.00</td>
 				</tr>
 				<tr>
 					<th><span >SGST(₹)</span></th>
-					<td><span>600.00</span></td>
+					<td id="grandTotalSGST">0.00</td>
 				</tr>
 				<tr>
 					<th><span >IGST(₹)</span></th>
-					<td><span >0.00</span></td>
+					<td id="grandTotalIGST">0.00</td>
 				</tr>
 				<tr>
 					<th><span >Grand Total(₹)</span></th>
-					<td><span>600.00</span></td>
+					<td id="grandTotal">0.00</td>
 				</tr>
 			</table>
-			<div class="modal fade" id="addItemModal" role="dialog">
+	<div class="modal fade" id="addItemModal" role="dialog">
 		<div class="modal-dialog">
 		
 		  <!-- Modal content-->

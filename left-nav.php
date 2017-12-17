@@ -2,7 +2,7 @@
 	    <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="#" class="simple-text" id="navYear">
-                    Items WareHouse
+                    Item WareHouse
                 </a>
             </div>
 
@@ -29,6 +29,18 @@
                     <a href="purchase.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Purchase Billing</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="itemhistory.php">
+                        <i class="pe-7s-news-paper"></i>
+                        <p>item history</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="portfolio.php">
+                        <i class="pe-7s-news-paper"></i>
+                        <p>Portfolio performance </p>
                     </a>
                 </li>
 			</ul>

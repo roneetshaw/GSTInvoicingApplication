@@ -1,3 +1,24 @@
+CREATE TABLE PURCHASE_MASTER (
+    InvoiceNo int NOT NULL AUTO_INCREMENT,
+    PurchaseNo varchar(255),
+    BillDate varchar(255),
+	CustomerID varchar(255),
+	PlaceOfSupply varchar(255),
+	InvoiceAddress varchar(5000),
+	TYPE varchar(255) ,
+	TotalTaxable varchar(255),
+	TOTALCGST varchar(255),
+	TOTALSGST varchar(255),
+	TOTALIGST varchar(255),
+	GrandTotal varchar(255),
+	CreatedDate varchar(255),
+    PRIMARY KEY (InvoiceNo)
+)
+
+ALTER TABLE PURCHASE_MASTER AUTO_INCREMENT = 100;
+
+
+
 CREATE TABLE SALES_MASTER (
     InvoiceNo int NOT NULL AUTO_INCREMENT,
     BillDate varchar(255),
@@ -15,6 +36,22 @@ CREATE TABLE SALES_MASTER (
 )
 
 ALTER TABLE SALES_MASTER AUTO_INCREMENT = 500;
+
+CREATE TABLE PURCHASE_TRANSACTIONS (
+    ID int NOT NULL AUTO_INCREMENT,
+    InvoiceNo int NOT NULL,
+    ItemID varchar(255),
+	Quantity varchar(255),
+	Rate varchar(255),
+	GSTRate varchar(255),	
+	Discount varchar(255),
+	TaxableValue varchar(255),
+	CGST varchar(255),
+	SGST varchar(255),
+	IGST varchar(255),
+	TotalItemValue varchar(255),
+    PRIMARY KEY (ID)
+)
 
 CREATE TABLE SALES_TRANSACTIONS (
     ID int NOT NULL AUTO_INCREMENT,
