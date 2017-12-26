@@ -12,11 +12,18 @@
 
 	<?php include 'csslibrary.php';?>
 	<?php include 'jslibrary.php';?>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
 	<style>
 	
 		table.dataTable thead th { font-size: 15px; color: black;}
 		a { cursor: pointer; }
+		tr td { text-align: center; }
+		.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
 	</style>
 
 </head>
@@ -34,18 +41,37 @@
                             <div class="header">
 								<div class="row" style="margin:10px;">
 									<div class="col-md-9">
-										<h4 class="title">Items</h4>
-										<p class="category">*All Items</p>
-									</div>
-									<div class="col-md-3" style="padding-left:37px;">
-										<input type="button" value="Add Item" id="btnItemAdd" >
+										<h4 class="title">Monthly Report</h4>
+										<p class="category"></p>
 									</div>
 								</div>
                                 
                             </div>
                             <div class="content">
+								<div class="row" style="margin:20px;">
+									<div class="col-md-3">
+										<input type="number" min="2017" class="form-control" placeholder="2017" id="salesYear">
+									</div>
+									<div class="col-md-2">
+										<button type="button" id="btnDrawChart" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Result</button>
+									</div>
+								</div>
+								<div class="row" style="margin:20px;">
+									<div id="chart_div"></div> 
+								</div>
                                 <div class="row" style="margin:20px;">
-									<table id="itemDisplay" class="table table-condensed table-hover" width="100%"></table>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="fromDate">
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="toDate">
+									</div>
+									<div class="col-md-4">
+										<button type="button" id="btnGetResult" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Get Result</button>
+									</div>
+								</div>
+                                <div class="row" style="margin:20px;">
+									<table id="itemMonthlyPortfolioDisplay" class="table table-condensed table-hover" width="100%"></table>
 								</div>
                             </div>
                         </div>
@@ -55,139 +81,25 @@
             </div>
         </div>
     </div>
-	<div class="modal fade" id="addItemModal" role="dialog">
-		<div class="modal-dialog">
-		
-		  <!-- Modal content-->
-		  <div class="modal-content">
-			<div class="modal-header">
-				<div class="row">
-					<div class="col-sm-4">
-						<h4 class="modal-title">Add Item</h4>
-					</div>
-					<div class="col-sm-6" style="text-align:center">
-						<button type="button" class="btn btn-default" id="btnItemSave">Save</button>
-					</div>
-					<div class="col-sm-2">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-12">
-						<label for="usr">Item Description (*required)</label>
-						<input type="text" class="form-control" id="itemDesp">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="usr">Item Type (*required)</label>
-						<div class="dropdown" id="itemType">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Item Type 
-							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">Goods</a></li>
-								<li><a href="#">Services</a></li>
-						    </ul>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<label for="usr">HSN/SAC code (*required)</label>
-						<input type="text" class="form-control" id="itemHSNCode">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="usr">Item/SKU code</label>
-						<input type="text" class="form-control" id="itemSKUCode">
-					</div>
-					<div class="col-sm-6">
-						<label for="usr">Unit</label>
-						<div class="dropdown" id="itemUnit">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Unit
-							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a value="Pieces">Pieces</a></li>
-								<li><a value="Packs">Packs</a></li>
-								<li><a value="Pairs">Pairs</a></li>
-								<li><a value="Rolls">Rolls</a></li>
-								<li><a value="Set">Set</a></li>
-								<li><a value="Boxes">Boxes</a></li>																
-								<li><a value="Dorzen">Dorzen</a></li>																
-								<li><a value="Others">Others</a></li>																
-						    </ul>
-						</div>
-					</div>
-					
-				</div>
-				<br/>
-				<div class="row">				
-					<div class="col-sm-6">
-						<label for="usr">Tax Rate</label>
-						<div class="dropdown" id="itemTaxRate">
-							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Tax Rate
-							<span class="caret"></span></button>
-						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">0.25%</a></li>
-								<li><a href="#">12%</a></li>
-								<li><a href="#">18%</a></li>
-								<li><a href="#">28%</a></li>
-								<li><a href="#">3%</a></li>
-								<li><a href="#">5%</a></li>																
-						    </ul>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<label for="usr">Discount</label>
-						<input type="text" class="form-control" id="itemDiscount">
-					</div>										
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="usr">Cess Amount</label>
-						<input type="text" class="form-control" id="itemCess">
-					</div>				
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="usr">Purchase Price</label>
-						<input type="text" class="form-control" id="itemPurchase">
-					</div>
-					
-					<div class="col-sm-6">
-						<label for="usr">Selling price</label>
-						<input type="text" class="form-control" id="itemSelling">
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		  
-		</div>
-	</div>
 </div>
 </body>
 	<script type="text/javascript">
-		
+		$( function() {
+				$( "#fromDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+				$( "#toDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		});
     	$(document).ready(function(){
-			initTable();
-			function clearFields()
-			{
-				$("#addItemModal input").val("");
-			}
-			function initTable()
-			{
+			drawCh();
+			$('#btnGetResult').on('click',function(){
+				initTable();
+			})
+    	});
+		function initTable()
+		{
 				$.ajax({ 
 					url: 'webmethods.php',
 					type: 'POST',
-					data: {type: 5 },
+					data: {type: 23,fromDate: $('#fromDate').val().trim(), toDate: $('#toDate').val().trim() },
 					success: function (data1) {
 									var arr = JSON.parse(data1);
 									fillItemTable(arr);
@@ -196,61 +108,75 @@
 									console.log(log.message);
 					}
 				});
-			}
+		}
 			
-			function fillItemTable(dataSet)
-			{
-				$('#itemDisplay').DataTable( {
-					data: dataSet,
-					dom: 'Bfrtip',
-					buttons: [
+		function fillItemTable(dataSet)
+		{
+			$('#itemMonthlyPortfolioDisplay').DataTable( {
+				data: dataSet,
+				dom: 'Bfrtip',
+				buttons: [
 						'pdf'
 					],
-					destroy: true,
-					columns: [
-						{ title: "Sr. no." },
-						{ title: "ITEM DESCRIPTION" },
-						{ title: "HSN/SAC" },
-						{ title: "PURCHASE PRICE (₹)" },
-						{ title: "SELLING PRICE (₹)" },
-						{ title: "GST (%)" },
-						{ title: "DISCOUNT (%)" },
-						{ title: "QUANTITY" },
-					]
-				});
-			}
-			function saveIteminDB()
+				destroy: true,
+				columns: [
+					{ title: "Sr. no." },
+					{ title: "Invoice Type" },
+					{ title: "Start Date" },
+					{ title: "End Date" },
+					{ title: "Taxable Amount (₹)" },
+					{ title: "GST Amount (₹)" },
+					{ title: "Net Amount (₹)" }
+				]
+			});
+		}
+		function drawCh()
+		{
+			google.charts.load('current', {'packages':['bar']});
+			google.charts.setOnLoadCallback(drawChart);
+		}
+
+		function drawChart() {
+			var year = $('#salesYear').val().trim();
+			if(year == "")
 			{
-				$.ajax({ 
+				year = (new Date()).getFullYear();
+				$('#salesYear').val(year);
+			}
+			var data;
+			var title="Sales and Purchase : "+year;
+			$.ajax({ 
 					url: 'webmethods.php',
 					type: 'POST',
-					data: {type: 4, Description: $("#addItemModal input:eq(0)").val(),ItemType: $("#addItemModal button:eq(2)").text(),HSN: $("#addItemModal input:eq(1)").val(),ITEMCODE: $("#addItemModal input:eq(2)").val(),UNIT: $("#addItemModal button:eq(3)").text(),TAXRATE: $("#addItemModal button:eq(4)").text(), DISCOUNT: $("#addItemModal input:eq(3)").val(),CESSAMOUNT: $("#addItemModal input:eq(4)").val(),PURCHASEPRICE: $("#addItemModal input:eq(5)").val(),SELLINGPRICE:$("#addItemModal input:eq(6)").val(), query_type: $("#itemHiddensave").val() },
-					success: function (d) {
-						initTable();
-						if(d == "1")
-							$("#addItemModal").modal('hide');
+					data: {type: 24,Year: year},
+					success: function (data1) {
+						var arr = JSON.parse(data1);
+						console.log(arr)
+						data = google.visualization.arrayToDataTable(arr);		
+						var options = {
+							chart: {
+								title: 'Yearly Performance',
+								subtitle: title,
+							  },
+							bars: 'vertical',
+							vAxis: {baseline: 0,format: 'decimal'},
+							height: 400,
+							colors: ['#7570b3', '#d95f02']
+						};
+
+						var chart = new google.charts.Bar(document.getElementById('chart_div'));
+						chart.draw(data, google.charts.Bar.convertOptions(options));
+						var btns = document.getElementById('btn-group');
 					},
 					error: function (log) {
-						console.log(log);
+						console.log(log.message);
 					}
-				});
-			}
-			$("#btnItemSave").on('click',function(){
-				if($("#itemDesp").val().length > 0)
-				{
-					saveIteminDB();
-				}
-				else
-					alert("Please add Vendor Name");
-			})
-			$("#btnItemAdd").on('click',function(){
-				clearFields();
-				$("#itemType button").html('Item Type<span class="caret"></span>');
-				$("#itemUnit button").html('Unit<span class="caret"></span>');
-				$("#itemTaxRate button").html('Tax Rate<span class="caret"></span>');
-				$("#addItemModal").modal('show');
-			})
-    	});
+			});
+		}
+		
+		$('#btnDrawChart').on('click',function(){
+			drawCh()
+		})
 	</script>
 
 </html>

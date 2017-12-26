@@ -286,10 +286,23 @@
 	
 	else if($type=="13")
 	{
-		$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
-		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
-		sm.GrandTotal as GrandTotal, sm.TYPE as custType
-		FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
+		$fromDate = mysqli_real_escape_string($db,$_POST['fromDate']);
+		$toDate = mysqli_real_escape_string($db,$_POST['toDate']);
+		$mode = mysqli_real_escape_string($db,$_POST['mode']);
+		if($mode == "1")
+		{
+			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+			sm.GrandTotal as GrandTotal, sm.TYPE as custType
+			FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
+		}
+		else if($mode == "2")
+		{
+			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+			sm.GrandTotal as GrandTotal, sm.TYPE as custType
+			FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+		}
 		$result = mysqli_query($db,$sql13);
 		$Date = Array();$InvoiceNo = Array();$custName = Array();$GST = Array();$TotalTaxable = Array();$Tax = Array();$GrandTotal = Array();$custType = Array();
 		while ($row = mysqli_fetch_array($result)) 
@@ -351,10 +364,24 @@
 	}
 	else if($type=="16")
 	{
-		$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
-		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
-		sm.GrandTotal as GrandTotal, sm.TYPE as custType
-		FROM purchase_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
+		$fromDate = mysqli_real_escape_string($db,$_POST['fromDate']);
+		$toDate = mysqli_real_escape_string($db,$_POST['toDate']);
+		$mode = mysqli_real_escape_string($db,$_POST['mode']);
+		if($mode == "1")
+		{
+			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+			sm.GrandTotal as GrandTotal, sm.TYPE as custType
+			FROM purchase_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
+		}
+		else if($mode == "2")
+		{
+			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
+			sm.GrandTotal as GrandTotal, sm.TYPE as custType
+			FROM purchase_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+
+		}
 		$result = mysqli_query($db,$sql13);
 		$Date = Array();$InvoiceNo = Array();$custName = Array();$GST = Array();$TotalTaxable = Array();$Tax = Array();$GrandTotal = Array();$custType = Array();
 		while ($row = mysqli_fetch_array($result)) 
@@ -474,12 +501,12 @@
 		$sql22_1="select im.Description as s_desp,im.Quantity as s_qty,sm.BillDate as s_billdate,concat('-',(st.Quantity)) as s_trans,sm.InvoiceNo as s_inv  from item_master im 
 		INNER JOIN sales_transactions st on im.ID=st.ItemID
 		INNER JOIN sales_master sm on st.InvoiceNo= sm.InvoiceNo
-		where (sm.BillDate BETWEEN '".$fromDate."' AND '".$toDate."') and im.Description = '".$itemName."' order by sm.BillDate";
+		where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by sm.BillDate";
 		$result_1 = mysqli_query($db,$sql22_1);
 		$sql22_2="select im.Description as p_desp,im.Quantity as p_qty,pm.BillDate as p_billdate,concat('+',(pt.Quantity)) as p_trans,pt.InvoiceNo as p_inv from item_master im 
 		INNER JOIN purchase_transactions pt on im.ID=pt.ItemID
 		INNER JOIN purchase_master pm on pt.InvoiceNo= pm.InvoiceNo
-		where (pm.BillDate BETWEEN '".$fromDate."' AND '".$toDate."') and im.Description = '".$itemName."' order by pm.BillDate";
+		where (str_to_date(pm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by pm.BillDate";
 		$result_2 = mysqli_query($db,$sql22_2);
 		$ID = Array();$Description = Array();$TAXRATE = Array();$SELLINGPRICE = Array();$PURCHASEPRICE = Array();$HSN = Array();$DISCOUNT = Array();$QUANTITY = Array();
 		$rows[] = array();
@@ -535,6 +562,101 @@
 				}
 			}
 		}
+		$r = array (($k-1),' ',' ',' ',' ',' ','Grand Total',$s);
+		$rows[$k-2] = $r;
+		echo json_encode($rows);
+	}
+	else if($type=="23")
+	{
+		$fromDate = mysqli_real_escape_string($db,$_POST['fromDate']);
+		$toDate = mysqli_real_escape_string($db,$_POST['toDate']);
+		$sql23_1="select 'Sales' as type,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from sales_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+		$result_1 = mysqli_query($db,$sql23_1);
+		$sql23_2="select 'Purchase' as type,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from purchase_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+		$result_2 = mysqli_query($db,$sql23_2);
+		$rows[] = array();
+		while ($row = mysqli_fetch_array($result_1)) 
+		{
+			$row = array ('1',$row['type'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
+			$rows[0] = $row;
+		}
+
+		while ($row = mysqli_fetch_array($result_2)) 
+		{
+			$row = array ('2',$row['type'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
+			$rows[1] = $row;
+		}
+		echo json_encode($rows);
+	}
+	else if($type=="24")
+	{
+		$year = intval(mysqli_real_escape_string($db,$_POST['Year']));
+		$sql24_1="SELECT 
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 1 THEN sm.GrandTotal ELSE 0 END) AS 'January',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 2 THEN sm.GrandTotal ELSE 0 END) AS 'February',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 3 THEN sm.GrandTotal ELSE 0 END) AS 'March',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 4 THEN sm.GrandTotal ELSE 0 END) AS 'April',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 5 THEN sm.GrandTotal ELSE 0 END) AS 'May',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 6 THEN sm.GrandTotal ELSE 0 END) AS 'June',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 7 THEN sm.GrandTotal ELSE 0 END) AS 'July',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 8 THEN sm.GrandTotal ELSE 0 END) AS 'August',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 9 THEN sm.GrandTotal ELSE 0 END) AS 'September',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 10 THEN sm.GrandTotal ELSE 0 END) AS 'October',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 11 THEN sm.GrandTotal ELSE 0 END) AS 'November',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 12 THEN sm.GrandTotal ELSE 0 END) AS 'December'
+				FROM
+					sales_master sm
+				WHERE
+					YEAR(str_to_date(sm.BillDate, '%d/%m/%Y')) = ".$year;
+		$result_1 = mysqli_query($db,$sql24_1);
+		$sql24_2="SELECT 
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 1 THEN sm.GrandTotal ELSE 0 END) AS 'January',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 2 THEN sm.GrandTotal ELSE 0 END) AS 'February',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 3 THEN sm.GrandTotal ELSE 0 END) AS 'March',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 4 THEN sm.GrandTotal ELSE 0 END) AS 'April',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 5 THEN sm.GrandTotal ELSE 0 END) AS 'May',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 6 THEN sm.GrandTotal ELSE 0 END) AS 'June',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 7 THEN sm.GrandTotal ELSE 0 END) AS 'July',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 8 THEN sm.GrandTotal ELSE 0 END) AS 'August',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 9 THEN sm.GrandTotal ELSE 0 END) AS 'September',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 10 THEN sm.GrandTotal ELSE 0 END) AS 'October',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 11 THEN sm.GrandTotal ELSE 0 END) AS 'November',
+				  SUM(CASE MONTH(str_to_date(sm.BillDate, '%d/%m/%Y')) WHEN 12 THEN sm.GrandTotal ELSE 0 END) AS 'December'
+				FROM
+					purchase_master sm
+				WHERE
+					YEAR(str_to_date(sm.BillDate, '%d/%m/%Y')) = ".$year;
+		$result_2 = mysqli_query($db,$sql24_2);
+		$rows[] = array();
+		$row = array ('Year', 'Sales', 'Purchase'); 
+		$rows[0] = $row;
+		$i=1;
+		$r = mysqli_fetch_array($result_1);
+		$r1 = mysqli_fetch_array($result_2);
+		$row = array ('January',floatval($r['January']),floatval($r1['January'])); 
+		$rows[$i++] = $row;
+		$row = array ('February',floatval($r['February']),floatval($r1['February'])); 
+		$rows[$i++] = $row;
+		$row = array ('March',floatval($r['March']),floatval($r1['March'])); 
+		$rows[$i++] = $row;
+		$row = array ('April',floatval($r['April']),floatval($r1['April'])); 
+		$rows[$i++] = $row;
+		$row = array ('May',floatval($r['May']),floatval($r1['May'])); 
+		$rows[$i++] = $row;
+		$row = array ('June',floatval($r['June']),floatval($r1['June'])); 
+		$rows[$i++] = $row;
+		$row = array ('July',floatval($r['July']),floatval($r1['July'])); 
+		$rows[$i++] = $row;
+		$row = array ('August',floatval($r['August']),floatval($r1['August'])); 
+		$rows[$i++] = $row;
+		$row = array ('September',floatval($r['September']),floatval($r1['September'])); 
+		$rows[$i++] = $row;
+		$row = array ('October',floatval($r['October']),floatval($r1['October'])); 
+		$rows[$i++] = $row;
+		$row = array ('November',floatval($r['November']),floatval($r1['November'])); 
+		$rows[$i++] = $row;
+		$row = array ('December',floatval($r['December']),floatval($r1['December'])); 
+		$rows[$i++] = $row;
 		echo json_encode($rows);
 	}
 ?>

@@ -15,8 +15,9 @@
 	
 	<style>
 	
-		table.dataTable thead th { font-size: 15px; color: black;}
+		table.dataTable thead th { font-size: 15px; color: black;text-align: center;}
 		table.dataTable tbody tr { cursor:pointer;}
+		tr td { text-align: center; }
 	</style>
 	
 </head>
@@ -44,6 +45,17 @@
 								</div>
                             </div>
                             <div class="content">
+								<div class="row" style="margin:20px;">
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="fromDate">
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="toDate">
+									</div>
+									<div class="col-md-4">
+										<button type="button" id="btnApplyFilter" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Filter</button>
+									</div>
+								</div>
                                 <div class="row" style="margin:20px;">
 									<table id="invoicePurchaseGrandDisplay" style="text-align:center;" class="table table-condensed table-hover" width="100%"></table>
 								</div>
@@ -208,10 +220,14 @@
 
 </body>
 	<script type="text/javascript">
+		$( function() {
+			$( "#fromDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+			$( "#toDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		});
     	$(document).ready(function(){
 			var availableTags = [];
 			initCustomerName();
-			initInvoiceTable();
+			initInvoiceTable("1");
 			function initCustomerName()
 			{
 				$.ajax({ 
@@ -310,12 +326,12 @@
 				$( "#itemBillDate" ).datepicker();
 			});
 			
-			function initInvoiceTable()
+			function initInvoiceTable(mode)
 			{
 				$.ajax({ 
 					url: 'webmethods.php',
 					type: 'POST',
-					data: {type: 16 },
+					data: {type: 16, mode: mode, fromDate: $('#fromDate').val().trim(), toDate: $('#toDate').val().trim()},
 					success: function (data1) {
 						var arr = JSON.parse(data1);
 						fillInvoiceTable(arr);
@@ -347,6 +363,9 @@
 					]
 				});
 			}
+			$('#btnApplyFilter').on('click',function(){
+				initInvoiceTable("2");
+			})
     	});
 	</script>
 

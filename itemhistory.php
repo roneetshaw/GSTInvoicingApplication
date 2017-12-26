@@ -66,33 +66,6 @@
             </div>
         </div>
     </div>
-	<div class="modal fade" id="addItemModal" role="dialog">
-		<div class="modal-dialog">
-		
-		  <!-- Modal content-->
-		  <div class="modal-content">
-			<div class="modal-header">
-				<div class="row">
-					<div class="col-sm-4">
-						<h4 class="modal-title">Add Item</h4>
-					</div>
-					<div class="col-sm-6" style="text-align:center">
-						<button type="button" class="btn btn-default" id="btnItemSave">Save</button>
-					</div>
-					<div class="col-sm-2">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-body">
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		  
-		</div>
-	</div>
 </div>
 </body>
 	<script type="text/javascript">
@@ -141,11 +114,6 @@
 			$('#btnGetResult').on('click',function(){
 				initTable();
 			})
-			
-			function clearFields()
-			{
-				$("#addItemModal input").val("");
-			}
 			function initTable()
 			{
 				$.ajax({ 
