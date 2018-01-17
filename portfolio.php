@@ -87,6 +87,11 @@
 		$( function() {
 				$( "#fromDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
 				$( "#toDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+				var d=new Date();
+				$( "#fromDate" ).val(d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear());
+				$( "#toDate" ).val(d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear());
+				initTable();
+				
 		});
     	$(document).ready(function(){
 			drawCh();
@@ -122,6 +127,7 @@
 				columns: [
 					{ title: "Sr. no." },
 					{ title: "Invoice Type" },
+					{ title: "No. of Transaction" },
 					{ title: "Start Date" },
 					{ title: "End Date" },
 					{ title: "Taxable Amount (₹)" },

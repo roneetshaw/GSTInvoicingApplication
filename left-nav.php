@@ -8,37 +8,37 @@
 
             <ul class="nav" id="leftNav">
                 <li>
-                    <a href="itemdashboard.php">
+                    <a idef="itemwarehouse" href="itemwarehouse.php">
                         <i class="pe-7s-graph"></i>
-                        <p>Item Dashboard</p>
+                        <p>Items</p>
                     </a>
                 </li>
                 <li>
-                    <a href="customerdashboard.php">
+                    <a idef="customer" href="customer.php">
                         <i class="pe-7s-news-paper"></i>
-                        <p>Customer Dashboard</p>
+                        <p>Customer</p>
                     </a>
                 </li>
 				<li>
-                    <a href="sales.php">
+                    <a idef="sales" href="sales.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Sales Billing</p>
                     </a>
                 </li>
 				<li>
-                    <a href="purchase.php">
+                    <a idef="purchase" href="purchase.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Purchase Billing</p>
                     </a>
                 </li>
 				<li>
-                    <a href="itemhistory.php">
+                    <a idef="itemhistory" href="itemhistory.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>item history</p>
                     </a>
                 </li>
 				<li>
-                    <a href="portfolio.php">
+                    <a idef="portfolio" href="portfolio.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Portfolio performance </p>
                     </a>
@@ -48,7 +48,27 @@
 	</div>
 	<!-- Modal -->
 	<script type="text/javascript">
+		$( window ).load(function() {
+	
+	var x=window.location.pathname.substring(1);
+	var end=x.indexOf(".php")
+	var start=x.indexOf("/")
+	var selected=x.substring(start+1,end)
+	MarkActive();
+	function MarkActive()
+	{
+		$('#leftNav li').each(function(){
+			console.log("hi");
+			if($(this).find('a').attr('idef').trim().toUpperCase().trim().indexOf(selected.toUpperCase())!=-1)
+			{
+				$(this).addClass('active')
+			}
+		})
+	}
+	
+});
     	$(document).ready(function(){
+			
     	});
 		
 	</script>

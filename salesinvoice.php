@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Invoice</title>
+		<title>Sales Invoice</title>
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 				<link rel="stylesheet" href="invoice.css?v=3.2">
@@ -11,6 +11,11 @@
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<style>
 			input,textarea:disabled{background-color:white;}
+			@media print {
+				html, body {
+					height: auto;    
+				}
+			}
 		</style>
 		<script type="text/javascript">
 
@@ -301,6 +306,7 @@
 			<h1>Invoice</h1>
 			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
 		</header>
+		<p style="text-decoration: underline;"><b>Customer Address</b></p>
 		<article>
 			<h1>Recipient</h1>
 			<address >
@@ -525,8 +531,8 @@
 		</article>
 		<aside>
 			<h1><span contenteditable>Additional Notes</span></h1>
-			<div contenteditable>
-				<p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+			<div  class="print">
+				<p>*All charges are inclusive of taxes</p>
 			</div>
 		</aside>
 		

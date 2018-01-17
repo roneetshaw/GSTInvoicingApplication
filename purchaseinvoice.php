@@ -5,12 +5,17 @@
 		<title>Invoice</title>
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-				<link rel="stylesheet" href="invoice.css?v=3.2">
+				<link rel="stylesheet" href="invoice.css?v=3.1">
 		<?php include 'jslibrary.php';?>
 		<script src="purchaseinvoice.js?v=1.2"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<style>
 			input,textarea:disabled{background-color:white;}
+			@media print {
+				html, body {
+					height: auto;    
+				}
+			}
 		</style>
 		<script type="text/javascript">
 
@@ -302,11 +307,12 @@
 		</div>
 		<header >
 			<h1>Purchase Invoice</h1>
-			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
+			<span><img alt="" src="assets/img/letter_head.png"><input type="file" accept="image/*"></span>
 		</header>
+		<p style="text-decoration: underline;"><b>Invoice Address</b></p>
 		<article>
-			<h1>Recipient</h1>
-			<address >
+			
+			<address>
 				<p><span id="custName" >Some Company</span></p>
 				<textarea rows="4" cols="40" id="invoiceAddress" placeholder="Type Vendor Address"></textarea>
 			</address>
@@ -529,8 +535,8 @@
 		</article>
 		<aside>
 			<h1><span contenteditable>Additional Notes</span></h1>
-			<div contenteditable>
-				<p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+			<div  class="print">
+				<p>*All charges are inclusive of taxes</p>
 			</div>
 		</aside>
 		

@@ -69,7 +69,7 @@
 		$contactPerson = mysqli_real_escape_string($db,$_POST['custContactName']);
 		$MobileNumber = mysqli_real_escape_string($db,$_POST['custMobileNumber']);
 		$PAN = mysqli_real_escape_string($db,$_POST['custPAN']);
-		$Address = str_replace(array(":", "-", "/", "*","'"), '',mysqli_real_escape_string($db,$_POST['custAddress']));
+		$Address = mysqli_real_escape_string($db,$_POST['custAddress']);
 		$pincode = mysqli_real_escape_string($db,$_POST['custPin']);
 		if($query_type == "-99")
 		{
@@ -570,20 +570,20 @@
 	{
 		$fromDate = mysqli_real_escape_string($db,$_POST['fromDate']);
 		$toDate = mysqli_real_escape_string($db,$_POST['toDate']);
-		$sql23_1="select 'Sales' as type,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from sales_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+		$sql23_1="select 'Sales' as type, count(InvoiceNo) as cnt,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from sales_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
 		$result_1 = mysqli_query($db,$sql23_1);
-		$sql23_2="select 'Purchase' as type,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from purchase_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
+		$sql23_2="select 'Purchase' as type, count(InvoiceNo) as cnt,'".$fromDate."' as frmDt,'".$toDate."' as toDt, sum(sm.TotalTaxable) as amount, sum(sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as gst, sum(sm.GrandTotal) as netamount from purchase_master sm where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
 		$result_2 = mysqli_query($db,$sql23_2);
 		$rows[] = array();
 		while ($row = mysqli_fetch_array($result_1)) 
 		{
-			$row = array ('1',$row['type'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
+			$row = array ('1',$row['type'],$row['cnt'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
 			$rows[0] = $row;
 		}
 
 		while ($row = mysqli_fetch_array($result_2)) 
 		{
-			$row = array ('2',$row['type'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
+			$row = array ('2',$row['type'],$row['cnt'],$row['frmDt'],$row['toDt'],round($row['amount'],2),round($row['gst'],2),round($row['netamount'],2)); 
 			$rows[1] = $row;
 		}
 		echo json_encode($rows);
