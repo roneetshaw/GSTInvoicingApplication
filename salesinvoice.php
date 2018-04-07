@@ -5,9 +5,14 @@
 		<title>Sales Invoice</title>
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-				<link rel="stylesheet" href="invoice.css?v=3.2">
+		<link rel="stylesheet" href="invoice.css?v=2.51">
 		<?php include 'jslibrary.php';?>
-		<script src="salesinvoice.js?v=1.1"></script>
+		<script src="salesinvoice.js?v=4.1"></script>
+		
+	<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="font-awesome/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" type="text/css" href="font-awesome/css/buttons.dataTables.min.css" />
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<style>
 			input,textarea:disabled{background-color:white;}
@@ -35,10 +40,15 @@
 					var id = url.searchParams.get("cust_id");
 					var name = url.searchParams.get("name");
 					$("#custName").html(name)
-					$("#invoiceId").html(invId);
+					$("#invoiceId").html('000'+invId);
+					$('#invoiceNote').removeAttr("disabled")
+					$('#invoiceNote').css("background-color", "white");
+					loadAddress(id)
 				}
 				else if(action == "edit")
 				{
+					$('#invoiceNote').attr("disabled", "disabled");
+					$('#invoiceNote').css("background-color", "#e8e6e6");
 					loadInvoiceFromDB(invId);
 				}
 				$('#stateToShip').on('change', function() {
@@ -51,6 +61,23 @@
 				$('#itemList tbody tr').on('click','a',function(){
 					alert($('#itemList tbody tr').length);
 				});
+				function loadAddress(cust_id)
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 25, id: cust_id},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							console.log(arr);
+							$('#invoiceAddress').text(arr.Address);
+							$('#custGST').text('GST: '+arr.GSTNUMBER);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
 				
 				function loadInvoiceFromDB(invId)
 				{
@@ -59,6 +86,11 @@
 				}
 				function DisableInvoice(state)
 				{
+					$('#invoiceNote').prop('disabled', state);
+					if (state)
+						$('#invoiceNote').css("background-color", "#e8e6e6");
+					else
+						$('#invoiceNote').css("background-color", "white");
 					$('#btnInvoiceSave').prop('disabled', state);
 					$('#itemBillDate').prop('disabled', state);
 					$('#stateToShip').prop('disabled', state);
@@ -83,16 +115,21 @@
 						data: {type: 14, invId: invId},
 						success: function (data1) {
 							var arr = JSON.parse(data1);
-							$('#itemBillDate').val(arr.Date);
-							$('#invoiceId').text(invId);
-							$('#stateToShip').val(arr.PlaceOfSupply);
-							$('#custName').text(arr.custName);
-							$('#invoiceAddress').val(arr.InvoiceAddress);
-							$('#taxableTotal').text(arr.TotalTaxable);
-							$('#grandTotalCGST').text(arr.TOTALCGST);
-							$('#grandTotalSGST').text(arr.TOTALSGST);
-							$('#grandTotalIGST').text(arr.TOTALIGST);
-							$('#grandTotal').text(arr.GrandTotal);
+							if (arr !=null)
+							{
+								$('#itemBillDate').val(arr.Date);
+								$('#invoiceId').text('000'+invId);
+								$('#invoiceNote').val(arr.note);
+								$('#stateToShip').val(arr.PlaceOfSupply);
+								$('#custGST').text('GST: '+arr.GST);
+								$('#custName').text(arr.custName);
+								$('#invoiceAddress').val(arr.InvoiceAddress);
+								$('#taxableTotal').text(arr.TotalTaxable);
+								$('#grandTotalCGST').text(arr.TOTALCGST);
+								$('#grandTotalSGST').text(arr.TOTALSGST);
+								$('#grandTotalIGST').text(arr.TOTALIGST);
+								$('#grandTotal').text(arr.GrandTotal);
+							}
 						},
 						error: function (log) {
 							console.log(log.message);
@@ -122,15 +159,15 @@
 					$('#itemList tbody').empty();
 					for(i=0 ;i<arr[0].length;  i++)
 					{var emptyColumn = document.createElement('tr');
-						emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(i+1)+'</span></td>' +
+						emptyColumn.innerHTML = '<td style="text-align:center;"><a class="cut">-</a><div class="row "><div class="col-sm-6"><a onclick="showSmallModal($(this))" href="javascript:void(0)" class="smlbtn round-button1 no-print"></a></div><div  class="col-sm-6"><span>'+(i+1)+'</span></div></div></td>' +
 						'<td><input class="itemDespText" placeholder="Type an Item" value="'+arr[12][i]+'" style="width:100%;text-align:left;" type="search" ></input></td>' +
 						'<td>'+arr[13][i]+'</td>' +
-						'<td><input  style="width:100%;text-align:right;" type="text"value="'+arr[7][i]+'" onchange="rateChange($(this))"></input></td>' +
-						'<td><input style="width:100%;text-align:right;" type="number" min="0" value="'+arr[8][i]+'" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
-						'<td style="text-align:center;"><span >'+arr[14][i]+'</span></td>' +
-						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[5][i]+'" onchange="disChange($(this))"></td>' +
+						'<td><input  style="width:100%;text-align:center;" type="text"value="'+arr[7][i]+'" onchange="rateChange($(this))"></input></td>' +
+						'<td><input style="width:100%;text-align:center;" type="number" min="0" value="'+arr[8][i]+'" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
+						'<td style="text-align:center;display:none;"><span >'+arr[14][i]+'</span></td>' +
+						'<td style = "display:none;"><input style="width:100%;text-align:center;" type="text" value="'+arr[5][i]+'" onchange="disChange($(this))"></td>' +
 						'<td>'+arr[4][i]+'</td>' +
-						'<td><input style="width:100%;text-align:right;" type="text" value="'+arr[6][i]+'%" onchange="gstChange($(this))"></td>'+
+						'<td><input style="width:100%;text-align:center;" type="text" value="'+arr[6][i]+'%" onchange="gstChange($(this))"></td>'+
 						'<td>'+arr[0][i]+'</td>' +
 						'<td>'+arr[1][i]+'</td>' +
 						'<td>'+arr[2][i]+'</td>' +
@@ -141,7 +178,7 @@
 						$('#itemList tbody').append($(emptyColumn));
 					}
 					x=(i+1);
-					DisableInvoice(true);
+					//DisableInvoice(true);
 				}
 				function initTable()
 				{
@@ -206,7 +243,7 @@
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
-						data: {type: 11,action: action, invId: invId, stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
+						data: {type: 11,action: action, invId: invId, stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim(), note: $('#invoiceNote').val().trim()},
 						success: function (d) {
 							if(d == "1")
 							{
@@ -246,6 +283,7 @@
 				}
 				function saveIteminDB()
 				{
+					var desp = $("#addItemModal input:eq(0)").val();
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
@@ -255,6 +293,8 @@
 							{
 								alert("Item Saved");
 								$("#addItemModal").modal('hide');
+								$(tempRow).val(desp);
+								fillItemDetails(desp,tempRow);
 								initItemName();
 							}
 						},
@@ -272,6 +312,9 @@
 					else
 						alert("Please enter Item Description");
 				})
+
+							
+				
 			});
 			
 			
@@ -303,8 +346,8 @@
 						</div>
 		</div>
 		<header >
-			<h1>Invoice</h1>
-			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
+			<h1>Sales Invoice</h1>
+			<span><img alt="" src="assets/img/letter_head.jpg"><input type="file" accept="image/*"></span>
 		</header>
 		<p style="text-decoration: underline;"><b>Customer Address</b></p>
 		<article>
@@ -312,11 +355,12 @@
 			<address >
 				<p><span id="custName" >Some Company</span></p>
 				<textarea rows="4" cols="40" id="invoiceAddress" placeholder="Type customer address"></textarea>
+				<p><span id="custGST" ></span></p>
 			</address>
 			<table class="meta">
 				<tr>
 					<th><span>Invoice #</span></th>
-					<td><span id="invoiceId">00001</span></td>
+					<td><span id="invoiceId">0001</span></td>
 				</tr>
 				<tr>
 					<th><span>Bill Date</span></th>
@@ -367,13 +411,13 @@
 			<table class="inventory" id="itemList">
 				<thead>
 					<tr>
-						<th style="width:15px"><span >#</span></th>
-						<th style="width:130px"><span >Item Description</span></th>
-						<th style="width:30px"><span >HSN</span></th>
-						<th style="width:25px"><span >Rate</span></th>
-						<th style="width:20px"; ><span >Qty.</span></th>
-						<th style="width:30px"><span >Unit</span></th>
-						<th style="width:25px"><span >Dis.</span></th>
+						<th style="width:20px"><span >#</span></th>
+						<th style="width:150px"><span >Item Description</span></th>
+						<th style="width:35px"><span >HSN</span></th>
+						<th style="width:30px"><span >Rate</span></th>
+						<th style="width:35px"; ><span >Qty.</span></th>
+						<th style="width:0px;display:none;"><span >Unit</span></th>
+						<th style="width:0px;display:none;"><span >Dis.</span></th>
 						<th style="width:40px"><span >Taxable Value</span></th>
 						<th style="width:30px"><span >GST Rate</span></th>
 						<th style="width:40px"><span >CGST(₹)</span></th>
@@ -410,7 +454,7 @@
 					<td id="grandTotal">0.00</td>
 				</tr>
 			</table>
-			<div class="modal fade" id="addItemModal" role="dialog">
+	<div class="modal fade" id="addItemModal" role="dialog">
 		<div class="modal-dialog">
 		
 		  <!-- Modal content-->
@@ -432,7 +476,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<label for="usr">Item Description (*required)</label>
-						<input type="text" class="form-control" id="itemDesp">
+						<input type="search" class="form-control" id="itemDesp">
 					</div>
 				</div>
 				<br/>
@@ -528,11 +572,42 @@
 		</div>
 	</div>
 	
+	<div class="modal fade" id="itemDespModal" role="dialog">
+		<div class="modal-dialog">
+		
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+				<div class="row">
+					<div class="col-sm-10">
+						<h4 class="modal-title">Item: <span id="qtyDetailLeft">Item Name(Quantity left:N)<span></h4>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<table id="itemPerDetail" style="text-align:center;" class="table table-condensed table-hover" width="100%"></table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	</div>
+	
 		</article>
 		<aside>
 			<h1><span contenteditable>Additional Notes</span></h1>
 			<div  class="print">
 				<p>*All charges are inclusive of taxes</p>
+				<textarea style= "width:100%;height:80px;border:solid 3px grey;font-size: 18px;" id="invoiceNote" placeholder="Make a note"></textarea>
 			</div>
 		</aside>
 		

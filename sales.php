@@ -48,12 +48,15 @@
                             <div class="content">
 								<div class="row" style="margin:20px;">
 									<div class="col-md-4">
+										<label for="From">From: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="fromDate">
 									</div>
 									<div class="col-md-4">
+										<label for="From">From: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="toDate">
 									</div>
 									<div class="col-md-4">
+										<br/>
 										<button type="button" id="btnApplyFilter" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Filter</button>
 									</div>
 								</div>
@@ -185,15 +188,15 @@
 						<input type="text" value=""  class="form-control" id="custContactName">
 					</div>
 					<div class="col-sm-6">
-						<label for="usr">Mobile No.</label>
-						<input type="text" value=""  class="form-control" id="custMobileNumber">
+						<label for="usr">PAN</label>
+						<input type="text" value=""  class="form-control" id="custPAN">
 					</div>										
 				</div>
 				<br/>
-				<div class="row">
+				<div class="row" style= "display:none">
 					<div class="col-sm-6">
 						<label for="usr">PAN</label>
-						<input type="text" value=""  class="form-control" id="custPAN">
+						<input type="text" value=""  class="form-control" id="custMobileNumber">
 					</div>
 					<div class="col-sm-6">
 						<label for="usr">Pin code</label>
@@ -204,7 +207,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<label for="usr">Address</label>
-						<input type="text" value=""  class="form-control" id="custAddress">
+						<textarea style= "width:100%;height:80px;" id="custAddress" value="" placeholder="Address"></textarea>
 					</div>
 				</div>
 			</div>
@@ -351,25 +354,43 @@
 			
 			function fillInvoiceTable(dataSet)
 			{
-				$('#invoiceGrandDisplay').DataTable( {
+				$('#invoiceGrandDisplay').DataTable({
 					data: dataSet,
 					dom: 'Bfrtip',
 					buttons: [
 						'pdf'
 					],
 					destroy: true,
-					columns: [
-						{ title: "DATE" },
-						{ title: "INVOICE NO." },
-						{ title: "CUSTOMER" },
-						{ title: "GSTIN" },
-						{ title: "TAXABLE AMOUNT" },
-						{ title: "TAX" },
-						{ title: "TOTAL AMOUNT" },
-						{ title: "TYPE" }					
+					"aoColumns": [
+						{ "sType": "date-uk","sTitle": "DATE" },
+						{"sTitle": "INVOICE NO"},
+						{"sTitle": "CUSTOMER"},
+						{"sTitle": "GSTIN"},
+						{"sTitle": "TAXABLE AMOUNT"},
+						{"sTitle": "TAX"},
+						{"sTitle": "TOTAL AMOUNT"},
+						{"sTitle": "TYPE"}
+						
 					]
 				});
 			}
+			jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+			"date-uk-pre": function ( a ) {
+				if(a != null)
+				{
+					var ukDatea = a.split('/');
+					return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+				}
+			},
+
+			"date-uk-asc": function ( a, b ) {
+				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+			},
+
+			"date-uk-desc": function ( a, b ) {
+				return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+			}
+			} );
 			$('#btnApplyFilter').on('click',function(){
 				initInvoiceTable("2");
 			})

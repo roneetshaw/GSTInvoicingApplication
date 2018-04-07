@@ -7,7 +7,7 @@
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 				<link rel="stylesheet" href="invoice.css?v=3.1">
 		<?php include 'jslibrary.php';?>
-		<script src="purchaseinvoice.js?v=1.2"></script>
+		<script src="purchaseinvoice.js?v=1.3"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<style>
 			input,textarea:disabled{background-color:white;}
@@ -16,6 +16,7 @@
 					height: auto;    
 				}
 			}
+			
 		</style>
 		<script type="text/javascript">
 
@@ -36,9 +37,14 @@
 					var name = url.searchParams.get("name");
 					$("#custName").html(name)
 					$("#invoiceId").val(invId);
+					$('#invoiceNote').removeAttr("disabled")
+					$('#invoiceNote').css("background-color", "white");
+					loadAddress(id)
 				}
 				else if(action == "edit")
 				{
+					$('#invoiceNote').attr("disabled", "disabled");
+					$('#invoiceNote').css("background-color", "#e8e6e6");
 					loadInvoiceFromDB(invId);
 				}
 				$('#stateToShip').on('change', function() {
@@ -57,8 +63,30 @@
 					initHeader(invId)
 					fillInvoiceTableRows();
 				}
+				function loadAddress(cust_id)
+				{
+					$.ajax({ 
+						url: 'webmethods.php',
+						type: 'POST',
+						data: {type: 25, id: cust_id},
+						success: function (data1) {
+							var arr = JSON.parse(data1);
+							console.log(arr);
+							$('#invoiceAddress').text(arr.Address);
+							$('#custGST').text('GST: '+arr.GSTNUMBER);
+						},
+						error: function (log) {
+							console.log(log.message);
+						}
+					});
+				}
 				function DisableInvoice(state)
 				{
+					$('#invoiceNote').prop('disabled', state);
+					if (state)
+						$('#invoiceNote').css("background-color", "#e8e6e6");
+					else
+						$('#invoiceNote').css("background-color", "white");
 					$('#btnInvoiceSave').prop('disabled', state);
 					$('#itemBillDate').prop('disabled', state);
 					$('#stateToShip').prop('disabled', state);
@@ -84,17 +112,23 @@
 						data: {type: 18, invId: invId},
 						success: function (data1) {
 							var arr = JSON.parse(data1);
-							$('#itemBillDate').val(arr.Date);
-							$('#invoiceId').val(invId);
-							$('#purchaseNo').val(arr.PurchaseNo);
-							$('#stateToShip').val(arr.PlaceOfSupply);
-							$('#custName').text(arr.custName);
-							$('#invoiceAddress').val(arr.InvoiceAddress);
-							$('#taxableTotal').text(arr.TotalTaxable);
-							$('#grandTotalCGST').text(arr.TOTALCGST);
-							$('#grandTotalSGST').text(arr.TOTALSGST);
-							$('#grandTotalIGST').text(arr.TOTALIGST);
-							$('#grandTotal').text(arr.GrandTotal);
+							console.log(arr)
+							if (arr !=null)
+							{
+								$('#itemBillDate').val(arr.Date);
+								$('#invoiceNote').val(arr.note);
+								$('#invoiceId').val(invId);
+								$('#custGST').text('GST: '+arr.GST);
+								$('#purchaseNo').val(arr.PurchaseNo);
+								$('#stateToShip').val(arr.PlaceOfSupply);
+								$('#custName').text(arr.custName);
+								$('#invoiceAddress').val(arr.InvoiceAddress);
+								$('#taxableTotal').text(arr.TotalTaxable);
+								$('#grandTotalCGST').text(arr.TOTALCGST);
+								$('#grandTotalSGST').text(arr.TOTALSGST);
+								$('#grandTotalIGST').text(arr.TOTALIGST);
+								$('#grandTotal').text(arr.GrandTotal);
+							}
 						},
 						error: function (log) {
 							console.log(log.message);
@@ -181,6 +215,7 @@
 				});
 				
 				$("#btnInvoiceEdit").on('click',function(){
+					
 					DisableInvoice(false);
 				});
 				
@@ -209,7 +244,7 @@
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
-						data: {type: 21,action: action, invId: invId, purchaseNo: $('#purchaseNo').val().trim() , stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim() },
+						data: {type: 21,action: action, invId: invId, purchaseNo: $('#purchaseNo').val().trim() , stateToShip:$('#stateToShip').val().trim(), itemBillDate: $('#itemBillDate').val().trim(), invoiceAddress: $('#invoiceAddress').val().trim(), taxableTotal: $('#taxableTotal').text().trim(),grandTotalCGST: $('#grandTotalCGST').text().trim(), grandTotalSGST: $('#grandTotalSGST').text().trim(), grandTotalIGST: $('#grandTotalIGST').text().trim(), grandTotal: $('#grandTotal').text().trim(),note: $('#invoiceNote').val().trim() },
 						success: function (d) {
 							if(d == "1")
 							{
@@ -249,6 +284,7 @@
 				}
 				function saveIteminDB()
 				{
+					var desp = $("#addItemModal input:eq(0)").val();
 					$.ajax({ 
 						url: 'webmethods.php',
 						type: 'POST',
@@ -258,6 +294,8 @@
 							{
 								alert("Item Saved");
 								$("#addItemModal").modal('hide');
+								$(tempRow).val(desp);
+								fillItemDetails(desp,tempRow);
 								initItemName();
 							}
 						},
@@ -314,6 +352,7 @@
 			
 			<address>
 				<p><span id="custName" >Some Company</span></p>
+				<p><span id="custGST" ></span></p>
 				<textarea rows="4" cols="40" id="invoiceAddress" placeholder="Type Vendor Address"></textarea>
 			</address>
 			<table class="meta">
@@ -375,12 +414,12 @@
 						<th style="width:130px"><span >Item Description</span></th>
 						<th style="width:30px"><span >HSN</span></th>
 						<th style="width:25px"><span >Rate</span></th>
-						<th style="width:20px"; ><span >Qty.</span></th>
-						<th style="width:30px"><span >Unit</span></th>
+						<th style="width:35px"; ><span >Qty.</span></th>
+						<th style="width:25px"><span >Unit</span></th>
 						<th style="width:25px"><span >Dis.</span></th>
 						<th style="width:40px"><span >Taxable Value</span></th>
-						<th style="width:30px"><span >GST Rate</span></th>
-						<th style="width:40px"><span >CGST(₹)</span></th>
+						<th style="width:25px"><span >GST Rate</span></th>
+						<th style="width:35px"><span >CGST(₹)</span></th>
 						<th style="width:40px"><span >SGST(₹)</span></th>
 						<th style="width:40px"><span >IGST(₹)</span></th>
 						<th style="width:40px"><span >Total(₹)</span></th>
@@ -436,7 +475,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<label for="usr">Item Description (*required)</label>
-						<input type="text" class="form-control" id="itemDesp">
+						<input type="search" class="form-control" id="itemDesp">
 					</div>
 				</div>
 				<br/>
@@ -447,8 +486,8 @@
 							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Item Type 
 							<span class="caret"></span></button>
 						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">Goods</a></li>
-								<li><a href="#">Services</a></li>
+								<li><a >Goods</a></li>
+								<li><a >Services</a></li>
 						    </ul>
 						</div>
 					</div>
@@ -490,12 +529,12 @@
 							<button class="btn btn-default dropdown-toggle" style="width:250px" type="button" data-toggle="dropdown">Tax Rate
 							<span class="caret"></span></button>
 						    <ul class="dropdown-menu" style="width:250px">
-								<li><a href="#">0.25%</a></li>
-								<li><a href="#">12%</a></li>
-								<li><a href="#">18%</a></li>
-								<li><a href="#">28%</a></li>
-								<li><a href="#">3%</a></li>
-								<li><a href="#">5%</a></li>																
+								<li><a >0.25%</a></li>
+								<li><a >12%</a></li>
+								<li><a >18%</a></li>
+								<li><a >28%</a></li>
+								<li><a >3%</a></li>
+								<li><a >5%</a></li>																
 						    </ul>
 						</div>
 					</div>
@@ -537,6 +576,7 @@
 			<h1><span contenteditable>Additional Notes</span></h1>
 			<div  class="print">
 				<p>*All charges are inclusive of taxes</p>
+				<textarea style= "width:100%;height:80px;border:solid 3px grey;font-size: 18px;" id="invoiceNote" placeholder="Make a note"></textarea>
 			</div>
 		</aside>
 		

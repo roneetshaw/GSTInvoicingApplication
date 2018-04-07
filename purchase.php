@@ -47,12 +47,15 @@
                             <div class="content">
 								<div class="row" style="margin:20px;">
 									<div class="col-md-4">
+										<label for="From">From: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="fromDate">
 									</div>
 									<div class="col-md-4">
+										<label for="To">To: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="toDate">
 									</div>
 									<div class="col-md-4">
+										<br/>
 										<button type="button" id="btnApplyFilter" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Filter</button>
 									</div>
 								</div>
@@ -351,18 +354,36 @@
 						'pdf'
 					],
 					destroy: true,
-					columns: [
-						{ title: "DATE" },
-						{ title: "INVOICE NO." },
-						{ title: "CUSTOMER" },
-						{ title: "GSTIN" },
-						{ title: "TAXABLE AMOUNT" },
-						{ title: "TAX" },
-						{ title: "TOTAL AMOUNT" },
-						{ title: "TYPE" }					
+					"aoColumns": [
+						{"sType": "date-uk","sTitle": "DATE" },
+						{"sTitle": "INVOICE NO"},
+						{"sTitle": "CUSTOMER"},
+						{"sTitle": "GSTIN"},
+						{"sTitle": "TAXABLE AMOUNT"},
+						{"sTitle": "TAX"},
+						{"sTitle": "TOTAL AMOUNT"},
+						{"sTitle": "TYPE"}
+						
 					]
 				});
 			}
+			jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+			"date-uk-pre": function ( a ) {
+				if(a != null)
+				{
+					var ukDatea = a.split('/');
+					return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+				}
+			},
+
+			"date-uk-asc": function ( a, b ) {
+				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+			},
+
+			"date-uk-desc": function ( a, b ) {
+				return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+			}
+			});
 			$('#btnApplyFilter').on('click',function(){
 				initInvoiceTable("2");
 			})

@@ -82,7 +82,8 @@ function initItemName()
 				response: function(event, ui){
 					ui.content.push({id:'New Item', label:'New Item', value:''});
 				},
-				minLength: 0,
+				minLength: 3,
+				delay:500,
 				autoFocus: true,
 				open: function(event) {},
 				close: function() {},
@@ -112,13 +113,6 @@ function initItemName()
 	function fillItemDetails(itemDesp,ele)
 	{
 		var tableElem = ele.parent();
-		/*$("#itemList tbody tr td:nth-child(2)").each(function(){
-			if($(this).find('input').val().trim() == itemDesp)
-			{
-				tableElem=$(this);
-			}
-				
-		})*/
 		$.ajax({ 
 			url: 'webmethods.php',
 			type: 'POST',
@@ -291,14 +285,14 @@ function generateTableRow() {
     
 	
 	emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(x)+'</span></td>' +
-		'<td><input class="itemDespText" placeholder="Type an Item" style="width:100%;text-align:left;" type="search" ></input></td>' +
+		'<td style="padding:0px;height: 30px;"><input class="itemDespText" placeholder="Type an Item" style="width:100%;height:100%;text-align:left;" type="search" ></input></td>' +
 		'<td></td>' +
-		'<td><input  style="width:100%;text-align:right;" type="text" onchange="rateChange($(this))"></input></td>' +
-		'<td><input style="width:100%;text-align:right;" type="number" min="0" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
+		'<td style="padding:0px;height: 30px;"><input  style="width:100%;height:100%;text-align:right;" type="text" onchange="rateChange($(this))"></input></td>' +
+		'<td style="padding:0px;height: 30px;"><input style="width:100%;height:100%;text-align:right;" type="number" min="0" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
 		'<td style="text-align:center;"><span ></span></td>' +
-		'<td><input style="width:100%;text-align:right;" type="text" onchange="disChange($(this))"></td>' +
+		'<td style="padding:0px;height: 30px;" ><input style="width:100%;height:100%;text-align:right;" type="text" onchange="disChange($(this))"></td>' +
 		'<td></td>' +
-		'<td><input style="width:100%;text-align:right;" type="text" onchange="gstChange($(this))"></td>'+
+		'<td style="padding:0px;height: 30px;"><input style="width:100%;height:100%;text-align:right;" type="text" onchange="gstChange($(this))"></td>'+
 		'<td></td>' +
 		'<td></td>' +
 		'<td></td>' +
@@ -311,7 +305,8 @@ function generateTableRow() {
 		response: function(event, ui){
             ui.content.push({id:'New Item', label:'New Item', value:''});
         },
-        minLength: 0,
+        minLength: 3,
+		delay:500,
         autoFocus: true,
         open: function(event) {},
         close: function() {},
@@ -422,7 +417,7 @@ function onContentLoad() {
 			
 			$("table.inventory tbody tr").each(function(){
 				
-				var node='<a class="cut">-</a><span contenteditable>'+(y)+'</span>'
+				var node='<a class="cut">-</a><span>'+(y)+'</span>'
 				$(this).find("td:eq(0)").html(node);
 				y++;
 			})

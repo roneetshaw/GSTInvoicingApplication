@@ -82,7 +82,8 @@ function initItemName()
 				response: function(event, ui){
 					ui.content.push({id:'New Item', label:'New Item', value:''});
 				},
-				minLength: 0,
+				minLength: 3,
+				delay:500,
 				autoFocus: true,
 				open: function(event) {},
 				close: function() {},
@@ -111,15 +112,7 @@ function initItemName()
     });
 	function fillItemDetails(itemDesp,ele)
 	{
-		console.log('Roneet :'+itemDesp);
 		var tableElem = ele.parent();
-		/*$("#itemList tbody tr td:nth-child(2)").each(function(){
-			if($(this).find('input').val().trim() == itemDesp)
-			{
-				tableElem=$(this);
-			}
-				
-		})*/
 		$.ajax({ 
 			url: 'webmethods.php',
 			type: 'POST',
@@ -225,7 +218,7 @@ function calRow(elem)
 				var tblsGST=parseFloat($(this).next().text().trim());
 				var tbliGST=parseFloat($(this).next().next().text().trim());
 				var tblTotal=parseFloat($(this).next().next().next().text().trim());
-				grandTotal= grandTotal+tblTotal;
+				grandTotal= Math.round(grandTotal+tblTotal);
 				grandTotalIGST = grandTotalIGST + tbliGST;
 				grandTotalCGST = grandTotalCGST + tblcGST;
 				grandTotalSGST = grandTotalSGST + tblsGST;
@@ -289,21 +282,102 @@ function emptyRow(elem)
 		elem.parent().parent().find('td:nth-child(13)').text('');
 		elem.parent().parent().find('td:nth-child(8)').text('');
 }
+
+
+function showSmallModal(elem)
+{
+	var e = elem;
+	var itemId = elem.parent().parent().parent().parent().find('td:nth-child(15)').text().trim()
+	initItemDetailTable(itemId);
+	fillQtyLeft(itemId);
+	$("#itemDespModal").modal('show');
+}
+
+function fillQtyLeft(id)
+{
+	$.ajax({ 
+		url: 'webmethods.php',
+		type: 'POST',
+		data: {type: 27, id: id },
+		success: function (data1) {
+			var arr = JSON.parse(data1);
+			$('#qtyDetailLeft').text(" "+arr.nm+"( Quantity Left: "+arr.qty+")");
+		},
+		error: function (log) {
+			console.log(log.message);
+		}
+	});
+}
+function initItemDetailTable(id)
+{
+	$.ajax({ 
+		url: 'webmethods.php',
+		type: 'POST',
+		data: {type: 26, id: id },
+		success: function (data1) {
+			var arr = JSON.parse(data1);
+			console.log(arr)			
+			fillPerItemDetails(arr);
+			
+		},
+		error: function (log) {
+			console.log(log.message);
+		}
+	});
+}
+
+function fillPerItemDetails(dataSet)
+{
+	$('#itemPerDetail').DataTable({
+		data: dataSet,
+		destroy: true,
+		"aoColumns": [
+			{"sTitle": "Serial NO"},
+			{ "sType": "date-uk","sTitle": "DATE" },
+			{"sTitle": "CUSTOMER"},
+			{"sTitle": "INV.NO."},
+			{"sTitle": "QTY"},
+			{"sTitle": "RATE"},
+			{"sTitle": "GST"}
+				
+		]
+	});
+}
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+	"date-uk-pre": function ( a ) {
+		if(a != null)
+		{
+			var ukDatea = a.split('/');
+			return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+		}
+	},
+
+	"date-uk-asc": function ( a, b ) {
+		return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+	},
+
+	"date-uk-desc": function ( a, b ) {
+		return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+	}
+} );	
+
+
+
 function generateTableRow() {
 	
 	var emptyColumn = document.createElement('tr');
 	//var input=$('<input class="itemDesp" placeholder="Type a Location" style="width:100%;text-align:left;" type="text" ></input>');
     
 	
-	emptyColumn.innerHTML = '<td style="text-align:right;"><a class="cut">-</a><span >'+(x)+'</span></td>' +
-		'<td><input class="itemDespText" placeholder="Type an Item" style="width:100%;text-align:left;" type="search" ></input></td>' +
+	emptyColumn.innerHTML = '<td style ="text-align:center;"><a class="cut">-</a><div class="row "><div class="col-sm-6"><a onclick="showSmallModal($(this))" href="javascript:void(0)" class="smlbtn round-button1 no-print"></a></div><div  class="col-sm-6"><span>'+(x)+'</span></div></div></td>' +
+		'<td style="padding:0px;height: 30px;" ><input class="itemDespText" placeholder="Type an Item" style="width:100%;height:100%;text-align:left;" type="search" ></input></td>' +
 		'<td></td>' +
-		'<td><input  style="width:100%;text-align:right;" type="text" onchange="rateChange($(this))"></input></td>' +
-		'<td><input style="width:100%;text-align:right;" type="number" min="0" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
-		'<td style="text-align:center;"><span ></span></td>' +
-		'<td><input style="width:100%;text-align:right;" type="text" onchange="disChange($(this))"></td>' +
+		'<td style="padding:0px;height: 30px;" ><input  style="width:100%;height:100%;text-align:center;" type="text" onchange="rateChange($(this))"></input></td>' +
+		'<td style="padding:0px;height: 30px;" ><input style="width:100%;height:100%;text-align:center;" type="number" min="0" onfocus="this.oldvalue = this.value;" onchange="qtyChange($(this),this);this.oldvalue = this.value;"></input></td>'+
+		'<td style="text-align:center;display:none;"><span ></span></td>' +
+		'<td style="padding:0px;height: 30px;display:none;" ><input style="width:100%;height:100%;text-align:center;" type="text" onchange="disChange($(this))"></td>' +
 		'<td></td>' +
-		'<td><input style="width:100%;text-align:right;" type="text" onchange="gstChange($(this))"></td>'+
+		'<td style="padding:0px;height: 30px;" ><input style="width:100%;height:100%;text-align:center;" type="text" onchange="gstChange($(this))"></td>'+
 		'<td></td>' +
 		'<td></td>' +
 		'<td></td>' +
@@ -311,12 +385,14 @@ function generateTableRow() {
 		'<td style="display:none;"></td>'+
 		'<td style="display:none;"></td>'+
 		'<td style="display:none;"></td>';
+		
 	$('.itemDespText', emptyColumn).autocomplete({
 		source: autocompleteOptions,
 		response: function(event, ui){
             ui.content.push({id:'New Item', label:'New Item', value:''});
         },
-        minLength: 0,
+        minLength: 3,
+		delay:500,
         autoFocus: true,
         open: function(event) {},
         close: function() {},
@@ -427,7 +503,7 @@ function onContentLoad() {
 			
 			$("table.inventory tbody tr").each(function(){
 				
-				var node='<a class="cut">-</a><span contenteditable>'+(y)+'</span>'
+				var node='<a class="cut">-</a><span>'+(y)+'</span>'
 				$(this).find("td:eq(0)").html(node);
 				y++;
 			})

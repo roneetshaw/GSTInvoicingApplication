@@ -39,7 +39,6 @@
 									</div>
 									<div class="col-md-4">
 										<input type="button" value="Add Customer" id="btnCustomerAdd">
-										<input type="button" value="Edit Customer" id="btnItemChange"  data-toggle="modal" data-target="#editCustomerModal">
 									</div>
 								</div>
                                 
@@ -174,56 +173,6 @@
 			</div>
 			<div class="modal-footer">
 			  
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		  
-		</div>
-	</div>
-	<div class="modal fade" id="editCustomerModal" role="dialog">
-		<div class="modal-dialog">
-		
-		  <!-- Modal content-->
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal">&times;</button>
-			  <h4 class="modal-title">Change Item</h4>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-3">
-						<label for="usr" style="margin-top:10px;">Item Name:</label>
-					</div>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="itemDespName" placeholder="Type an Item">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-3">
-						<label for="usr" style="margin-top:10px;">Bill Date:</label>
-					</div>
-					<div class="col-sm-9">
-						<input class="form-control" id="itemBillDate" name="date" placeholder="MM/DD/YYYY" type="text"/>
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-12">
-						<input type="text" class="form-control" id="itemChangeValue" style="text-align:center;">
-					</div>
-				</div>
-				<br/>
-				<div class="row">
-					<div class="col-sm-12" style="text-align:center;">
-						<button type="button" class="btn btn-default" id="btnItemAdd" style="width:80px;font-weight:bold; color: black;" >Add</button>
-						<button type="button" class="btn btn-default" id="btnItemMinus" style="width:80px;font-weight:bold; color: black;" >Minus</button>
-						<button type="button" class="btn btn-default" id="btnItemEdit" style="width:80px;font-weight:bold; color: black;" >Edit</button>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
 			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		  </div>

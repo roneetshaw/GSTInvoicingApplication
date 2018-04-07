@@ -15,8 +15,9 @@
 	
 	<style>
 	
-		table.dataTable thead th { font-size: 15px; color: black;}
+		table.dataTable thead th { font-size: 15px; color: black;text-align: center; }
 		a { cursor: pointer; }
+		tr td { text-align: center; }
 	</style>
 
 </head>
@@ -214,7 +215,7 @@
 						{ title: "PURCHASE PRICE (₹)" },
 						{ title: "SELLING PRICE (₹)" },
 						{ title: "GST (%)" },
-						{ title: "DISCOUNT (%)" },
+						{ title: "DISCOUNT" },
 						{ title: "QUANTITY" },
 					]
 				});

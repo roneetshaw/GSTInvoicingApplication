@@ -208,18 +208,38 @@
 						'pdf'
 					],
 					destroy: true,
-					columns: [
-						{ title: "Sr. no." },
-						{ title: "ITEM DESCRIPTION" },
-						{ title: "HSN/SAC" },
-						{ title: "PURCHASE PRICE (₹)" },
-						{ title: "SELLING PRICE (₹)" },
-						{ title: "GST (%)" },
-						{ title: "DISCOUNT" },
-						{ title: "QUANTITY" },
+					"aoColumns": [
+						{"sTitle": "Sr. no." },
+						{"sTitle": "ITEM DESCRIPTION"},
+						{"sTitle": "HSN/SAC"},
+						{"sTitle": "PURCHASE PRICE (₹)"},
+						{"sTitle": "SELLING PRICE (₹)"},
+						{"sTitle": "GST (%)"},
+						{"sTitle": "DISCOUNT"},
+						{"bSortable": true,"sType": "duration","sTitle": "QUANTITY"}
+						
 					]
 				});
 			}
+			
+			jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+			"duration-pre": function ( a ) {
+				if(a != null)
+				{
+					var ukDatea = a.split(' ');
+					return ((ukDatea[0]).trim())*1;
+				}
+			},
+
+			"duration-asc": function ( a, b ) {
+				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+			},
+
+			"duration-desc": function ( a, b ) {
+				return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+			}
+			});
+
 			function saveIteminDB()
 			{
 				$.ajax({ 

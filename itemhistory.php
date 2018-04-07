@@ -43,15 +43,19 @@
                             <div class="content">
 								<div class="row" style="margin:20px;">
 									<div class="col-md-4">
+										<label for="From">Item Name</label>
 										<input type="text" class="form-control" id="itemautocomplete">
 									</div>
 									<div class="col-md-3">
+										<label for="From">From: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" value="01/04/2017" id="fromDate">
 									</div>
 									<div class="col-md-3">
+										<label for="To">To: (DD/MM/YYYY)</label>
 										<input type="text" class="form-control" placeholder="DD/MM/YYYY" id="toDate">
 									</div>
 									<div class="col-md-2">
+										<br/>
 										<button type="button" id="btnGetResult" class="btn" style="border-color: #2e6da4 ;background-color: #337ab7;color: white;">Get Result</button>
 									</div>
 								</div>
@@ -88,7 +92,8 @@
 						autocompleteOptions = dataRET[0]
 						$('#itemautocomplete').autocomplete({
 							source: autocompleteOptions,
-							minLength: 0,
+							minLength: 3,
+							delay:800,
 							autoFocus: true,
 							open: function(event) {},
 							close: function() {},

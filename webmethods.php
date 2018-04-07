@@ -213,7 +213,7 @@
 	else if($type=="8")
 	{
 		$custName = mysqli_real_escape_string($db,$_POST['customerName']);
-		$select_gst="Select GSTNUMBER, ID from CUSTOMER_MASTER where VendorName like '".$custName."'";
+		$select_gst="Select GSTNUMBER, ID,Address from CUSTOMER_MASTER where VendorName like '".$custName."'";
 		$result=mysqli_query($db,$select_gst);
 		$row = mysqli_fetch_array($result);
 		$gst = $row["GSTNUMBER"];
@@ -223,7 +223,7 @@
 		{
 			$cust_type = "B2B";
 		}
-		$insert_query = "insert into SALES_MASTER (CustomerID, TYPE) values ('".$row["ID"]."','".$cust_type."')";
+		$insert_query = "insert into SALES_MASTER (CustomerID, TYPE,InvoiceAddress) values ('".$row["ID"]."','".$cust_type."','".$row["Address"]."')";
 		$runcheck=mysqli_query($db,$insert_query);
 		if ( false===$runcheck ) {
 			printf("error: %s\n", mysqli_error($db));
@@ -254,6 +254,7 @@
 		$rows = mysqli_fetch_assoc($result);
 		echo json_encode($rows);
 	}
+	
 	else if($type=="11")
 	{
 		$invId = mysqli_real_escape_string($db,$_POST['invId']);
@@ -265,7 +266,8 @@
 		$grandTotalIGST = mysqli_real_escape_string($db,$_POST['grandTotalIGST']);
 		$grandTotal = mysqli_real_escape_string($db,$_POST['grandTotal']);
 		$invoiceAddress = str_replace(array("/:", "/-", "//", "/*","/'"), ' ',mysqli_real_escape_string($db,$_POST['invoiceAddress']));	
-		$sql11 = "update SALES_MASTER set PlaceOfSupply ='".$stateToShip."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."', CreatedDate = '".$itemBillDate."' where InvoiceNo='".$invId."'";
+		$note = str_replace(array("/:", "/-", "//", "/*","/'"), ' ',mysqli_real_escape_string($db,$_POST['note']));	
+		$sql11 = "update SALES_MASTER set PlaceOfSupply ='".$stateToShip."', note = '".$note."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."', CreatedDate = '".$itemBillDate."' where InvoiceNo='".$invId."'";
 		$runcheck=mysqli_query($db,$sql11);
 		if ( false===$runcheck ) {
 			printf("error: %s\n", mysqli_error($db));
@@ -291,14 +293,14 @@
 		$mode = mysqli_real_escape_string($db,$_POST['mode']);
 		if($mode == "1")
 		{
-			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			$sql13="SELECT sm.BillDate as Date,CONCAT('000',sm.InvoiceNo) as InvoiceNo, cm.VendorName as custName,
 			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
 			sm.GrandTotal as GrandTotal, sm.TYPE as custType
 			FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID";
 		}
 		else if($mode == "2")
 		{
-			$sql13="SELECT sm.BillDate as Date,sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+			$sql13="SELECT sm.BillDate as Date,CONCAT('000',sm.InvoiceNo) as InvoiceNo, cm.VendorName as custName,
 			cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
 			sm.GrandTotal as GrandTotal, sm.TYPE as custType
 			FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y'))";
@@ -325,7 +327,7 @@
 	else if($type=="14")
 	{
 		$invId = mysqli_real_escape_string($db,$_POST['invId']);
-		$sql14="SELECT sm.BillDate as Date, sm.PlaceOfSupply as PlaceOfSupply, sm.InvoiceAddress as InvoiceAddress,sm.TOTALCGST as TOTALCGST,sm.TOTALSGST as TOTALSGST,sm.TOTALIGST as TOTALIGST, sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+		$sql14="SELECT sm.Note as note,sm.BillDate as Date, sm.PlaceOfSupply as PlaceOfSupply, sm.InvoiceAddress as InvoiceAddress,sm.TOTALCGST as TOTALCGST,sm.TOTALSGST as TOTALSGST,sm.TOTALIGST as TOTALIGST, sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
 		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
 		sm.GrandTotal as GrandTotal, sm.TYPE as custType
 		FROM sales_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where sm.InvoiceNo='".$invId."'";
@@ -426,7 +428,7 @@
 	else if($type=="18")
     {
 		$invId = mysqli_real_escape_string($db,$_POST['invId']);
-		$sql14="SELECT sm.BillDate as Date,sm.PurchaseNo as PurchaseNo, sm.PlaceOfSupply as PlaceOfSupply, sm.InvoiceAddress as InvoiceAddress,sm.TOTALCGST as TOTALCGST,sm.TOTALSGST as TOTALSGST,sm.TOTALIGST as TOTALIGST, sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
+		$sql14="SELECT sm.Note as note,sm.BillDate as Date,sm.PurchaseNo as PurchaseNo, sm.PlaceOfSupply as PlaceOfSupply, sm.InvoiceAddress as InvoiceAddress,sm.TOTALCGST as TOTALCGST,sm.TOTALSGST as TOTALSGST,sm.TOTALIGST as TOTALIGST, sm.InvoiceNo as InvoiceNo, cm.VendorName as custName,
 		cm.GSTNUMBER as GST, sm.TotalTaxable as TotalTaxable, (sm.TOTALCGST+sm.TOTALSGST+sm.TOTALIGST) as Tax,
 		sm.GrandTotal as GrandTotal, sm.TYPE as custType
 		FROM purchase_master sm INNER JOIN customer_master cm ON sm.CustomerID = cm.ID where sm.InvoiceNo='".$invId."'";
@@ -484,7 +486,9 @@
 		$grandTotalIGST = mysqli_real_escape_string($db,$_POST['grandTotalIGST']);
 		$grandTotal = mysqli_real_escape_string($db,$_POST['grandTotal']);
 		$invoiceAddress = str_replace(array("/:", "/-", "//", "/*","/'"), ' ',mysqli_real_escape_string($db,$_POST['invoiceAddress']));	
-		$sql21 = "update PURCHASE_MASTER set PlaceOfSupply ='".$stateToShip."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."', CreatedDate = '".$itemBillDate."', PurchaseNo = '".$purchaseNo."' where InvoiceNo='".$invId."'";
+		$note = str_replace(array("/:", "/-", "//", "/*","/'"), ' ',mysqli_real_escape_string($db,$_POST['note']));	
+		
+		$sql21 = "update PURCHASE_MASTER set PlaceOfSupply ='".$stateToShip."', note = '".$note."', CreatedDate = '".$itemBillDate."', BillDate = '".$itemBillDate."', InvoiceAddress ='".$invoiceAddress."', TotalTaxable ='".$taxableTotal."', TOTALCGST ='".$grandTotalCGST."', TOTALSGST ='".$grandTotalSGST."', TOTALIGST ='".$grandTotalIGST."', GrandTotal ='".$grandTotal."', CreatedDate = '".$itemBillDate."', PurchaseNo = '".$purchaseNo."' where InvoiceNo='".$invId."'";
 		$runcheck=mysqli_query($db,$sql21);
 		if ( false===$runcheck ) {
 			printf("error: %s\n", mysqli_error($db));
@@ -498,15 +502,15 @@
 		$itemName = mysqli_real_escape_string($db,$_POST['itemName']);
 		$fromDate = mysqli_real_escape_string($db,$_POST['fromDate']);
 		$toDate = mysqli_real_escape_string($db,$_POST['toDate']);
-		$sql22_1="select im.Description as s_desp,im.Quantity as s_qty,sm.BillDate as s_billdate,concat('-',(st.Quantity)) as s_trans,sm.InvoiceNo as s_inv  from item_master im 
+		$sql22_1="select im.Description as s_desp,im.Quantity as s_qty,sm.BillDate as s_billdate,concat('-',(st.Quantity)) as s_trans,CONCAT('000',sm.InvoiceNo) as s_inv  from item_master im 
 		INNER JOIN sales_transactions st on im.ID=st.ItemID
 		INNER JOIN sales_master sm on st.InvoiceNo= sm.InvoiceNo
-		where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by sm.BillDate";
+		where (str_to_date(sm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by sm.BillDate desc";
 		$result_1 = mysqli_query($db,$sql22_1);
 		$sql22_2="select im.Description as p_desp,im.Quantity as p_qty,pm.BillDate as p_billdate,concat('+',(pt.Quantity)) as p_trans,pt.InvoiceNo as p_inv from item_master im 
 		INNER JOIN purchase_transactions pt on im.ID=pt.ItemID
 		INNER JOIN purchase_master pm on pt.InvoiceNo= pm.InvoiceNo
-		where (str_to_date(pm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by pm.BillDate";
+		where (str_to_date(pm.BillDate, '%d/%m/%Y') BETWEEN str_to_date('".$fromDate."', '%d/%m/%Y') AND str_to_date('".$toDate."', '%d/%m/%Y')) and im.Description = '".$itemName."' order by pm.BillDate desc";
 		$result_2 = mysqli_query($db,$sql22_2);
 		$ID = Array();$Description = Array();$TAXRATE = Array();$SELLINGPRICE = Array();$PURCHASEPRICE = Array();$HSN = Array();$DISCOUNT = Array();$QUANTITY = Array();
 		$rows[] = array();
@@ -657,6 +661,48 @@
 		$rows[$i++] = $row;
 		$row = array ('December',floatval($r['December']),floatval($r1['December'])); 
 		$rows[$i++] = $row;
+		echo json_encode($rows);
+	}
+	else if($type=="25")
+	{
+		$cust_id = mysqli_real_escape_string($db,$_POST['id']);
+		$total_row="select * from CUSTOMER_MASTER where ID = ".$cust_id;
+		$result=mysqli_query($db,$total_row);
+		$rows = mysqli_fetch_assoc($result);
+		echo json_encode($rows);
+	}
+	else if($type=="26")
+	{
+		$item_id = mysqli_real_escape_string($db,$_POST['id']);
+		$total_row="SELECT @s:=@s+1 serial_number,pm.BillDate as dt,cm.VendorName as vendornm,pst.InvoiceNo as invno,
+		pst.Quantity as qty, pst.rate as rt, CONCAT(pst.GSTRate,'%') as gst 
+		FROM (select @s:=0) as s,purchase_transactions pst
+		INNER JOIN purchase_master pm ON pst.InvoiceNo = pm.InvoiceNo 
+		INNER JOIN customer_master cm ON pm.CustomerID = cm.ID
+		where pst.ItemID = ".$item_id;
+		$result=mysqli_query($db,$total_row);
+		$SR = Array();$Date = Array();$InvoiceNo = Array();$vendornm = Array();$GST = Array();$qty = Array();$rate = Array();
+		while ($row = mysqli_fetch_array($result)) 
+		{
+			$SR[] = $row["serial_number"]; 
+			$Date[] = $row["dt"]; 
+			$InvoiceNo[] = $row["invno"];
+			$vendornm[] = $row["vendornm"]; 
+			$GST[] = $row["gst"];
+			$qty[] = $row["qty"]; 
+			$rate[] = $row["rt"]; 
+		}
+		//$row = mysqli_fetch_array($result);
+		$res = array($SR, $Date, $vendornm, $InvoiceNo, $qty, $rate, $GST);
+		$res=transpose($res);
+		echo json_encode($res);
+	}
+	else if($type=="27")
+	{
+		$item_id = mysqli_real_escape_string($db,$_POST['id']);
+		$total_row="select it.Quantity as qty,it.Description as nm from item_master it where it.ID =".$item_id;
+		$result=mysqli_query($db,$total_row);
+		$rows = mysqli_fetch_assoc($result);
 		echo json_encode($rows);
 	}
 ?>
